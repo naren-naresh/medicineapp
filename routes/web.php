@@ -28,5 +28,6 @@ Route::group(['middleware' => 'prevent-back-history'],function() {
 Route::group(['middleware' => ['admin']], function () {
     Route::get('dashboard','AuthController@index')->name('dashboard');
     Route::get('logout', 'AuthController@logout')->name('logout');
+    Route::get('profile','AuthController@profile')->name('profile');
 });
 });

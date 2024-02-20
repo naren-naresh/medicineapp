@@ -6,11 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Medicine Plus</title>
     <!--Bootstrap CSS-->
-    <link rel="stylesheet" href="{{ asset('assets/bootstrap/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/bootstrap/bootstrap.min.css') }}">
     <!--Font Awsome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
      <!--Jquery-->
-     <script src="{{ asset('assets/jquery/jquery.min.js') }}"></script>
+     <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
     {{-- styles --}}
     <style>
         *{
@@ -44,7 +44,7 @@
         @yield('content')
     </div>
     <!-- Bootstrap JS-->
-   <script src="{{ asset('assets/bootstrap/bootstrap.min.js')}}"></script>
+   <script src="{{ asset('assets/plugins/bootstrap/bootstrap.min.js')}}"></script>
     <!-- JQuery Validation-->
    <script src="{{ asset("assets/plugins/jqueryvalidation.js")}}"></script>
 </body>

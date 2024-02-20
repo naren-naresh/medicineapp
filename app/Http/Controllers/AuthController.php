@@ -2,12 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    protected $admin;
+    /**constructor */
+    public function __construct()
+    {
+
+            $this->admin= Auth::id();
+
+
+
+    }
+
     /** Admin login */
     public function login()
     {
@@ -34,6 +46,13 @@ class AuthController extends Controller
     public function index()
     {
         return view('dashboard');
+    }
+    /** profile */
+    public function profile()
+    {
+        $user = User::where('id',Auth::user()->id)->first();
+        // dd($user);
+        return view('admin.adminprofile.profile', compact('user'));
     }
     /** Logout */
     public function logout(Request $request): RedirectResponse
