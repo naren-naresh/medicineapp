@@ -29,5 +29,9 @@ Route::group(['middleware' => ['admin']], function () {
     Route::get('dashboard','AuthController@index')->name('dashboard');
     Route::get('logout', 'AuthController@logout')->name('logout');
     Route::get('profile','AuthController@profile')->name('profile');
+    Route::get('edit/{id}', 'AuthController@edit')->name('edit');
+    Route::put('update/{id}', 'AuthController@update')->name('profile.update');
+    /** password updatin model */
+    Route::put('passwordupdate', 'AuthController@passwordupdate')->name('passwordupdate');
 });
 });

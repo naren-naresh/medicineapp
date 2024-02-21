@@ -3,20 +3,21 @@ $("#menu-toggle").click(function(e) {
     $("#sidebar-wrapper").toggleClass("active");
     $("span.text").toggleClass("active");
 });
-
-function initMenu() {
-    $('#menu ul').hide();
-    $('#menu ul').children('.current').parent().show();
-    // $('#menu ul:first').show();
-    $('#menu li a').mouseenter(
-        function() {
-            $('#menu ul').show();
+$("#products").click(function () {
+    $("#menu ul").toggle();
+ })
+$("#menu-toggle").click(function () {
+    $("#sidebar-wrapper").hover(function () {
+        $this=$(this);
+        if ($this.hasClass("active")) {
+            $("#sidebar-wrapper").removeClass("active");
+            $("span.text").removeClass("active");
+        }
+        }, function () {
+          $("#sidebar-wrapper").addClass("active");
+          $("span.text").addClass("active")
         }
     );
-    $('#menu li a').mouseleave(function () {
-        $('#menu ul').hide();
-    });
-}
-$(document).ready(function() {
-    initMenu();
 });
+
+

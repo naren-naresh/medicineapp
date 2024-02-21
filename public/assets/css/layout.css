@@ -3,8 +3,11 @@
      margin: 0;
      padding: 0;
      box-sizing: border-box;
+     font-size: 14px;
  }
-
+.error{
+    color:red;
+}
  /* -------------------- Header Styles ------------------------- */
  .navbar {
      background-color: #385399;
@@ -19,7 +22,7 @@
  }
 
  a.navbar-brand {
-     width: 210px;
+     width: 200px;
      text-align: center;
      margin: 0;
  }
@@ -29,6 +32,7 @@
  /* --------------------- End Header Styles --------------------- */
  #sidebar-wrapper {
      background-color: #385399;
+     height: calc(100vh - 60px);
  }
 
  .sidebar-nav li a {
@@ -48,16 +52,14 @@
  }
 
  #sidebar-wrapper.active {
-     width: 70px;
+     width: 60px;
  }
 
  span.text.active {
-
      visibility: hidden;
  }
 
  #page-content-wrapper {
-     padding: 15px;
      width: 100%;
      overflow-x: hidden;
  }
@@ -88,7 +90,8 @@
      text-decoration: none;
      color: #fff;
      background: rgba(255, 255, 255, 0.2);
-     border-left: red 2px solid;
+     padding-left: 5px;
+     transition: all 0.3s ease;
  }
 
  .sidebar-nav li a:active,
@@ -115,23 +118,23 @@
      margin: 0;
  }
 
+ #category{
+  display: none;
+ }
+
  /*--Footer Stylings--*/
  footer {
      background-color: #385399;
      color: #fff;
+     position: absolute;
+     width: 100%;
+     bottom: -5px;
  }
 
  /*-- media queries-*/
  @media(min-width:768px) {
-     #wrapper {
-         padding-left: 250px;
-     }
-
-     /* #menu-toggle {
-         display: none !important;
-     } */
      .fixed-brand {
-         width: 250px;
+         width: 200px;
      }
 
      #wrapper.toggled {
@@ -139,11 +142,11 @@
      }
 
      #sidebar-wrapper {
-         width: 250px;
+         width: 200px;
      }
 
      #wrapper.toggled #sidebar-wrapper {
-         width: 250px;
+         width: 200px;
      }
 
      #wrapper.toggled-2 #sidebar-wrapper {
@@ -151,7 +154,7 @@
      }
 
      #wrapper.toggled-2 #sidebar-wrapper:hover {
-         width: 250px;
+         width: 200px;
      }
 
      #page-content-wrapper {
@@ -186,7 +189,7 @@
      }
 
      #sidebar-wrapper.active {
-         width: 260px;
+         width: 200px;
      }
 
      span.text.active {

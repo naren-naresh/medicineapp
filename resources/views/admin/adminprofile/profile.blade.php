@@ -5,7 +5,7 @@
             <p>{{ $message }}</p>
         </div>
     @endif
-    <div class="card w-50 mt-5 bg-secondary text-white">
+    <div class="card w-50 mt-5" style="background-color: #d2d9ea;">
         <div class="card-header">Profile Information</div>
         <div class="card-body">
             <div class="row ms-5 mt-2">
@@ -14,8 +14,8 @@
                         <img src="assets/images/{{ $user->image }}" alt="profile" class="w-50 h-25 mb-4 ms-2"
                             style="border-radius: 30%;">
                         <div class="button mb-5">
-                            <a href="{{ route('dashboard') }}" class="btn btn-info p-1">Back</a>
-                            <a href="" class="btn btn-info ms-2 p-1">Edit</a>
+                            <a href="{{ route('dashboard') }}" class="btn btn-primary p-1">Back</a>
+                            <a href="{{ route('edit', $user->id) }}" class="btn btn-primary ms-2 p-1">Edit</a>
                         </div>
                     </div>
                 </div>

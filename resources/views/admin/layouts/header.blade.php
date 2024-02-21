@@ -2,7 +2,7 @@
     <section id="nav-section">
         <nav class="container-fluid navbar navbar-expand-md">
             <a class="navbar-brand" href="#">
-                <img src="{{ asset('assets/images/logo_white.png') }}" alt="Medicine App Logo" style="width: 150px">
+                <img src="{{ asset('assets/images/logo_white.png') }}" alt="Medicine App Logo" style="width: 144px">
             </a>
             <!-- sidebar toggle -->
             <button type="button" class="btn navbar-toggle collapsed bg-transparent text-white" data-toggle="collapse"
