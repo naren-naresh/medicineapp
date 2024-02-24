@@ -12,6 +12,9 @@ $("#menu-toggle").click(function () {
         if ($this.hasClass("active")) {
             $("#sidebar-wrapper").removeClass("active");
             $("span.text").removeClass("active");
+        } else {
+            $("#sidebar-wrapper").addClass("active");
+            $("span.text").addClass("active")
         }
         }, function () {
           $("#sidebar-wrapper").addClass("active");

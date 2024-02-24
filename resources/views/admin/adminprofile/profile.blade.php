@@ -14,8 +14,8 @@
                         <img src="assets/images/{{ $user->image }}" alt="profile" class="w-50 h-25 mb-4 ms-2"
                             style="border-radius: 30%;">
                         <div class="button mb-5">
-                            <a href="{{ route('dashboard') }}" class="btn btn-primary p-1">Back</a>
-                            <a href="{{ route('edit', $user->id) }}" class="btn btn-primary ms-2 p-1">Edit</a>
+                            <a href="{{ route('dashboard') }}" class="btn py-1 px-2">Back</a>
+                            <a href="{{ route('edit', $user->id) }}" class="btn ms-2 py-1 px-2">Edit</a>
                         </div>
                     </div>
                 </div>

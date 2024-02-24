@@ -19,7 +19,7 @@
                         data-bs-toggle="dropdown" aria-expanded="false" id="navbarDropdown">
                         <img src="{{ asset('assets/images/logo_cut.png') }}" alt="logo-cut-image"
                             style="width: 30px; border-radius:50%;">&nbsp;{{ Auth::user()->name }}</a>
-                    <ul class="dropdown-menu me-5" aria-labelledby="navbarDropdown" style="background-color:#385399;">
+                    <ul class="dropdown-menu me-5" aria-labelledby="navbarDropdown"  style="background-color:#385399; border-top:2px solid white">
                         <li><a class="dropdown-item text-white" href="{{ route('profile')}}"><i class="fa fa-user"></i> &nbsp;Profile</a></li>
                         <li><a class="dropdown-item text-white" href="" id="btn" data-bs-toggle="modal"
                                 data-bs-target="#myModal"><i class="fa fa-keyboard"></i> &nbsp;Change Password</a></li>

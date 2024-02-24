@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DeliveryZoneController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,15 +24,19 @@ Route::get('forget-password', 'ForgotPasswordController@showForgetPasswordForm')
 Route::post('forget-password', 'ForgotPasswordController@submitForgetPasswordForm')->name('forget.password.post');
 Route::get('reset-password/{token}', 'ForgotPasswordController@showResetPasswordForm')->name('reset.password.get');
 Route::post('reset-password', 'ForgotPasswordController@submitResetPasswordForm')->name('reset.password.post');
-Route::group(['middleware' => 'prevent-back-history'],function() {
-/** Admin access authentication */
-Route::group(['middleware' => ['admin']], function () {
-    Route::get('dashboard','AuthController@index')->name('dashboard');
-    Route::get('logout', 'AuthController@logout')->name('logout');
-    Route::get('profile','AuthController@profile')->name('profile');
-    Route::get('edit/{id}', 'AuthController@edit')->name('edit');
-    Route::put('update/{id}', 'AuthController@update')->name('profile.update');
-    /** password updatin model */
-    Route::put('passwordupdate', 'AuthController@passwordupdate')->name('passwordupdate');
-});
+Route::group(['middleware' => 'prevent-back-history'], function () {
+    /** Admin access authentication routes */
+    Route::group(['middleware' => ['admin']], function () {
+        Route::get('dashboard', 'AuthController@index')->name('dashboard');
+        Route::get('logout', 'AuthController@logout')->name('logout');
+        Route::get('profile', 'AuthController@profile')->name('profile');
+        Route::get('edit/{id}', 'AuthController@edit')->name('edit');
+        Route::put('update/{id}', 'AuthController@update')->name('profile.update');
+        /** password updatin model routes */
+        Route::put('passwordupdate', 'AuthController@passwordupdate')->name('passwordupdate');
+        /** producsts category resource route */
+        Route::resource('category',CategoryController::class);
+        /** Delivery zones resource route */
+        Route::resource('delivery_zone',DeliveryZoneController::class);
+    });
 });

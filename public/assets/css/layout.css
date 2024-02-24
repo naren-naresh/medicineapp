@@ -5,19 +5,58 @@
      box-sizing: border-box;
      font-size: 14px;
  }
-.error{
-    color:red;
-}
+
+ .error {
+     color: red;
+ }
+
+ .card {
+     border-radius: 3px !important;
+     border-top: 3px solid #385399;
+ }
+
+ .card-header {
+     font-size: 16px;
+ }
+
+ .modal-content {
+     border-radius: 3px !important;
+     border-top: 3px solid #385399;
+     background-color: #d2d9ea;
+ }
+
+ .btn {
+     background-color: #385399 !important;
+     color: #fff;
+     border-radius: 3px !important;
+ }
+
+ a .btn {
+     color: #fff;
+ }
+
+ .form-control {
+     border-radius: 3px !important;
+ }
+
+ .form-control:focus {
+     border-color: unset !important;
+     box-shadow: unset !important;
+     border: unset !important;
+ }
+
+ label {
+     font-size: 16px !important;
+ }
+
  /* -------------------- Header Styles ------------------------- */
  .navbar {
      background-color: #385399;
      min-height: 60px !important;
  }
 
- .navbar button.navbar-toggle:active,
- .navbar button.navbar-toggle:focus,
- .navbar button.navbar-toggle:hover {
-     border: none;
+ .navbar button.navbar-toggle {
+     border: none !important;
      cursor: pointer;
  }
 
@@ -26,9 +65,12 @@
      text-align: center;
      margin: 0;
  }
- .dropdown ul li :hover{
-    background-color: black !important;
+
+ .dropdown ul li :hover {
+     background-color: black !important;
+     border-left: 2px solid white;
  }
+
  /* --------------------- End Header Styles --------------------- */
  #sidebar-wrapper {
      background-color: #385399;
@@ -44,7 +86,7 @@
  }
 
  #sidebar-wrapper {
-     min-height: 100vh;
+     height: calc(100vh + 60px);
      -webkit-transition: all 0.5s ease;
      -moz-transition: all 0.5s ease;
      -o-transition: all 0.5s ease;
@@ -91,6 +133,7 @@
      color: #fff;
      background: rgba(255, 255, 255, 0.2);
      padding-left: 5px;
+     /* transform: scale(1.1); */
      transition: all 0.3s ease;
  }
 
@@ -118,8 +161,8 @@
      margin: 0;
  }
 
- #category{
-  display: none;
+ #category {
+     display: none;
  }
 
  /*--Footer Stylings--*/

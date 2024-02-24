@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 @section('content')
-    <div class="card w-75 mt-5" style="background-color: #d2d9ea;">
+    <div class="card w-50 mt-5 card" style="background-color: #d2d9ea;">
         <div class="card-header">Profile Information</div>
         <div class="card-body">
             <form action="{{ route('profile.update', $user->id) }}" method="post" name="profileform" id="profileform"
@@ -44,8 +44,8 @@
                         </div>
 
                         <div class="button">
-                            <a href="{{ route('profile') }}" class="btn btn-primary">Cancel</a>
-                            <button type="submit" class="btn btn-primary ms-5">Save</button>
+                            <a href="{{ route('profile') }}" class="btn px-3">Cancel</a>
+                            <button type="submit" class="btn ms-5">Save</button>
                         </div>
                     </div>
                 </div>
