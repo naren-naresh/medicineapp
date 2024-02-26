@@ -5,7 +5,7 @@
             {{ Session::get('message') }}
         </div>
     @endif
-    <div class="row justify-content-between w-100 mt-2">
+    <div class="row justify-content-between w-100 mt-3">
         <div class="page-title col-6">
             <h5>Products Category</h5>
         </div>

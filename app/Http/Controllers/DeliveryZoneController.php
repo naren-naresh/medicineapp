@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Delivery_zone;
 use App\Models\ZoneGroup;
 use Illuminate\Http\Request;
-use Yajra\DataTables\Contracts\DataTable;
 use Yajra\DataTables\Facades\DataTables;
 
 class DeliveryZoneController extends Controller
@@ -15,8 +14,6 @@ class DeliveryZoneController extends Controller
      */
     public function index(Request $request)
     {
-        // $zone = Delivery_zone::latest()->get() ?? [];
-        // dd($zone);
         $detail['zone_groups'] = ZoneGroup::all();
         if ($request->ajax()) {
             $zone = Delivery_zone::latest()->get() ?? [];
@@ -62,10 +59,6 @@ class DeliveryZoneController extends Controller
         $zones = Delivery_zone::find($id);
         return response()->json($zones);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     /** delete category */
     public function destroy($id)
     {
