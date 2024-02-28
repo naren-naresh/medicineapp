@@ -5,22 +5,23 @@
             {{ Session::get('message') }}
         </div>
     @endif
+    <!--breadcrumbs of page-->
     <div class="row justify-content-between w-100 mt-3">
         <div class="page-title col-6">
-            <h5>Delivery Zones</h5>
+            <h5>Delivery Types</h5>
         </div>
         <div aria-label="breadcrumb" class="col-6">
             <ol class="breadcrumb float-end">
                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}" class=" text-decoration-none">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Delivery Zones</li>
+                <li class="breadcrumb-item active" aria-current="page">All Delivery Types</li>
             </ol>
         </div>
     </div>
     <div class="card w-100 mt-5">
         <div class="card-header d-flex justify-content-between">
-            <h5 class="card-title">All Delivery Zone</h5>
+            <h5 class="card-title">All Delivery Types</h5>
             <div class="card-tools">
-                <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#dzModal">Add</a>
+                <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#dtModal">Add</a>
             </div>
         </div>
         <div class="card-body">
@@ -29,8 +30,7 @@
                 <thead>
                     <tr>
                         <th>S.No.</th>
-                        <th>Zone Group</th>
-                        <th>Postal Code</th>
+                        <th>Types</th>
                         <th>Status</th>
                         <th style="width: 150px;">Action</th>
                     </tr>
@@ -40,31 +40,20 @@
             </table>
         </div>
     </div>
-    {{-- model for edit products category --}}
-    <div class="modal" tabindex="-1" id="dzModal">
+    <!-- Model for Delivery Fee -->
+    <div class="modal" tabindex="-1" id="dtModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header" style="border-bottom: 1px solid black !important">
-                    <h5 class="modal-title" id="modelHeading">Add New Delivery Zone</h5>
+                    <h5 class="modal-title" id="modelHeading">Add New Delivery Type</h5>
                 </div>
                 <div class="modal-body px-5">
-                    <form action="" id="dzform" name="dzform" method="post" enctype="multipart/form-data">
+                    <form action="" id="dtform" name="dtform" method="post" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
-                            <label for="zonegroup" class="mb-1">Zone Groups</label>
-                            <select class="form-control" name="zonegroup" id="zonegroup">
-                                <option value="option_select" disabled selected>Select Zone</option>
-                                @foreach ($zone_groups as $zone)
-                                <option value="{{ $zone->id }}">
-                                    {{ $zone->name }}
-                                </option>
-                            @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="pcode" class="mb-1">Postal Code</label>
-                            <input type="text" class="form-control" name="pcode" id="pcode">
+                            <label for="type" class="mb-1">Type</label>
+                            <input type="text" name="type" id="type" class="form-control">
                         </div>
                         <div class="row mt-2">
                             <div class="form-inline">
@@ -89,7 +78,6 @@
         </div>
     </div>
     @push('scripts')
-
         <script>
             /* csrf token*/
             $(function() {
@@ -99,20 +87,17 @@
                     }
                 });
             })
+            /* Datatables */
             var table = $('.data-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('delivery_zone.index') }}",
+                ajax: "{{ route('delivery_types.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex'
                     }, {
-                        data: 'zone_group_id',
-                        name: 'zone_group_id',
-                    },
-                    {
-                        data: 'postal_code',
-                        name: 'postal_code',
+                        data: 'types',
+                        name: 'types',
                     },
                     {
                         data: 'status',
@@ -129,14 +114,12 @@
             /*Edit product*/
             $('body').on('click', '.editProduct', function() {
                 var id = $(this).data('id');
-                $.get("{{ route('delivery_zone.index') }}" + '/' + id + '/edit', function(data) {
+                $.get("{{ route('delivery_types.index') }}" + '/' + id + '/edit', function(data) {
                     $('#id').val(data.id);
-                    $('#modelHeading').html("Edit Delivery Zone");
+                    $('#modelHeading').html("Edit Product");
                     $('#save').val("edit-user");
-                    $('#dzModal').modal('show');
-                    $('#pcode').val(data.postal_code);
-                    $('#zonegroup').val(data.zone_group_id);
-                    $('#zonegroup option[value=' + id + ']').hide();
+                    $('#dtModal').modal('show');
+                    $('#type').val(data.types);
                     $('.status').each(function() {
                         if ($(this).val() == data.status) {
                             $(this).prop("checked", true);
@@ -144,31 +127,68 @@
                     });
                 })
             });
-            /* ajax call store fuction in controller*/
-            $('#dzform').submit(function(e) {
+            /* passing data to the store function in controller*/
+            $('#dtform').submit(function(e) {
                 e.preventDefault();
                 $("#save").html('Sending..');
                 let data = new FormData(this);
-                $.ajax({
-                    data: data,
-                    url: "{{ route('delivery_zone.index') }}",
-                    contentType: false,
-                    processData: false,
-                    type: "POST",
-                    dataType: 'json',
-                    success: function(data) {
+                $('.status').each(function() {
+                    if ($(this).val() == 0) {
+                        Swal.fire({
+                            /* confirmation message popup */
+                            title: "Are you sure to change status?",
+                            text: "It is reflect on your relation tables",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Yes, change it!"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.ajax({
+                                    data: data,
+                                    url: "{{ route('delivery_types.index') }}",
+                                    contentType: false,
+                                    processData: false,
+                                    type: "POST",
+                                    dataType: 'json',
+                                    success: function(data) {
 
-                        $('#dzform').trigger("reset");
-                        $('#dzModal').modal('hide');
-                        table.draw();
-                        location.reload();
+                                        $('#dtform').trigger("reset");
+                                        $('#dtModal').modal('hide');
+                                        table.draw();
+                                        location.reload();
 
-                    },
-                    error: function(data) {
-                        console.log('Error:', data);
-                        $('#save').html('Save Changes');
+                                    },
+                                    error: function(data) {
+                                        console.log('Error:', data);
+                                        $('#save').html('Save Changes');
+                                    }
+                                });
+                            }
+                        });
                     }
                 });
+                // $.ajax({
+                //     data: data,
+                //     url: "{{ route('delivery_types.index') }}",
+                //     contentType: false,
+                //     processData: false,
+                //     type: "POST",
+                //     dataType: 'json',
+                //     success: function(data) {
+
+                //         $('#dtform').trigger("reset");
+                //         $('#dtModal').modal('hide');
+                //         table.draw();
+                //         location.reload();
+
+                //     },
+                //     error: function(data) {
+                //         console.log('Error:', data);
+                //         $('#save').html('Save Changes');
+                //     }
+                // });
             });
             /*Delete products*/
             $('body').on('click', '.deleteProduct', function() {
@@ -187,7 +207,7 @@
                         var id = $(this).data("id");
                         $.ajax({
                             type: "DELETE",
-                            url: "{{ route('category.index') }}" + '/' + id,
+                            url: "{{ route('delivery_types.index') }}" + '/' + id,
                             success: function(data) {
                                 table.draw();
                             },
@@ -204,16 +224,16 @@
                     }
                 });
             });
-            $('#cancel').click(function () {
-                 $('#dzform').trigger('reset');
-                 location.reload();
+            $('#cancel').click(function() {
+                $('#dtform').trigger('reset');
+                location.reload();
             });
-            $("#dzform").validate({
-               rules:{
-                 zonegroup:'required',
-                 pcode:'required',
-                 status:'required',
-               }
+            /* deliveryFee form validation */
+            $("#dtform").validate({
+                rules: {
+                    type: 'required',
+                    status: 'required',
+                }
             });
         </script>
     @endpush

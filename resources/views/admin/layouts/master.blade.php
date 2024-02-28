@@ -151,7 +151,7 @@
 
             },
         });
-        // ajax call for password updation
+        // ajax call for password update
         $(document).ready(function() {
             $('#submit').click(function(e) {
                 e.preventDefault();

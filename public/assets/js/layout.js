@@ -3,8 +3,14 @@ $("#menu-toggle").click(function(e) {
     $("#sidebar-wrapper").toggleClass("active");
     $("span.text").toggleClass("active");
 });
-$("#products").click(function () {
-    $("#menu ul").toggle();
+$("#settings").click(function () {
+    $("#smenu").toggleClass('sadd');
+ })
+ $("#products").click(function () {
+    $("#productMenu").toggleClass('productAdd');
+ })
+ $("#delivery").click(function () {
+    $("#deliveryMenu").toggleClass('deliveryAdd');
  })
 $("#menu-toggle").click(function () {
     $("#sidebar-wrapper").hover(function () {
