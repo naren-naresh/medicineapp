@@ -14,5 +14,6 @@ class ProductController extends Controller
             return response()->json($parentCategory);
         }
         return view('admin.products.basic_info',$name);
+          
        }
 }
