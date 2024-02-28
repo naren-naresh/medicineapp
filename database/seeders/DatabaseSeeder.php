@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
            Zone_Groups_Seeder::class,
+           DeliveryTypesseeder::class,
         ]);
     }
 }

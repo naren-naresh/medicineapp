@@ -34,7 +34,7 @@ class DeliveryZoneController extends Controller
                             <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $zone->id . '" data-original-title="Delete" class="btn btn-sm deleteProduct">Delete</a>';
                     return $btn;
                 })
-                ->rawColumns(['name', 'parent_category', 'status', 'image', 'created_by', 'action'])
+                ->rawColumns([ 'zone_group_id', 'postal_code', 'status', 'action'])
                 ->make(true);
         }
 
@@ -45,6 +45,11 @@ class DeliveryZoneController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'zonegroup' => 'required',
+            'pcode' => 'required',
+            'status' => 'required',
+        ]);
         Delivery_zone::updateOrCreate([
             'id' => $request->id
         ], ['zone_group_id' => $request->zonegroup, 'postal_code' => $request->pcode, 'status' => $request->status]);

@@ -48,7 +48,19 @@
  label {
      font-size: 16px !important;
  }
-
+ #smenu.sadd{
+    display: block !important;
+ }
+ #productMenu.productAdd{
+    display: block !important;
+ }
+ #deliveryMenu.deliveryAdd{
+    display: block !important;
+ }
+ .required:after {
+    content:" *";
+    color: red;
+  }
  /* -------------------- Header Styles ------------------------- */
  .navbar {
      background-color: #385399;

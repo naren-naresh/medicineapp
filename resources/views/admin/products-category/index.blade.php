@@ -59,7 +59,6 @@
                         </div>
                         <div class="form-group">
                             <label for="pcategory" class="mb-1">Parent Category</label>
-                            {{-- <input type="text" class="form-control" name="pcategory" id="pcategory"> --}}
                             <select class="form-control" name="pcategory" id="pcategory">
                                 <option value="option_select" disabled selected>Select Product</option>
                                 @foreach ($categories as $cat)
@@ -80,6 +79,7 @@
                                     <input type="radio" name="status" id="inactive" value="0" class="status">
                                     <label for="inactive" class="ms-1">InActive</label>
                                 </fieldset>
+                                <label for="status" class="ms-1 error" id="status-error"></label>
                             </div>
                         </div>
                         <div class="row mt-2">
@@ -122,7 +122,7 @@
                     }
                 });
             })
-            /* datatable*/
+            /* datatables*/
             var table = $('.data-table').DataTable({
                 processing: true,
                 serverSide: true,
@@ -245,6 +245,14 @@
             });
             $('#cancel').click(function () {
                  $('#pcform').trigger('reset');
+                 location.reload();
+            });
+            /* product form validation */
+            $("#pcform").validate({
+               rules:{
+                 cname:'required',
+                 status:'required',
+               }
             });
         </script>
     @endpush

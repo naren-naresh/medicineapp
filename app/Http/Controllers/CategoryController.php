@@ -11,7 +11,7 @@ use Yajra\DataTables\DataTables;
 
 class CategoryController extends Controller
 {
-    /** showing categories table with datatable */
+    /** showing categories table with datatables */
     public function index(Request $request)
     {
         $data['categories'] = Category::whereNull('parent_category_id')->get();
@@ -50,6 +50,10 @@ class CategoryController extends Controller
   /** update or create category */
     public function store(Request $request)
     {
+        $request->validate([
+            'cname' => 'required',
+            'status' => 'required',
+        ]);
         $oldimage=Category::where('id',$request->id)->value('image');
         if ($request->hasFile('img')) {
             $imageName = time() . "." . $request->file("img")->extension();

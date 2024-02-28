@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DeliveryFeeController;
+use App\Http\Controllers\DeliveryTypeController;
 use App\Http\Controllers\DeliveryZoneController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/** Authentican routes */
+/** Authenticate routes */
 Route::get('login', 'AuthController@login')->name('login');
 Route::post('authenticate', 'AuthController@authenticate')->name('authenticate');
 /** Forget routes */
@@ -32,11 +35,17 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('profile', 'AuthController@profile')->name('profile');
         Route::get('edit/{id}', 'AuthController@edit')->name('edit');
         Route::put('update/{id}', 'AuthController@update')->name('profile.update');
-        /** password updatin model routes */
+        /** password update model routes */
         Route::put('passwordupdate', 'AuthController@passwordupdate')->name('passwordupdate');
-        /** producsts category resource route */
-        Route::resource('category',CategoryController::class);
+        /** products category resource route */
+        Route::resource('category', CategoryController::class);
         /** Delivery zones resource route */
-        Route::resource('delivery_zone',DeliveryZoneController::class);
+        Route::resource('delivery_zone', DeliveryZoneController::class);
+        /** Delivery fee resource route */
+        Route::resource('delivery_fee', DeliveryFeeController::class);
+        /** Delivery Types resource route */
+        Route::resource('delivery_types', DeliveryTypeController::class);
+        /** Products routes */
+        Route::get('product','ProductController@index')->name('product.index');
     });
 });

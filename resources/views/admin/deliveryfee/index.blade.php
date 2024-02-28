@@ -5,22 +5,23 @@
             {{ Session::get('message') }}
         </div>
     @endif
+    <!--breadcrumbs of page-->
     <div class="row justify-content-between w-100 mt-3">
         <div class="page-title col-6">
-            <h5>Delivery Zones</h5>
+            <h5>Delivery Fee</h5>
         </div>
         <div aria-label="breadcrumb" class="col-6">
             <ol class="breadcrumb float-end">
                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}" class=" text-decoration-none">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Delivery Zones</li>
+                <li class="breadcrumb-item active" aria-current="page">All Delivery Fee</li>
             </ol>
         </div>
     </div>
     <div class="card w-100 mt-5">
         <div class="card-header d-flex justify-content-between">
-            <h5 class="card-title">All Delivery Zone</h5>
+            <h5 class="card-title">All Delivery Fee</h5>
             <div class="card-tools">
-                <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#dzModal">Add</a>
+                <a href="javascript:void(0)" class="btn" data-bs-toggle="modal" data-bs-target="#dfModal">Add</a>
             </div>
         </div>
         <div class="card-body">
@@ -30,7 +31,8 @@
                     <tr>
                         <th>S.No.</th>
                         <th>Zone Group</th>
-                        <th>Postal Code</th>
+                        <th>Delivery Fee</th>
+                        <th>Delivery Type</th>
                         <th>Status</th>
                         <th style="width: 150px;">Action</th>
                     </tr>
@@ -40,31 +42,42 @@
             </table>
         </div>
     </div>
-    {{-- model for edit products category --}}
-    <div class="modal" tabindex="-1" id="dzModal">
+   <!-- Model for Delivery Fee -->
+    <div class="modal" tabindex="-1" id="dfModal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header" style="border-bottom: 1px solid black !important">
-                    <h5 class="modal-title" id="modelHeading">Add New Delivery Zone</h5>
+                    <h5 class="modal-title" id="modelHeading">Add New Delivery Fee</h5>
                 </div>
                 <div class="modal-body px-5">
-                    <form action="" id="dzform" name="dzform" method="post" enctype="multipart/form-data">
+                    <form action="" id="dfform" name="dfform" method="post" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
-                            <label for="zonegroup" class="mb-1">Zone Groups</label>
-                            <select class="form-control" name="zonegroup" id="zonegroup">
+                            <label for="zgroup" class="mb-1">Zone Group</label>
+                            <select class="form-control" name="zgroup" id="zgroup">
                                 <option value="option_select" disabled selected>Select Zone</option>
                                 @foreach ($zone_groups as $zone)
-                                <option value="{{ $zone->id }}">
-                                    {{ $zone->name }}
-                                </option>
-                            @endforeach
+                                    <option value="{{ $zone->id }}">
+                                        {{ $zone->name }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="pcode" class="mb-1">Postal Code</label>
-                            <input type="text" class="form-control" name="pcode" id="pcode">
+                            <label for="dfee" class="my-1">Delivery Fee</label>
+                            <input type="text" id="dfee" name="dfee" class="form-control" onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
+                        </div>
+                        <div class="form-group">
+                            <label for="dtype" class="mb-1">Delivery Type</label>
+                            <select class="form-control" name="dtype" id="dtype">
+                                <option value="option_select" disabled selected>Select Delivery Type</option>
+                                @foreach ($delivery_types as $dtype)
+                                    <option value="{{ $dtype->id }}">
+                                        {{ $dtype->types }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="row mt-2">
                             <div class="form-inline">
@@ -88,21 +101,22 @@
             </div>
         </div>
     </div>
+    <!-- Scripts -->
     @push('scripts')
-
-        <script>
-            /* csrf token*/
-            $(function() {
+    <script>
+         /* csrf token*/
+         $(function() {
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
             })
-            var table = $('.data-table').DataTable({
+             /* datatable */
+             var table = $('.data-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('delivery_zone.index') }}",
+                ajax: "{{ route('delivery_fee.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex'
@@ -111,8 +125,12 @@
                         name: 'zone_group_id',
                     },
                     {
-                        data: 'postal_code',
-                        name: 'postal_code',
+                        data: 'delivery_fee',
+                        name: 'delivery_fee',
+                    },
+                    {
+                        data: 'delivery_type_id',
+                        name: 'delivery_type_id',
                     },
                     {
                         data: 'status',
@@ -126,17 +144,18 @@
                     },
                 ]
             });
-            /*Edit product*/
-            $('body').on('click', '.editProduct', function() {
+              /*Edit product*/
+              $('body').on('click', '.editProduct', function() {
                 var id = $(this).data('id');
-                $.get("{{ route('delivery_zone.index') }}" + '/' + id + '/edit', function(data) {
+                $.get("{{ route('delivery_fee.index') }}" + '/' + id + '/edit', function(data) {
                     $('#id').val(data.id);
-                    $('#modelHeading').html("Edit Delivery Zone");
+                    $('#modelHeading').html("Edit Product");
                     $('#save').val("edit-user");
-                    $('#dzModal').modal('show');
-                    $('#pcode').val(data.postal_code);
-                    $('#zonegroup').val(data.zone_group_id);
-                    $('#zonegroup option[value=' + id + ']').hide();
+                    $('#dfModal').modal('show');
+                    $('#zgroup').val(data.zone_group_id);
+                    $('#dfee').val(data.delivery_fee);
+                    $('#dtype').val(data.delivery_type_id)
+                    $('#zgroup option[value=' + id + ']').hide();
                     $('.status').each(function() {
                         if ($(this).val() == data.status) {
                             $(this).prop("checked", true);
@@ -144,22 +163,22 @@
                     });
                 })
             });
-            /* ajax call store fuction in controller*/
-            $('#dzform').submit(function(e) {
+             /* passing data to the store function in controller*/
+             $('#dfform').submit(function(e) {
                 e.preventDefault();
                 $("#save").html('Sending..');
                 let data = new FormData(this);
                 $.ajax({
                     data: data,
-                    url: "{{ route('delivery_zone.index') }}",
+                    url: "{{ route('delivery_fee.index') }}",
                     contentType: false,
                     processData: false,
                     type: "POST",
                     dataType: 'json',
                     success: function(data) {
 
-                        $('#dzform').trigger("reset");
-                        $('#dzModal').modal('hide');
+                        $('#dfform').trigger("reset");
+                        $('#dfModal').modal('hide');
                         table.draw();
                         location.reload();
 
@@ -170,9 +189,9 @@
                     }
                 });
             });
-            /*Delete products*/
-            $('body').on('click', '.deleteProduct', function() {
-                /* sweet alert2 package for custom alert */
+             /*Delete products*/
+             $('body').on('click', '.deleteProduct', function() {
+            /* sweet alert2 package for custom alert */
                 Swal.fire({
                     /* confirmation message popup */
                     title: "Are you sure?",
@@ -185,17 +204,17 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         var id = $(this).data("id");
-                        $.ajax({
-                            type: "DELETE",
-                            url: "{{ route('category.index') }}" + '/' + id,
-                            success: function(data) {
-                                table.draw();
-                            },
-                            error: function(data) {
-                                console.log('Error:', data);
-                            }
-                        });
-                        /* After confirmation message popup */
+                    $.ajax({
+                        type: "DELETE",
+                        url: "{{ route('delivery_fee.index') }}" + '/' +id,
+                        success: function(data) {
+                            table.draw();
+                        },
+                        error: function(data) {
+                            console.log('Error:', data);
+                        }
+                    });
+                    /* After confirmation message popup */
                         Swal.fire({
                             title: "Deleted!",
                             text: "Your file has been deleted.",
@@ -205,16 +224,18 @@
                 });
             });
             $('#cancel').click(function () {
-                 $('#dzform').trigger('reset');
+                 $('#dfform').trigger('reset');
                  location.reload();
             });
-            $("#dzform").validate({
+             /* deliveryFee form validation */
+             $("#dfform").validate({
                rules:{
-                 zonegroup:'required',
-                 pcode:'required',
+                 zgroup:'required',
+                 dfee:'required',
+                 dtype:'required',
                  status:'required',
                }
             });
-        </script>
+    </script>
     @endpush
 @endsection
