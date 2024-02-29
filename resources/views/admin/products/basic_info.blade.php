@@ -8,7 +8,7 @@
     <!--breadcrumbs of page-->
     <div class="row justify-content-between w-100 mt-3">
         <div class="page-title col-6">
-            <h5>Delivery Types</h5>
+            <h5>Product</h5>
         </div>
         <div aria-label="breadcrumb" class="col-6">
             <ol class="breadcrumb float-end">
@@ -19,53 +19,48 @@
     </div>
     <div class="card w-100 mt-2 mb-5">
         <div class="card-header d-flex justify-content-between">
-            <h5 class="card-title">Products Information</h5>
+            <h5 class="card-title">Basic Information</h5>
         </div>
         <div class="car-body px-5 py-3" style="background-color: #eaeaea;">
-            <form action="" name="productForm" id="productForm" method="post">
+            <form action="{{route('product.basicInfo.post')}}" name="productForm" id="productForm" method="post">
                 @csrf
                 <div class="row">
                     <div class="from-group col-6">
                         <label for="createdFor" class="required">Created For</label>
                         <input type="text" name="createdFor" id="createdFor" placeholder="Ex: SteveVendor(SV)"
-                            class="form-control">
+                            class="form-control mt-2">
                     </div>
                     <div class="from-group col-6">
                         <label for="productName" class="required">Product Name</label>
                         <input type="text" name="productName" id="productName" placeholder="Enter product name"
-                            class="form-control">
+                            class="form-control mt-2">
                     </div>
                 </div>
-                <div class="row">
-                    <label for="category" class="required">Category</label>
-                    <div class="row">
-                        <div class="col-5">
-                            <select class="form-control" name="parentCategory " id="parentCategory">
-                                <option value="option_select" disabled selected>Select Category</option>
-                                @foreach ($categories as $categoryName)
-                                    <option value="{{ $categoryName->id }}">{{ $categoryName->name }} <i
-                                            class="fa fa-angle-double-right"></i></option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-5">
-                            <select class="form-control" name="childCategory " id="childCategory">
-                                <option value="option_select" disabled selected>Select Sub Category</option>
-                                @foreach ($parentCategory as $parentCategory)
-                                    <option class=" border-bottom py-1">{{ $parentCategory->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                <div class="row mt-2">
+                    <div class="col-6">
+                        <label for="category" class="required">Category</label>
+                        <select class="form-control mt-2" name="parentCategory " id="parentCategory">
+                            <option value="option_select" disabled selected>Select Category</option>
+                            @foreach ($categories as $categoryName)
+                                <option value="{{ $categoryName->id }}">{{ $categoryName->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label for="category" class="required">Sub Category</label>
+                        <select class="form-control mt-2" name="childCategory " id="childCategory">
+                            <option value="option_select" disabled selected>Select Sub Category</option>
+                        </select>
                     </div>
                 </div>
-                <div class="row w-100">
-                    <label for="description">Product Description</label>
-                    <div name="description" id="description" class="mt-2"></div>
+                <div class="row mt-2">
+                    <label for="description" class="mb-2">Product Description</label>
+                    <textarea name="description" id="description" class="mt-2"></textarea>
                 </div>
-                <div class="row">
+                <div class="row mt-2">
                     <label class="mb-3">Product Image</label>
                     <input type="file" name="image" id="image" class="mt-2 d-none"></input>
-                    <label for="image" class="mb-3"><span
+                    <label for="image" class="mb-3" style="width: fit-content;"><span
                             class="py-3 px-2 bg-white text-secondary">image</span></label>
                 </div>
                 <div class="row mt-2">
@@ -89,13 +84,45 @@
         </div>
         @push('scripts')
             <!-- CK Editor -->
-            <script src="{{ asset('assets/plugins/ck_editor/editor.js') }}"></script>
+            <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
             <script>
-                ClassicEditor
-                    .create(document.querySelector('#description'))
-                    .catch(error => {
-                        console.error(error);
-                    });
+                tinymce.init({
+                    selector: '#description', // change this value according to your HTML
+                    menu: {
+                        file: {
+                            title: 'File',
+                            items: 'newdocument restoredraft | preview | export print | deleteallconversations'
+                        },
+                        edit: {
+                            title: 'Edit',
+                            items: 'undo redo | cut copy paste pastetext | selectall | searchreplace'
+                        },
+                        view: {
+                            title: 'View',
+                            items: 'code | visualaid visualchars visualblocks | spellchecker | preview fullscreen | showcomments'
+                        },
+                        insert: {
+                            title: 'Insert',
+                            items: 'image link media addcomment pageembed template codesample inserttable | charmap emoticons hr | pagebreak nonbreaking anchor tableofcontents | insertdatetime'
+                        },
+                        format: {
+                            title: 'Format',
+                            items: 'bold italic underline strikethrough superscript subscript codeformat | styles blocks fontfamily fontsize align lineheight | forecolor backcolor | language | removeformat'
+                        },
+                        tools: {
+                            title: 'Tools',
+                            items: 'spellchecker spellcheckerlanguage | a11ycheck code wordcount'
+                        },
+                        table: {
+                            title: 'Table',
+                            items: 'inserttable | cell row column | advtablesort | tableprops deletetable'
+                        },
+                        help: {
+                            title: 'Help',
+                            items: 'help'
+                        }
+                    }
+                });
                 $("#productForm").validate({
                     rules: {
                         productName: 'required',
@@ -111,19 +138,19 @@
                     });
                 })
                 /* passing parent id data to controller*/
-                $('#parentCategory ').change(function(e) {
-                    e.preventDefault();
-                    let data = $(this).serialize();
+                $('#parentCategory').change(function() {
+                    var data = $(this).val();
                     $.ajax({
-                        data: data,
-                        url: "{{ route('product.index') }}",
-                        contentType: false,
-                        processData: false,
-                        type: "GET",
-                        dataType: 'json',
+                        data: {
+                            'parentId': data
+                        },
+                        url: "{{ route('product.basicInfo') }}",
+                        type: "get",
                         success: function(data) {
-                            console.log('success:', 'hello');
-                            table.draw();
+                            $('#childCategory').empty();
+                            for (item of data) {
+                                $('#childCategory').append("<option>" + item.name + "</option>")
+                            }
                         },
                         error: function(data) {
                             console.log('Error:', data);

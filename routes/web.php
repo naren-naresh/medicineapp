@@ -46,6 +46,10 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         /** Delivery Types resource route */
         Route::resource('delivery_types', DeliveryTypeController::class);
         /** Products routes */
-        Route::get('product','ProductController@index')->name('product.index');
+        Route::get('product','ProductController@basicInfo')->name('product.basicInfo');
+        Route::post('product','ProductController@postBasicInfo')->name('product.basicInfo.post');
+        Route::get('product/additionalInfo','ProductController@additionalInfo')->name('product.additionalInfo');
+        Route::post('product/additionalInfo','ProductController@postAdditionalInfo')->name('product.additionalInfo.post');
+        Route::get('product/salesInfo','ProductController@salesInfo')->name('product.salesInfo');
     });
 });

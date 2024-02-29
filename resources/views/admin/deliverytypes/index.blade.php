@@ -132,63 +132,63 @@
                 e.preventDefault();
                 $("#save").html('Sending..');
                 let data = new FormData(this);
-                $('.status').each(function() {
-                    if ($(this).val() == 0) {
-                        Swal.fire({
-                            /* confirmation message popup */
-                            title: "Are you sure to change status?",
-                            text: "It is reflect on your relation tables",
-                            icon: "warning",
-                            showCancelButton: true,
-                            confirmButtonColor: "#3085d6",
-                            cancelButtonColor: "#d33",
-                            confirmButtonText: "Yes, change it!"
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                $.ajax({
-                                    data: data,
-                                    url: "{{ route('delivery_types.index') }}",
-                                    contentType: false,
-                                    processData: false,
-                                    type: "POST",
-                                    dataType: 'json',
-                                    success: function(data) {
 
-                                        $('#dtform').trigger("reset");
-                                        $('#dtModal').modal('hide');
-                                        table.draw();
-                                        location.reload();
+                if ($('#inactive').is(':checked')) {
+                    Swal.fire({
+                        /* confirmation message popup */
+                        title: "Are you sure to change status?",
+                        text: "It is reflect on your relation tables",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Yes, change it!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                data: data,
+                                url: "{{ route('delivery_types.index') }}",
+                                contentType: false,
+                                processData: false,
+                                type: "POST",
+                                dataType: 'json',
+                                success: function(data) {
 
-                                    },
-                                    error: function(data) {
-                                        console.log('Error:', data);
-                                        $('#save').html('Save Changes');
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
-                // $.ajax({
-                //     data: data,
-                //     url: "{{ route('delivery_types.index') }}",
-                //     contentType: false,
-                //     processData: false,
-                //     type: "POST",
-                //     dataType: 'json',
-                //     success: function(data) {
+                                    $('#dtform').trigger("reset");
+                                    $('#dtModal').modal('hide');
+                                    table.draw();
+                                    location.reload();
 
-                //         $('#dtform').trigger("reset");
-                //         $('#dtModal').modal('hide');
-                //         table.draw();
-                //         location.reload();
+                                },
+                                error: function(data) {
+                                    console.log('Error:', data);
+                                    $('#save').html('Save Changes');
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        data: data,
+                        url: "{{ route('delivery_types.index') }}",
+                        contentType: false,
+                        processData: false,
+                        type: "POST",
+                        dataType: 'json',
+                        success: function(data) {
 
-                //     },
-                //     error: function(data) {
-                //         console.log('Error:', data);
-                //         $('#save').html('Save Changes');
-                //     }
-                // });
+                            $('#dtform').trigger("reset");
+                            $('#dtModal').modal('hide');
+                            table.draw();
+                            location.reload();
+
+                        },
+                        error: function(data) {
+                            console.log('Error:', data);
+                            $('#save').html('Save Changes');
+                        }
+                    });
+                }
             });
             /*Delete products*/
             $('body').on('click', '.deleteProduct', function() {

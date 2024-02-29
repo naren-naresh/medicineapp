@@ -16,7 +16,7 @@
             <a href="#"><i class="fa fa-industry fa-stack"></i>&nbsp;<span class="text">Manufacturer</span></a>
         </li>
         <li>
-            <a href="{{ route('product.index') }}"><i class="fa fa-cubes fa-stack"></i>&nbsp;<span
+            <a href="{{ route('product.basicInfo') }}"><i class="fa fa-cubes fa-stack"></i>&nbsp;<span
                     class="text">Products</span></a>
         </li>
         <li>
