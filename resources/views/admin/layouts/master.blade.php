@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/layout.css') }}">
     <!-- Data Table css-->
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatable/datatable.css')}}">
+    <!-- Quil editor-->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/ck_editor/editor.css')}}">
 </head>
 
 <body>
@@ -28,7 +30,7 @@
         <!-- /#sidebar-wrapper -->
         @include('admin.layouts.sidebar')
         <!-- Page Content -->
-        <div id="page-content-wrapper">
+        <div id="page-content-wrapper" style="background-color: #eaeaea;">
             <div class="container-fluid d-flex justify-content-center align-items-center flex-column">
                 @yield('content')
             </div>
@@ -108,6 +110,8 @@
     <script src="{{ asset('assets/plugins/bootstrap/toggle.js') }}"></script>
     <!-- jquery validation plugin-->
     <script src="{{ asset('assets/plugins/jqueryvalidation.js') }}"></script>
+    <!-- jquery steps plugin-->
+    <script src="{{ asset('assets/plugins/jquery/steps.min.js')}}"></script>
     <!--datatable-->
     <script src="{{ asset('assets/plugins/datatable/datatable.js')}}"></script>
     <!--sweet alert-->
