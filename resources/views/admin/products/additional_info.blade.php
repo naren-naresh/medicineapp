@@ -72,7 +72,7 @@
                 </div>
                 <div class="row mt-3 d-flex justify-content-between">
                     <div class="col-3"> <a href="{{ route('product.basicInfo') }}" class="btn btn-light">Back</a></div>
-                    <div class="col-3"><button type="submit" class="btn btn-primary">Next</button></div>
+                    <div class="col-3"><button type="submit" class="btn">Next</button></div>
                 </div>
             </form>
         </div>

@@ -40,27 +40,61 @@
  }
 
  .form-control:focus {
-     border-color: unset !important;
      box-shadow: unset !important;
-     border: unset !important;
  }
 
  label {
      font-size: 16px !important;
  }
- #smenu.sadd{
-    display: block !important;
+
+ #smenu.sadd {
+     display: block !important;
  }
- #productMenu.productAdd{
-    display: block !important;
+
+ #productMenu.productAdd {
+     display: block !important;
  }
- #deliveryMenu.deliveryAdd{
-    display: block !important;
+
+ #deliveryMenu.deliveryAdd {
+     display: block !important;
  }
+
  .required:after {
-    content:" *";
-    color: red;
+     content: " *";
+     color: red;
+ }
+.parent-category.active{
+    background-color: aquamarine;
+}
+.child-category.active{
+    background-color: aquamarine;
+}
+.picture {
+    width: 150px;
+    aspect-ratio: 3/2;
+    background: #ddd;
+    color: #aaa;
+    border: 2px dashed;
+    cursor: pointer;
   }
+
+ /*---------------------Multi Step Form Styles-------------------*/
+
+ .step-circle {
+    cursor: pointer; /* Added cursor pointer */
+  }
+ .step-line {
+    position: absolute;
+    top: 16px;
+    left: 50px;
+    width: calc(100% - 100px);
+    height: 2px;
+    background-color: #007bff;
+    z-index: -1;
+  }
+  #productForm{
+    overflow-x: hidden;
+}
  /* -------------------- Header Styles ------------------------- */
  .navbar {
      background-color: #385399;
