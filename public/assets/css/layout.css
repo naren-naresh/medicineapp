@@ -63,6 +63,20 @@
      content: " *";
      color: red;
  }
+.parent-category.active{
+    background-color: aquamarine;
+}
+.child-category.active{
+    background-color: aquamarine;
+}
+.picture {
+    width: 150px;
+    aspect-ratio: 3/2;
+    background: #ddd;
+    color: #aaa;
+    border: 2px dashed;
+    cursor: pointer;
+  }
 
  /*---------------------Multi Step Form Styles-------------------*/
 
