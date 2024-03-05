@@ -183,7 +183,7 @@
                     }
                 })
             });
-            /* passing data to the store fuction in controller*/
+            /* passing data to the store function in controller*/
             $('#pcform').submit(function(e) {
                 e.preventDefault();
                 $("#save").html('Sending..');
@@ -213,7 +213,7 @@
             $('body').on('click', '.deleteProduct', function() {
             /* sweet alert2 package for custom alert */
                 Swal.fire({
-                    /* confrimation message popup */
+                    /* confirmation message popup */
                     title: "Are you sure?",
                     text: "You won't be able to revert this!",
                     icon: "warning",
@@ -234,7 +234,7 @@
                             console.log('Error:', data);
                         }
                     });
-                    /* After conforimation message popup */
+                    /* After confirmation message popup */
                         Swal.fire({
                             title: "Deleted!",
                             text: "Your file has been deleted.",

@@ -28,23 +28,4 @@ class ProductController extends Controller
         ]);
         return  redirect()->route('product.additionalInfo');
     }
-    // public function additionalInfo(Request $request)
-    // {
-    //     $type['deliveryTypes'] = DeliveryTypes::all();
-    //     return view('admin.products.additional_info', $type);
-    // }
-    // public function postAdditionalInfo(Request $request)
-    // {
-    //     $additional = $request->validate([
-    //         'brand' => 'required',
-    //         'manufacturer' => 'required',
-    //         'manufacturerDate' => 'required',
-    //         'expiryDate' => 'required',
-    //     ]);
-    //     return redirect()->route('product.salesInfo');
-    // }
-    // public function salesInfo(Request $request)
-    // {
-    //     return view('admin.products.sales_info');
-    // }
 }
