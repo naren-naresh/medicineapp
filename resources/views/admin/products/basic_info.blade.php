@@ -34,13 +34,14 @@
                             <label for="productName" class="error" id="productNameError"></label>
                         </div>
                     </div>
-                    <div class="row mt-2">
+                    <div class="row mt-1">
                         <div class="col-6">
                             <label for="category" class="required">Category</label>
                             <ul class="bg-white mt-2 list-unstyled" id="parentCategoryList">
                                 @foreach ($categories as $categoryName)
                                     <li parentCatID="{{ $categoryName->id }}"
-                                        class="parent-category border-bottom px-2 py-1" role="button">
+                                        class="parent-category border-bottom px-2 py-1" role="button"
+                                        parentCatName="{{ $categoryName->name }}">
                                         {{ $categoryName->name }} <i class="fa fa-angle-right float-end"></i></li>
                                 @endforeach
                             </ul>
@@ -50,20 +51,22 @@
                             <ul class="mt-2 bg-white list-unstyled px-2" id="childCategoryList">
                             </ul>
                         </div>
-                        <p for="category" id="category-error" class="error"></p>
                         <input type="hidden" name="category" id="category">
                     </div>
                     <div class="row">
-                        <p id='catPreview'></p>
+                        <p id='catPreview' class=" mt-0"></p>
+                        <p for="category" id="category-error" class="error"></p>
                     </div>
-                    <div class="row mt-2">
-                        <label for="description" class="mb-2">Product Description</label>
-                        <div name="description" id="description" class="mt-2"></div>
+                    <hr class="mt-0 p-0">
+                    <div class="row mt-2 w-100 ps-3">
+                        <label for="description" class="mb-2 p-0">Product Description</label>
+                        <div name="description" id="description" style="height: 200px "></div>
                     </div>
                     <div class="row mt-2" id="imgDiv">
                         <label class="mb-3">Product Image</label>
-                        <label for="image" class="mb-3 picture d-flex justify-content-center align-items-center"
-                            tabIndex="0"><img src="" class="imgPreview w-100 "></img></label>
+                        <label for="image" class="mb-3 picture d-flex justify-content-center align-items-center ms-3"
+                            tabIndex="0"><i class="fa fa-plus-square display-1 position-absolute" id="plusIcon"></i><img
+                                src="" class="w-100" id="imgPreview0"></img></label>
                         <input type="file" name="image[]" id="image" class="mt-2 d-none" multiple>
                     </div>
                     <div class="row mt-2">
@@ -126,11 +129,21 @@
                                     <input type="radio" name="taxInclude" id="yes" value="1"
                                         class="taxInclude">
                                     <label for="yes" class="me-2 ms-1">Yes</label>
-                                    <input type="radio" name="taxInclude" id="no" value="0"
+                                    <input type="radio" name="taxInclude" id="taxNo" value="0"
                                         class="taxInclude">
-                                    <label for="no" class="ms-1">No</label>
+                                    <label for="taxNo" class="ms-1">No</label>
                                 </fieldset>
                                 <label for="taxInclude" class="ms-1 error" id="taxInclude-error"></label>
+                            </div>
+                            <div id="tax" class="form-inline">
+                                <div><input type="text" oninput="process(this)" name="texValue" id="texValue"
+                                        maxlength="6" class="mt-3"><select name="taxType" class="mt-3"
+                                        id="taxType">
+                                        <option class="selected">Select tax type</option>
+                                        <option value="1">Percentage</option>
+                                        <option value="2">Fixed</option>
+                                    </select></div>
+                                <div class="row"><label for="taxValue" id="taxValue-error" class=error></label></div>
                             </div>
                         </div>
                     </div>
@@ -142,21 +155,75 @@
                 <!-- Sales Info -->
                 <div class="step step-3">
                     <div class="row">
+                        <div class="form-inline">
+                            <fieldset>
+                                <legend class="mb-1" style=" font-size:16px;font-weight:unset !important;">Is had
+                                    variation ?</legend>
+                                <input type="radio" name="variation" id="variant_yes" value="1"
+                                    class="variation">
+                                <label for="yes" class="me-2 ms-1">Yes</label>
+                                <input type="radio" name="variation" id="variant_no" value="0"
+                                    class="variation">
+                                <label for="No" class="ms-1">No</label>
+                            </fieldset>
+                            <label for="variation" class="ms-1 error" id="variation-error"></label>
+                        </div>
+                    </div>
+                    <!--Variation row -->
+                    <div class="row mt-2">
+                        <div class="row" id="variationRow">
+                            <div class="row varContent" id="varContent">
+                                <div class="row">
+                                    <div class="col-6" id="variationBlock">
+                                        <label for="variationName">Variation</label>
+                                        <input type="text" name="variationName[]" id="variationName"
+                                            class="form-control mt-1">
+                                    </div>
+                                    <div class="col-6">
+                                        <div id="optionBlock0">
+                                            <label for="options">Options</label>
+                                            <input type="text" name="options[]" id="options"
+                                                class="form-control mt-1">
+                                        </div>
+                                        <label for="addOptions" id="addOptions"
+                                            class="addOptions form-control d-flex justify-content-center mt-2"
+                                            style="border: 1px solid rgb(102, 102, 102) ; border-style:dotted;"><i
+                                                class="fa fa-plus-circle mt-2"></i> Add Options</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="addVar" class="col-6">
+                                <label for="addVariations" id="addVariations"
+                                    class="addVariations form-control d-flex justify-content-center mt-2"
+                                    style="border: 1px solid rgb(102, 102, 102) ; border-style:dotted;"><i
+                                        class="fa fa-plus-circle mt-2"></i> Add Variations</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
                         <div class="from-group col-2">
                             <label for="retailPrice" class="required">Retail Price</label>
-                            <input type="text" name="retailPrice" id="retailPrice" class="form-control mt-2">
+                            <input type="text" name="retailPrice" maxlength="6" id="retailPrice"
+                                class="form-control mt-2"
+                                onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
                         </div>
                         <div class="from-group col-2">
                             <label for="sellingPrice" class="required">Selling Price</label>
-                            <input type="text" name="sellingPrice" id="sellingPrice" class="form-control mt-2">
+                            <input type="text" name="sellingPrice" maxlength="6" id="sellingPrice"
+                                class="form-control mt-2"
+                                onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
                         </div>
                         <div class="from-group col-2">
                             <label for="stocks">Stocks</label>
-                            <input type="text" name="stocks" id="stocks" class="form-control mt-2">
+                            <input type="text" name="stocks" maxlength="6" id="stocks"
+                                class="form-control mt-2"
+                                onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
                         </div>
                         <div class="from-group col-2">
                             <label for="thresholdQty">Threshold Qty</label>
-                            <input type="text" name="thresholdQty" id="thresholdQty" class="form-control mt-2">
+                            <input type="text" name="thresholdQty" maxlength="6" id="thresholdQty"
+                                class="form-control mt-2"
+                                onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')">
                         </div>
                         <div class="from-group col-2">
                             <label for="sku">Sku</label>
@@ -205,12 +272,15 @@
                         }
                     });
                 })
-
                 var categoryObject = {
                     parentCategory: null,
                     childCategory: null,
                 };
                 var flag = false;
+                var string = {
+                    productName: null,
+                    categoryName: null,
+                }
                 /* passing parent id data to controller*/
                 $('.parent-category').click(function() {
                     let parentCatId = $(this).attr('parentCatID');
@@ -219,6 +289,12 @@
                     categoryObject.parentCategory = {
                         name: $(this).text()
                     };
+                    string.categoryName = {
+                        name: $(this).attr('parentCatName').slice(0, 3)
+                    }
+                    string.productName = {
+                        name: $("#productName").val().slice(0, 2)
+                    }
                     categoryObject.childCategory = null;
                     categoryPreview(parentCatId);
                     $.ajax({
@@ -231,17 +307,19 @@
                             $('#childCategoryList').empty();
                             for (item of data) {
                                 $('#childCategoryList').append(
-                                    "<li class='child-category border-bottom py-1' role='button'>" +
+                                    "<li class='child-category border-bottom py-1' role='button' childCatId=" +
+                                    item.id + ">" +
                                     item.name +
                                     "</li>")
                             }
                             $('.child-category').click(function() {
+                                let childCatId = $(this).attr('childCatId');
                                 $('#childCategoryList').find('.child-category').removeClass('active');
                                 $(this).addClass('active');
                                 categoryObject.childCategory = {
                                     name: $(this).text()
                                 };
-                                categoryPreview(parentCatId);
+                                categoryPreview(childCatId);
                             });
                         },
                         error: function(data) {
@@ -250,7 +328,7 @@
                         }
                     });
                 });
-
+                // select category preview
                 function categoryPreview(id) {
                     let categoryNames = "The Selected Category Was : ";
                     if (categoryObject.parentCategory) {
@@ -264,6 +342,21 @@
                     $('#category-error').text('');
                 }
                 $(".next-step").click(function() {
+                    // generating sku
+                    let date = new Date();
+                    let year = date.getFullYear();
+                    let month = date.getMonth() + 1;
+                    let lastTwoDigitsOfYear = year.toString().slice(-2);
+                    let lastTwoDigitsOfMonth = month.toString().slice(-2);
+                    let prefix=string.productName.name+string.categoryName.name;
+                    if (prefix.length<5) {
+                       prefix.padEnd('5',0);
+                    }
+                        let suffix=lastTwoDigitsOfMonth+lastTwoDigitsOfYear;
+                        console.log(suffix);
+                        let sku = prefix+suffix;
+
+                    $('#sku').val(sku);
                     if ($('#category').val() != "") {
                         flag = true;
                     } else {
@@ -304,14 +397,15 @@
                         }
                     }
                 });
-
-                // function displayStep(stepNumber) {
-                //     if (stepNumber >= 1 && stepNumber <= 3) {
-                //         $(".step-" + currentStep).hide();
-                //         $(".step-" + stepNumber).show();
-                //         currentStep = stepNumber;
-                //     }
-                // }
+                //multi step form navigation
+                function displayStep(stepNumber) {
+                    if (stepNumber >= 1 && stepNumber <= 3) {
+                        $(".step-" + currentStep).hide();
+                        $(".step-" + stepNumber).show();
+                        currentStep = stepNumber;
+                    }
+                }
+                //back button of multi step form
                 $(".prev-step").click(function() {
                     if (currentStep > 1) {
                         $('.step-circle-' + (currentStep - 2)).css('border-bottom', '2px solid #385399');
@@ -326,20 +420,104 @@
                 });
                 // dynamic images upload
                 var readURL = function(input) {
-                    let imgDesign="<label for='image' class='ms-2 mb-3 picture d-flex justify-content-center align-items-center'><img src='' class='imgPreview w-100'></img></label>";
+                    let length = $('.picture').length;
+                    let imgDesign =
+                        "<label for='image' class='ms-2 mb-3 picture d-flex justify-content-center align-items-center'><i class='fa fa-plus-square display-1 position-absolute' id='plusIcon'></i><img src='' id='imgPreview" +length + "' class='w-100'></img></label>";
                     if (input.files && input.files[0]) {
-                        let length=$('.picture').length;
-                        console.log(length);
-                        $('#imgDiv').after('#image').append(imgDesign);
+                        if (length <= 4) {
+                            $('#imgDiv').append(imgDesign);
+                        }
                         var reader = new FileReader();
                         reader.onload = function(e) {
-                            $('.imgPreview').attr('src', e.target.result);
+                            $('#imgPreview' + (length - 1)).attr('src', e.target.result);
                         }
                         reader.readAsDataURL(input.files[0]);
                     }
                 }
-                $("#image").change(function (){
+                $("#image").change(function() {
+                    $('#imgPreview,#plusIcon').hide();
                     readURL(this);
+                });
+                // default status for product
+                $('.status').each(function() {
+                    if ($(this).val() == '1') {
+                        $(this).prop("checked", true);
+                    }
+
+                });
+                // default tax for product
+                $('.taxInclude').each(function() {
+                    if ($(this).val() == '1') {
+                        $(this).prop("checked", true);
+                    }
+                });
+                // custom tax for product
+                $('#taxNo').click(function() {
+                    if ($(this).is(':checked')) {
+                        $('#tax').show();
+                    } else {
+                        $('#tax').hide();
+                    }
+                });
+
+                function process(input) {
+                    let value = input.value;
+                    let letters = value.replace(/\D/g, '');
+                    input.value = letters;
+                }
+                // tax type functionality
+                $("#taxType").change(function() {
+                    let selectOption = $(this).val();
+                    let textField = $('#texValue');
+                    textField.off('input');
+                    textField.val('100');
+                    if (selectOption == '1') {
+                        textField.on('input', function() {
+                            let value = $(this).val();
+                            if (value > 100) {
+                                $(this).val(100);
+                            }
+                        });
+                    }
+                })
+                //variant default check
+                $('.variation').each(function() {
+                    if ($(this).val() == '0') {
+                        $(this).prop("checked", true);
+                    }
+                });
+                $('#tax').hide();
+                $('#variationRow').hide();
+                $('#variant_yes').click(function() {
+                    if ($(this).is(':checked')) {
+                        $('#variationRow').show();
+                    }
+                });
+                // appending options and variations
+                $(document).on('click', '.addOptions', function() {
+                    let varLength = $('.varContent .row').length;
+                    let optionDesign =
+                        '<input type="text" name="options[]" id="options" class="form-control mt-1">';
+                    $('#optionBlock' + (varLength - 1)).append(optionDesign);
+                });
+                // appending variation
+                $('.addVariations').click(function() {
+                    let optionVal = $('#options').val();
+                    let variationVal = $('#variation').val();
+                    let varLength = $('.varContent .row').length;
+                    let VarDesign =
+                        '<div class="row"><div class="col-6" id="variationBlock"><label for="variationName">Variation</label><input type="text" name="variationName[]" id="variationName" class="form-control mt-1"></div><div class="col-6"> <div id="optionBlock' +varLength +'"><label for="options">Options</label><input type="text" name="options[]" id="options" class="form-control mt-1"></div><label for="addOptions" id="addOptions" class="addOptions form-control d-flex justify-content-center mt-2" style="border: 1px solid rgb(102, 102, 102) ; border-style:dotted;"><i class="fa fa-plus-circle mt-2"></i> Add Options</label></div></div>';
+                    if (varLength <= 3 && variationVal != "" && optionVal != "") {
+                        $('#varContent').append(VarDesign);
+                    }
+                });
+                // selling price validation
+                $('#sellingPrice').keyup(function() {
+                    let retailAmount = $('#retailPrice').val();
+                    let sellingAmount = $('#sellingPrice').val();
+                    if (retailAmount < sellingAmount) {
+                        $('#sellingPrice').val(retailAmount);
+                    }
                 });
             </script>
         @endpush
