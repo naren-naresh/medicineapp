@@ -13,7 +13,7 @@
             <h5 class="card-title">Add New Product</h5>
             <div aria-label="breadcrumb" class="col-6">
                 <ol class="breadcrumb step-container d-flex justify-content-between float-end">
-                    <li class="step-circle-0 mx-1" onclick="displayStep(1)" style="border-bottom: 2px solid #385399;">Basic
+                    <li class="step-circle-0 mx-1" onclick="displayStep(1)" style="border-bottom: 2px solid #385399;"> Basic
                         Information</li>
                     <li class="step-circle-1 mx-1" onclick="displayStep(2)">Additional Information</li>
                     <li class="step-circle-2 mx-1" onclick="displayStep(3)">Sales Information</li>
@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="car-body px-5 py-3">
-            <form action="{{ route('product.basicInfo.post') }}" name="productForm" id="productForm" method="post"
+            <form action="{{ route('product.store') }}" name="productForm" id="productForm" method="post"
                 enctype="multipart/form-data">
                 @csrf
                 <!--basic info-->
@@ -32,6 +32,9 @@
                             <input type="text" name="productName" id="productName" placeholder="Enter product name"
                                 class="form-control mt-2">
                             <label for="productName" class="error" id="productNameError"></label>
+                            @if ($errors->has('productName'))
+                               <span class="text-danger">{{ $errors->first('productName') }}</span>
+                            @endif
                         </div>
                     </div>
                     <div class="row mt-1">
@@ -52,6 +55,9 @@
                             </ul>
                         </div>
                         <input type="hidden" name="category" id="category">
+                        @if ($errors->has('category'))
+                          <span class="text-danger">{{ $errors->first('category') }}</span>
+                        @endif
                     </div>
                     <div class="row">
                         <p id='catPreview' class=" mt-0"></p>
@@ -59,22 +65,31 @@
                     </div>
                     <hr class="mt-0 p-0">
                     <div class="row mt-2 w-100 ps-3">
-                        <label for="description" class="mb-2 p-0">Product Description</label>
+                        <label for="description" class="mb-2 p-0 required">Product Description</label>
                         <div name="description" id="description" style="height: 200px "></div>
+                        <textarea name="descriptionContent" id="descriptionContent" class="d-none"></textarea>
+                        @if ($errors->has('descriptionContent'))
+                          <span class="text-danger">{{ $errors->first('descriptionContent') }}</span>
+                        @endif
                     </div>
-                    <div class="row mt-2" id="imgDiv">
+                    <div class="mt-2 d-flex align-items-center">
+                       <div class="row" id="imgDiv">
                         <label class="mb-3">Product Image</label>
-                        <label for="image" class="mb-3 picture d-flex justify-content-center align-items-center ms-3"
-                            tabIndex="0"><i class="fa fa-plus-square display-1 position-absolute" id="plusIcon"></i><img
-                                src="" class="w-100" id="imgPreview0"></img></label>
-                        <input type="file" name="image[]" id="image" class="mt-2 d-none" multiple>
+                        <!-- cover image -->
+                        <label for="coverImage" class="mb-3 coverImage d-flex justify-content-center align-items-center ms-3"
+                            tabIndex="0"><i class="fa fa-plus-square display-1 position-absolute" id="imgIcon"></i><img
+                                src="" class="w-100" id="coverImgPreview"></img></label>
+                        <input type="file" name="coverImage" id="coverImage" class="d-none">
+                       <!--Thumbnail images-->
+                        <input type="file" name="image[]" id="image" class="mt-2 d-none upload_image" data-max_length="20"  accept="image/jpeg, image/jpg, image/png" multiple>
+                       </div>
                     </div>
                     <div class="row mt-2">
                         <div class="form-inline">
                             <fieldset>
                                 <legend class="mb-1" style=" font-size:16px;font-weight:unset !important;">Status
                                 </legend>
-                                <input type="radio" name="status" id="active" value="1" class="status">
+                                <input type="radio" name="status" id="active" value="1" class="status" checked>
                                 <label for="active" class="me-2 ms-1">Active</label>
                                 <input type="radio" name="status" id="inactive" value="0" class="status">
                                 <label for="inactive" class="ms-1">InActive</label>
@@ -92,11 +107,11 @@
                     <div class="row">
                         <div class="from-group col-6">
                             <label for="brand">Brand</label>
-                            <input type="text" name="brand" id="brand" class="form-control mt-2">
+                            <input type="text" name="brand" id="brand" class="form-control mt-2" value="1">
                         </div>
                         <div class="from-group col-6">
                             <label for="manufacturer" class="required">Manufacturer</label>
-                            <input type="text" name="manufacturer" id="manufacturer" class="form-control mt-2">
+                            <input type="text" name="manufacturer" id="manufacturer" class="form-control mt-2" value="1">
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -113,7 +128,7 @@
                     <div class="row mt-2">
                         <div class="col-6">
                             <label for="deliveryType">Delivery type</label>
-                            <select class="form-control mt-2" name="deliveryType " id="deliveryType">
+                            <select class="form-control mt-2" name="deliveryType" id="deliveryType">
                                 <option value="option_select" disabled selected>Select Delivery Mode</option>
                                 @foreach ($deliveryTypes as $deliveryType)
                                     <option value="{{ $deliveryType->id }}">{{ $deliveryType->types }}</option>
@@ -127,7 +142,7 @@
                                         Include ?
                                     </legend>
                                     <input type="radio" name="taxInclude" id="yes" value="1"
-                                        class="taxInclude">
+                                        class="taxInclude" checked>
                                     <label for="yes" class="me-2 ms-1">Yes</label>
                                     <input type="radio" name="taxInclude" id="taxNo" value="0"
                                         class="taxInclude">
@@ -135,14 +150,16 @@
                                 </fieldset>
                                 <label for="taxInclude" class="ms-1 error" id="taxInclude-error"></label>
                             </div>
-                            <div id="tax" class="form-inline">
-                                <div><input type="text" oninput="process(this)" name="texValue" id="texValue"
-                                        maxlength="6" class="mt-3"><select name="taxType" class="mt-3"
+                            <div id="tax">
+                                <label for="texValue" class="mb-1">Tax Amount:</label>
+                                <div class="form-inline">
+                                    <input type="text" oninput="process(this)" name="texValue" id="texValue"
+                                        maxlength="6" class=""><select name="taxType"
                                         id="taxType">
-                                        <option class="selected">Select tax type</option>
                                         <option value="1">Percentage</option>
-                                        <option value="2">Fixed</option>
-                                    </select></div>
+                                        <option value="2" selected >Fixed</option>
+                                    </select>
+                                </div>
                                 <div class="row"><label for="taxValue" id="taxValue-error" class=error></label></div>
                             </div>
                         </div>
@@ -163,7 +180,7 @@
                                     class="variation">
                                 <label for="yes" class="me-2 ms-1">Yes</label>
                                 <input type="radio" name="variation" id="variant_no" value="0"
-                                    class="variation">
+                                    class="variation" checked>
                                 <label for="No" class="ms-1">No</label>
                             </fieldset>
                             <label for="variation" class="ms-1 error" id="variation-error"></label>
@@ -175,15 +192,15 @@
                             <div class="row varContent" id="varContent">
                                 <div class="row">
                                     <div class="col-6" id="variationBlock">
-                                        <label for="variationName">Variation</label>
+                                        <label for="variationName">Variation 1</label>
                                         <input type="text" name="variationName[]" id="variationName"
-                                            class="form-control mt-1">
+                                            class="varName form-control mt-1">
                                     </div>
                                     <div class="col-6">
-                                        <div id="optionBlock0">
-                                            <label for="options">Options</label>
-                                            <input type="text" name="options[]" id="options"
-                                                class="form-control mt-1">
+                                        <div class="optionBlock" id="optionBlock0">
+                                                <label for="options">Options</label>
+                                                <input type="text" name="options[]" id="options0"
+                                                class="optionValue form-control mt-1">
                                         </div>
                                         <label for="addOptions" id="addOptions"
                                             class="addOptions form-control d-flex justify-content-center mt-2"
@@ -198,6 +215,7 @@
                                     style="border: 1px solid rgb(102, 102, 102) ; border-style:dotted;"><i
                                         class="fa fa-plus-circle mt-2"></i> Add Variations</label>
                             </div>
+                            <span id="varValidate-error" class='error'></span>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -230,8 +248,8 @@
                             <input type="text" name="sku" id="sku" class="form-control mt-2">
                         </div>
                     </div>
-                    <div class="row mt-2">
-                        <div class="col-6">
+                    <div class="row mt-3">
+                        <div class="col-2">
                             <div class="form-inline">
                                 <fieldset>
                                     <legend class="mb-1" style=" font-size:16px;font-weight:unset !important;"> Have
@@ -242,11 +260,20 @@
                                         class="returnPolicy">
                                     <label for="yes" class="me-2 ms-1">Yes</label>
                                     <input type="radio" name="returnPolicy" id="policy_no" value="0"
-                                        class="returnPolicy">
+                                        class="returnPolicy" checked>
                                     <label for="no" class="ms-1">No</label>
                                 </fieldset>
                                 <label for="returnPolicy" class="ms-1 error" id="returnPolicy-error"></label>
                             </div>
+                        </div>
+                        <div class="col-3" id="policyTypeContent">
+                            <label for="policyType">Select your policy</label>
+                            <select class="form-control mt-2" name="policyType " id="policyType">
+                                <option value="option_select" disabled selected>Select policy Type</option>
+                                {{-- @foreach ($deliveryTypes as $deliveryType)
+                                    <option value="{{ $deliveryType->id }}">{{ $deliveryType->types }}</option>
+                                @endforeach --}}
+                            </select>
                         </div>
                     </div>
                     <div class="row mt-3 d-flex justify-content-between">
@@ -263,6 +290,11 @@
                 // quill editor configuration
                 const quill = new Quill('#description', {
                     theme: 'snow'
+                });
+                $('#description').keyup(function (e) {
+                    var quillContent = quill.getText();
+                     $('#descriptionContent').html(quillContent);
+                    console.log(quillContent);
                 });
                 /* csrf token*/
                 $(function() {
@@ -290,10 +322,10 @@
                         name: $(this).text()
                     };
                     string.categoryName = {
-                        name: $(this).attr('parentCatName').slice(0, 3)
+                        name: $(this).attr('parentCatName').slice(0, 2)
                     }
                     string.productName = {
-                        name: $("#productName").val().slice(0, 2)
+                        name: $("#productName").val().slice(0, 3)
                     }
                     categoryObject.childCategory = null;
                     categoryPreview(parentCatId);
@@ -301,7 +333,7 @@
                         data: {
                             'parentId': parentCatId
                         },
-                        url: "{{ route('product.basicInfo') }}",
+                        url: "{{ route('product.index') }}",
                         type: "get",
                         success: function(data) {
                             $('#childCategoryList').empty();
@@ -342,21 +374,6 @@
                     $('#category-error').text('');
                 }
                 $(".next-step").click(function() {
-                    // generating sku
-                    let date = new Date();
-                    let year = date.getFullYear();
-                    let month = date.getMonth() + 1;
-                    let lastTwoDigitsOfYear = year.toString().slice(-2);
-                    let lastTwoDigitsOfMonth = month.toString().slice(-2);
-                    let prefix=string.productName.name+string.categoryName.name;
-                    if (prefix.length<5) {
-                       prefix.padEnd('5',0);
-                    }
-                        let suffix=lastTwoDigitsOfMonth+lastTwoDigitsOfYear;
-                        console.log(suffix);
-                        let sku = prefix+suffix;
-
-                    $('#sku').val(sku);
                     if ($('#category').val() != "") {
                         flag = true;
                     } else {
@@ -373,6 +390,10 @@
                             category: {
                                 required: true
                             },
+                            coverImage: 'required',
+                            descriptionContent: {
+                            required: true,
+                            minlength: 10 },
                             productName: 'required',
                             manufacturer: 'required',
                             manufacturerDate: 'required',
@@ -381,7 +402,10 @@
                             sellingPrice: 'required',
                         },
                         message: {
-                            required: "This field is required",
+                            coverImage:{
+                                required: "Please select a file.",
+                                extension: "Please select a file with a valid extension."
+                            }
                         },
                     });
                     if (basic.valid() == true && flag == true) {
@@ -395,16 +419,33 @@
                                 $(".step-" + currentStep).show();
                             });
                         }
+                        $('.step-container li:first').click(function () {
+                             alert('hello');
+                        });
                     }
+                    // generating sku
+                    let date = new Date();
+                    let year = date.getFullYear();
+                    let month = date.getMonth() + 1;
+                    let lastTwoDigitsOfYear = year.toString().slice(-2);
+                    let lastTwoDigitsOfMonth = month.toString().slice(-2);
+                    var prefix=string.productName.name+string.categoryName.name;
+                    if (prefix.length<5) {
+                       prefix=prefix.padEnd('5',"0");
+                    }
+                        let suffix=lastTwoDigitsOfMonth+lastTwoDigitsOfYear;
+                        let sku = prefix+suffix;
+
+                    $('#sku').val(sku);
                 });
-                //multi step form navigation
-                function displayStep(stepNumber) {
-                    if (stepNumber >= 1 && stepNumber <= 3) {
-                        $(".step-" + currentStep).hide();
-                        $(".step-" + stepNumber).show();
-                        currentStep = stepNumber;
+                 //multi step form navigation
+                 function displayStep(stepNumber) {
+                        if (stepNumber >= 1 && stepNumber <= 3) {
+                            $(".step-" + currentStep).hide();
+                            $(".step-" + stepNumber).show();
+                            currentStep = stepNumber;
+                        }
                     }
-                }
                 //back button of multi step form
                 $(".prev-step").click(function() {
                     if (currentStep > 1) {
@@ -418,48 +459,76 @@
                         });
                     }
                 });
-                // dynamic images upload
-                var readURL = function(input) {
-                    let length = $('.picture').length;
-                    let imgDesign =
-                        "<label for='image' class='ms-2 mb-3 picture d-flex justify-content-center align-items-center'><i class='fa fa-plus-square display-1 position-absolute' id='plusIcon'></i><img src='' id='imgPreview" +length + "' class='w-100'></img></label>";
-                    if (input.files && input.files[0]) {
-                        if (length <= 4) {
-                            $('#imgDiv').append(imgDesign);
+                // cover image preview
+                    $('#coverImage').change(function (e) {
+                        e.preventDefault();
+                        var files = e.target.files;
+                        let thumbnailImg_html = '<label for="image" class="mb-3 picture d-flex justify-content-center align-items-center ms-3" tabIndex="0"><i class="fa fa-plus-square display-1 position-absolute" id="plusIcon"></i><img src="" class="w-100" id="imgPreview0"></img></label>';
+                        var imageReader = new FileReader();
+                        imageReader.onload = function (e){
+                            $('#imgIcon').hide();
+                            $('#imgDiv').append(thumbnailImg_html);
+                            $('#coverImgPreview').attr('src', e.target.result);
                         }
+                        imageReader.readAsDataURL(this.files[0]);
+                    });
+                //  dynamic images and preview
+                var imgArray = [];
+                $('.upload_image').each(function (index, element) {
+                    $(this).change(function(e) {
+                    $('#imgPreview,#plusIcon').hide();
+                    var maxLength = $(this).attr('data-max_length');
+                    var files = e.target.files;
+                    var filesArr = Array.prototype.slice.call(files);
+                    let length = $('.picture').length;
+                    filesArr.forEach(function(f,index){
+                        if (imgArray.length > maxLength) {
+                        return false
+                    } else {
+                        var len = 0;
+                        for (var i = 0; i < imgArray.length; i++) {
+                        if (imgArray[i] !== undefined) {
+                            len++;
+                        }
+                        }
+                        if (len > maxLength) {
+                        return false;
+                        } else {
+                        imgArray.push(f);
+                        let imgDesign =
+                        "<label for='image' class='ms-2 mb-3 picture d-flex justify-content-center align-items-center position-relative'index="+length+"><i class='fa fa-plus-square display-1 position-absolute' id='plusIcon'></i><img src='' id='imgPreview" +length + "' class='w-100'></img><i class='fa fa-close position-absolute imageCancel' style='top:4px;right:4px;'></i></label>";
                         var reader = new FileReader();
-                        reader.onload = function(e) {
+                        reader.onload = function (e) {
+                            console.log(imgArray);
+                            $('#imgDiv').append(imgDesign);
                             $('#imgPreview' + (length - 1)).attr('src', e.target.result);
                         }
-                        reader.readAsDataURL(input.files[0]);
+                        reader.readAsDataURL(f);
+                        }
                     }
-                }
-                $("#image").change(function() {
-                    $('#imgPreview,#plusIcon').hide();
-                    readURL(this);
+                    });
                 });
-                // default status for product
-                $('.status').each(function() {
-                    if ($(this).val() == '1') {
-                        $(this).prop("checked", true);
-                    }
 
                 });
-                // default tax for product
-                $('.taxInclude').each(function() {
-                    if ($(this).val() == '1') {
-                        $(this).prop("checked", true);
-                    }
+                // cancel selected image
+                $(document).on("click",'.imageCancel', function (e) {
+                    var index = $(this).parent().attr('index');
+                    imgArray.splice(index, 1);
+                    console.log(imgArray);
+                    $(this).parent().remove();
                 });
+                $('#tax').hide();
                 // custom tax for product
-                $('#taxNo').click(function() {
-                    if ($(this).is(':checked')) {
-                        $('#tax').show();
-                    } else {
-                        $('#tax').hide();
-                    }
-                });
+                var defaultTaxOption = $('input[name ="taxInclude"]:checked');
+                $('input[name ="taxInclude"]').click(function () {
+                   if ($(this).val() == '0') {
+                    $('#tax').show();
+                   }
+                   if ($(this).val() === defaultTaxOption.val()) {
+                    $('#tax').hide();
+                   }
 
+                });
                 function process(input) {
                     let value = input.value;
                     let letters = value.replace(/\D/g, '');
@@ -480,35 +549,84 @@
                         });
                     }
                 })
-                //variant default check
-                $('.variation').each(function() {
-                    if ($(this).val() == '0') {
-                        $(this).prop("checked", true);
-                    }
-                });
-                $('#tax').hide();
+                // variation hide and show based on the radio check
                 $('#variationRow').hide();
-                $('#variant_yes').click(function() {
-                    if ($(this).is(':checked')) {
+                var defaultVarOption = $('input[name="variation"]:checked');
+                $('input[name="variation"]').click(function () {
+                    if($(this).val()=='1'){
                         $('#variationRow').show();
-                    }
+                     }
+                     if ($(this).val() === defaultVarOption.val()) {
+                            $('#variationRow').hide();
+                            $('#variationRow input').val('');
+                     }
                 });
+                var optionFlag = false;
+                function checkOptionValidate(){
+                    optionFlag = true;
+                    $(".optionValue").each(function () {
+                       let inputVal = $(this);
+                       if (inputVal.val() === "") {
+                          optionFlag = false;
+                       }
+                    });
+                }
                 // appending options and variations
                 $(document).on('click', '.addOptions', function() {
-                    let varLength = $('.varContent .row').length;
-                    let optionDesign =
-                        '<input type="text" name="options[]" id="options" class="form-control mt-1">';
-                    $('#optionBlock' + (varLength - 1)).append(optionDesign);
-                });
-                // appending variation
-                $('.addVariations').click(function() {
                     let optionVal = $('#options').val();
-                    let variationVal = $('#variation').val();
+                    let opLength = $('.optionValue').length;
                     let varLength = $('.varContent .row').length;
-                    let VarDesign =
-                        '<div class="row"><div class="col-6" id="variationBlock"><label for="variationName">Variation</label><input type="text" name="variationName[]" id="variationName" class="form-control mt-1"></div><div class="col-6"> <div id="optionBlock' +varLength +'"><label for="options">Options</label><input type="text" name="options[]" id="options" class="form-control mt-1"></div><label for="addOptions" id="addOptions" class="addOptions form-control d-flex justify-content-center mt-2" style="border: 1px solid rgb(102, 102, 102) ; border-style:dotted;"><i class="fa fa-plus-circle mt-2"></i> Add Options</label></div></div>';
-                    if (varLength <= 3 && variationVal != "" && optionVal != "") {
+                    checkOptionValidate();
+
+                     if (optionFlag && optionVal !== "") {
+                        let optionDesign =
+                        '<div class="appendedOption'+opLength+' d-flex justify-content-between input-group mt-2"><input type="text" name="options[]" id="options'+(opLength-1)+'" class="optionValue form-control"><i class="fa fa-close optionCancel input-group-text p-2" id="optionCancel"></i></div>';
+                        $('#optionBlock' + (varLength - 1)).append(optionDesign);
+                     }
+                     //option cancel option
+                    $(document).on("click",'.optionCancel', function () {
+                       $(this).parent().remove();
+                     });
+                });
+                    var optionValid = false;
+                    var varValid = false;
+
+                    function checkVariantValidate() {
+                        varValid = true;
+                        optionValid = true;
+
+                        $('.varContent .row').each(function () {
+                            var variationBlock = $(this).find('.variationBlock');
+                            var optionBlock = $(this).find('.optionBlock');
+
+                            if (variationBlock.find('.variationName').val() === "") {
+                                varValid = false;
+                            }
+
+                            if (optionBlock.find('.optionValue').val() === "") {
+                                optionValid = false;
+                            }
+                        });
+                    }
+                    // additional variation
+                    $('.addVariations').click(function() {
+                    let optionVal = $('#options').val();
+                    let variationVal = $('#variationName').val();
+                    let varLength = $('.varContent .row').length;
+
+                    // Validate the input fields
+                    checkVariantValidate();
+                    // Validate the options input fields
+                    checkOptionValidate();
+                    // Check if both variation name and options are valid and varLength is within limit
+                    if (optionValid && varValid && optionFlag && varLength <= 3 && optionVal !== "" && variationVal !== "") {
+                        let VarDesign =
+                            '<div class="row"><div class="col-6 variationBlock"><label for="variationName">Variation '+(varLength+1)+'</label><input type="text" name="variationName[]" class="varName form-control mt-1 variationName"></div><div class="col-6"><div class="optionBlock" id="optionBlock'+varLength+'"><label for="options">Options</label><input type="text" name="options[]" class="optionValue form-control mt-1"></div><label for="addOptions" class="addOptions form-control d-flex justify-content-center mt-2" style="border: 1px solid rgb(102, 102, 102) ; border-style:dotted;"><i class="fa fa-plus-circle mt-2"></i> Add Options</label></div></div>';
+
                         $('#varContent').append(VarDesign);
+                        $('#varValidate-error').html("");
+                    } else {
+                        $('#varValidate-error').html("Both variation and option fields are required, or maximum variations reached.");
                     }
                 });
                 // selling price validation
@@ -519,6 +637,38 @@
                         $('#sellingPrice').val(retailAmount);
                     }
                 });
+                // custom return policy option
+                $('#policyTypeContent').hide();
+                $('input[name="returnPolicy"]').click(function () {
+                      if ($(this).val() == '1') {
+                        $('#policyTypeContent').show();
+                      }
+                      if ($(this).val() == '0') {
+                        $('#policyTypeContent').hide();
+                      }
+                });
+                // ajax call for the product form
+                // $("#productForm").submit(function(event) {
+
+                //     event.preventDefault();
+
+                //     var formData = imgArray;
+
+
+                //     $.ajax({
+                //     url: "{{ route('product.store')}}",
+                //     type: "post",
+                //     data: formData,
+                //     processData: false,
+                //     contentType: false,
+                //     success: function(response) {
+                //         console.log('array send successfully');
+                //     },
+                //     error: function(xhr, status, error) {
+                //       console.log('good bye !');
+                //     }
+                //     });
+                // });
             </script>
         @endpush
     @endsection
