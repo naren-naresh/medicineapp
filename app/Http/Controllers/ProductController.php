@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\DeliveryTypes;
+use App\Models\Manufacturer;
 use App\Models\Product;
+use App\Models\ReturnPolicy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,6 +17,9 @@ class ProductController extends Controller
     {
         $name['categories'] = Category::where('parent_category_id', null)->orderBy('name', 'asc')->get();
         $name['deliveryTypes'] = DeliveryTypes::all();
+        $name['brands']=Brand::all();
+        $name['manufacturers']=Manufacturer::all();
+        $name['returnPolicies']=ReturnPolicy::all();
         if ($request->ajax()) {
             $data = Category::where('parent_category_id', $request->parentId)->get();
             return response()->json($data);
@@ -23,17 +29,17 @@ class ProductController extends Controller
     }
     public function store(Request $request)
     {
-        dd($request->all());
         $request->validate([
             'productName' => 'required',
             'category'=>'required',
             'descriptionContent' => 'required',
         ]);
+        $imageName = time() . "." . $request->file("coverImage")->extension();
         $product = Product::create([
             'name' => $request->productName,
             'category_id' => $request->category,
-            'description' => $request->description,
-            'cover_image' => json_encode($request->image),
+            'description' => $request->descriptionContent,
+            'cover_image' => $imageName,
             'thumbnail_images' => json_encode($request->image),
             'status' => $request->status,
             'brand_id' => $request->brand,
@@ -53,6 +59,7 @@ class ProductController extends Controller
             'return_policy_applicable' => $request->returnPolicy,
             'return_policy_id' => $request->policyType,
             'created_by' => Auth::user()->id ]);
+            $request->coverImage->move(public_path('/assets/images/products/'.$product->id.''), $imageName);
         return  redirect()->route('product.index');
     }
 }

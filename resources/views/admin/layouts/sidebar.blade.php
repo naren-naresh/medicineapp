@@ -13,7 +13,7 @@
             <a href="#"><i class="fa fa-users fa-stack"></i>&nbsp;<span class="text">Customers</span></a>
         </li>
         <li>
-            <a href="#"><i class="fa fa-industry fa-stack"></i>&nbsp;<span class="text">Manufacturer</span></a>
+            <a href="{{ route('manufacturer.index') }}"><i class="fa fa-industry fa-stack"></i>&nbsp;<span class="text">Manufacturer</span></a>
         </li>
         <li>
             <a href="{{ route('product.index') }}"><i class="fa fa-cubes fa-stack"></i>&nbsp;<span
@@ -27,7 +27,7 @@
             <ul class="list-unstyled text-white d-none" id="productMenu">
                 <li><a href="{{ route('category.index') }}"><i class="fa fa-angle-double-right ms-4"></i> Categories</a>
                 </li>
-                <li><a href="#"><i class="fa fa-angle-double-right ms-4"></i> Brands</a></li>
+                <li><a href="{{ route('brand.index') }}"><i class="fa fa-angle-double-right ms-4"></i> Brands</a></li>
             </ul>
         </li>
         <li>
@@ -51,7 +51,7 @@
             <a href="#" id="settings"><i class="fa fa-gear fa-stack"></i>&nbsp;<span
                     class="text">Settings</span> <i class="fa fa-sort-down"></i></a>
             <ul class="list-unstyled text-white d-none" id="smenu">
-                <li><a href="#"><i class="fa fa-angle-double-right ms-4"></i> Return Policy</a></li>
+                <li><a href="{{ route('return_policy.index') }}"><i class="fa fa-angle-double-right ms-4"></i> Return Policy</a></li>
             </ul>
         </li>
     </ul>
