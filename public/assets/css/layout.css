@@ -37,6 +37,7 @@
 
  .form-control {
      border-radius: 3px !important;
+     -webkit-appearance: menulist;
  }
 
  .form-control:focus {
@@ -80,9 +81,9 @@
   .coverImage {
     width: 150px;
     aspect-ratio: 3/2;
-    background: #ddd;
-    color: #aaa;
-    border: 2px dashed;
+    background: #eee;
+    color: #bbb;
+    border: 1px dashed;
     cursor: pointer;
   }
 

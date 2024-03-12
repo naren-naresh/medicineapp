@@ -87,11 +87,11 @@
                                 <label for="img" class="mb-1">Image</label>
                                 <input type="file" name="img" id="img">
                             </div>
-                            <div class="col-6">
-                                <img src="" alt="product image" class="mt-2 w-25 ms-2" id="preview">
+                            <div class="col-6  ps-3 mt-4">
+                                <img src="{{ asset('assets/images/woocommerce-placeholder.webp')}}" alt="product image" class="mt-2 w-25 ms-5" id="preview">
                             </div>
                         </div>
-                        <div class="buttons mt-4">
+                        <div class="buttons my-2">
                             <button type="button" class="btn me-3" data-bs-dismiss="modal" id="cancel">Cancel</button>
                             <button type="submit" name="save" id="save" class="btn">Save</button>
                         </div>

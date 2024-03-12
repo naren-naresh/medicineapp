@@ -30,7 +30,7 @@ class CategoryController extends Controller
                     return ($category->status != 0) ? '<span class=" badge bg-success">Active</span>' : '<span class=" badge bg-danger">InActive</span>';
                 })
                 ->addColumn('image', function ($category) {
-                    return($category->image !='') ? '<img src="assets/images/'.$category->image.'">':'<img src="assets/images/woocommerce-placeholder.webp" style="width:50px">';
+                    return($category->image !='') ? '<img src="assets/images/'.$category->image.'" style="width:50px">':'<img src="assets/images/woocommerce-placeholder.webp" style="width:50px">';
                 })
                 ->addColumn('created_by', function ($category) {
                     $username = Category::find(1)->user->name;
@@ -58,7 +58,9 @@ class CategoryController extends Controller
         if ($request->hasFile('img')) {
             $imageName = time() . "." . $request->file("img")->extension();
             $request->img->move(public_path('/assets/images'), $imageName);
-            unlink(public_path('assets/images/'.$oldimage));
+            if ($oldimage) {
+                unlink(public_path('assets/images/'.$oldimage));
+            }
         } else {
             $imageName = $oldimage;
         }

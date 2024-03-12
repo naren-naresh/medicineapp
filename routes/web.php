@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DeliveryFeeController;
 use App\Http\Controllers\DeliveryTypeController;
 use App\Http\Controllers\DeliveryZoneController;
+use App\Http\Controllers\ManufacturerController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReturnPolicyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -45,9 +48,13 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::resource('delivery_fee', DeliveryFeeController::class);
         /** Delivery Types resource route */
         Route::resource('delivery_types', DeliveryTypeController::class);
-        /** Products routes */
+        /** Products resource routes */
         Route::resource('product',ProductController::class);
-        // Route::get('product','ProductController@basicInfo')->name('product.basicInfo');
-        // Route::post('product','ProductController@postBasicInfo')->name('product.basicInfo.post');
+        /** Brand resource routes */
+        Route::resource('brand', BrandController::class);
+        /** Manufacturer resource routes */
+        Route::resource('manufacturer',ManufacturerController::class);
+        /** Return policy resource routes */
+        Route::resource('return_policy',ReturnPolicyController::class);
     });
 });

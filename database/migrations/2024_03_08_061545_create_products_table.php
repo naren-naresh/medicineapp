@@ -23,7 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('manufacturer_id')->nullable();
             $table->date('manufacturer_date');
             $table->date('expiry_date');
-            $table->unsignedMediumInteger('delivery_type_id');
+            $table->unsignedMediumInteger('delivery_type_id')->nullable();
             $table->boolean('tax_include')->comment('1-yes , 0-no');
             $table->unsignedMediumInteger('tax')->nullable();
             $table->boolean('have_variation')->comment('1-yes , 0-no');
