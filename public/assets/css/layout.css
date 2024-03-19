@@ -24,13 +24,20 @@
      border-top: 3px solid #385399;
      background-color: #d2d9ea;
  }
-
+ input[type="radio"]{
+    cursor: pointer;
+ }
  .btn {
      background-color: #385399 !important;
      color: #fff;
      border-radius: 3px !important;
  }
 
+ .btn:hover{
+    color:#385399;
+    background-color: #ffff !important ;
+    border-color: #385399;
+ }
  a .btn {
      color: #fff;
  }
@@ -45,9 +52,8 @@
  }
 
  label {
-     font-size: 16px !important;
+     font-size: 15px ;
  }
-
  #smenu.sadd {
      display: block !important;
  }
@@ -64,46 +70,9 @@
      content: " *";
      color: red;
  }
-.parent-category.active{
-    background-color: aquamarine;
-}
-.child-category.active{
-    background-color: aquamarine;
-}
-.picture {
-    width: 150px;
-    aspect-ratio: 3/2;
-    background: #ddd;
-    color: #aaa;
-    border: 2px dashed;
-    cursor: pointer;
-  }
-  .coverImage {
-    width: 150px;
-    aspect-ratio: 3/2;
-    background: #eee;
-    color: #bbb;
-    border: 1px dashed;
-    cursor: pointer;
-  }
-
- /*---------------------Multi Step Form Styles-------------------*/
-
- .step-circle {
-    cursor: pointer; /* Added cursor pointer */
-  }
- .step-line {
-    position: absolute;
-    top: 16px;
-    left: 50px;
-    width: calc(100% - 100px);
-    height: 2px;
-    background-color: #007bff;
-    z-index: -1;
-  }
-  #productForm{
-    overflow-x: hidden;
-}
+ .main{
+    height: calc(100vh - 60px);
+ }
  /* -------------------- Header Styles ------------------------- */
  .navbar {
      background-color: #385399;
@@ -129,7 +98,6 @@
  /* --------------------- End Header Styles --------------------- */
  #sidebar-wrapper {
      background-color: #385399;
-     height: calc(100vh - 60px);
  }
 
  .sidebar-nav li a {
@@ -141,7 +109,6 @@
  }
 
  #sidebar-wrapper {
-     height: calc(100vh + 60px);
      -webkit-transition: all 0.5s ease;
      -moz-transition: all 0.5s ease;
      -o-transition: all 0.5s ease;

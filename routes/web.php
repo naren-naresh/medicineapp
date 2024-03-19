@@ -50,6 +50,9 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::resource('delivery_types', DeliveryTypeController::class);
         /** Products resource routes */
         Route::resource('product',ProductController::class);
+        Route::post('product_variant','ProductController@productVariant')->name('productVariant');
+        Route::get('product_add','ProductController@add')->name('product.add');
+        Route::get('product_destroy','ProductController@destroy')->name('product.destroy');
         /** Brand resource routes */
         Route::resource('brand', BrandController::class);
         /** Manufacturer resource routes */
