@@ -1,0 +1,52 @@
+.parent-category.active{
+    background-color: #385399;
+    color:#ffff;
+}
+.child-category.active{
+    background-color:  #385399;
+    color:#ffff;
+}
+.picture {
+    width: 150px;
+    aspect-ratio: 3/2;
+    background: #eee;
+    color: #bbb;
+    border: 1px dashed;
+    cursor: pointer;
+  }
+  .coverImage {
+    width: 150px;
+    aspect-ratio: 3/2;
+    background: #eee;
+    color: #bbb;
+    border: 1px dashed;
+    cursor: pointer;
+  }
+ /*---------------------Multi Step Form Styles-------------------*/
+
+ .step-circle {
+    cursor: pointer; /* Added cursor pointer */
+  }
+ .step-line {
+    position: absolute;
+    top: 16px;
+    left: 50px;
+    width: calc(100% - 100px);
+    height: 2px;
+    background-color: #007bff;
+    z-index: -1;
+  }
+  #productForm{
+    overflow-x: hidden;
+}
+/*----------cursor pointer for labels------------*/
+.addVariations{
+    cursor: pointer;
+}
+.addOptions{
+    cursor: pointer;
+}
+.product-image-sec img{
+    height: 125px;
+    object-fit: contain;
+}

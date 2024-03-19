@@ -17,7 +17,7 @@
             </ol>
         </div>
     </div>
-    <div class="card w-100 mt-5">
+    <div class="card w-100 mt-2 mb-5">
         <div class="card-header d-flex justify-content-between">
             <h5 class="card-title">All Delivery Types</h5>
             <div class="card-tools">

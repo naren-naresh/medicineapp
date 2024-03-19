@@ -21,7 +21,9 @@
     <!-- Data Table css-->
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatable/datatable.css')}}">
     <!-- Quil editor-->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/ck_editor/editor.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/quill/quill.snow.css')}}">
+    <!-- Custom Style & Inbuilt Styles -->
+    @stack('styles')
 </head>
 
 <body>
