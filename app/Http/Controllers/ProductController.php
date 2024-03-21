@@ -49,7 +49,6 @@ class ProductController extends Controller
                 ->rawColumns(['cover_image', 'name', 'category_id', 'status', 'stocks', 'action'])
                 ->make(true);
         }
-        $name['product'] = $request->session()->get('product');
         return view('admin.products.index');
     }
     public function add(Request $request){

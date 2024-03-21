@@ -1,8 +1,10 @@
 $(document).ready(function () {
-    oldCategory(oldParentCateId,oldChildCateId);
+    oldCategory(oldParentCateId, oldChildCateId);
     // cover image show
-    $('#coverImgPreview').attr("src","/assets/images/products/"+product_id+"/"+coverImage+"");
-
+    $("#coverImgPreview").attr(
+        "src",
+        "/assets/images/products/" + product_id + "/" + coverImage + ""
+    );
 });
 const toolbarOptions = [
     ["bold", "italic", "underline", "strike"], // toggled buttons
@@ -377,11 +379,11 @@ $("#sellingPrice").keyup(function () {
     }
 });
 // Show category data form database
-function oldCategory(id,childID){
-       categoryPreview(id);
-    $('.parent-category ').each(function () {
-        if ($(this).attr('parentcatid') == id) {
-            $(this).addClass('active');
+function oldCategory(id, childID) {
+    categoryPreview(id);
+    $(".parent-category ").each(function () {
+        if ($(this).attr("parentcatid") == id) {
+            $(this).addClass("active");
             categoryObject.parentCategory = {
                 name: $(this).text(),
             };
@@ -402,7 +404,7 @@ function oldCategory(id,childID){
                     $("#childCategoryList").empty();
                     for (item of data) {
                         $("#childCategoryList").append(
-                            "<li class='child-category border-bottom py-1' role='button' childCatId=" +
+                            "<li class='child-category border-bottom py-1 px-2' role='button' childCatId=" +
                                 item.id +
                                 ">" +
                                 item.name +
@@ -410,7 +412,7 @@ function oldCategory(id,childID){
                         );
                     }
                     $(".child-category").each(function () {
-                        if ($(this).attr('childcatid') == childID) {
+                        if ($(this).attr("childcatid") == childID) {
                             let childCatId = childID;
                             $("#childCategoryList")
                                 .find(".child-category")
@@ -429,7 +431,7 @@ function oldCategory(id,childID){
                 },
             });
         }
-  });
+    });
 }
 //cover image preview
 $("#coverImage").change(function (e) {
@@ -439,4 +441,50 @@ $("#coverImage").change(function (e) {
         $("#coverImgPreview").attr("src", e.target.result);
     };
     imageReader.readAsDataURL(this.files[0]);
+});
+function thumbnailImage(id) {
+    let thumbnailImg_html =
+        `<label for='image` +
+        id +
+        `' class='ms-2 mb-3 picture d-flex justify-content-center align-items-center position-relative' index='` +
+        id +
+        `'>
+        <i class='fa fa-plus-circle position-absolute' id='plusIcon' style='font-size: 1.5rem'></i>
+        <img src='' id='imgPreview` +
+        id +
+        `' class='w-100'>
+        <i class='fa fa-close position-absolute imageCancel' style='top:4px;right:4px;'></i>
+    </label>
+    <input type='file' name='image[]' id='image` +
+        id +
+        `' class='mt-2 d-none upload_image' accept="image/*" multiple>`;
+    return thumbnailImg_html;
+}
+//  dynamic images and preview
+$(document).on("change", ".upload_image", function (e) {
+    $("#imgPreview,#plusIcon").hide();
+    var imageReader = new FileReader();
+    let thumbImgCount = $(".upload_image").length;
+    let thumbnailImgHtml = thumbnailImage(thumbImgCount);
+    $("#thumbImgDiv").append(thumbnailImgHtml);
+    imageReader.onload = function (e) {
+        $("#imgPreview" + (thumbImgCount - 1)).attr("src", e.target.result);
+    };
+    imageReader.readAsDataURL(this.files[0]);
+});
+// cancel selected image
+$(document).on("click", ".imageCancel", function (e) {
+    $(this).parent().remove();
+});
+$("#tax").hide();
+
+// custom tax for product
+var defaultTaxOption = $('input[name ="taxInclude"]:checked');
+$('input[name ="taxInclude"]').click(function () {
+    if ($(this).val() == "0") {
+        $("#tax").show();
+    }
+    if ($(this).val() === defaultTaxOption.val()) {
+        $("#tax").hide();
+    }
 });

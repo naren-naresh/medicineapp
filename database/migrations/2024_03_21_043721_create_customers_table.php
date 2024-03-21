@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('gender')->nullable();
             $table->date('dob');
             $table->string('password');
-            $table->boolean('is_blocked')->default('false');
+            $table->boolean('is_blocked')->default(false);
             $table->dateTime('created_at');
             $table->dateTime('updated_at');
             $table->softDeletes();

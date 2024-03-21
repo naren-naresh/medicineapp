@@ -69,7 +69,7 @@
                     $("#childCategoryList").empty();
                     for (item of data) {
                         $("#childCategoryList").append(
-                            "<li class='child-category border-bottom py-1' role='button' childCatId=" +
+                            "<li class='child-category border-bottom py-1 px-2' role='button' childCatId=" +
                                 item.id +
                                 ">" +
                                 item.name +
