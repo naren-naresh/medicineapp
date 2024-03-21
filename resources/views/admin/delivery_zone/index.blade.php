@@ -102,6 +102,9 @@
             var table = $('.data-table').DataTable({
                 processing: true,
                 serverSide: true,
+                language: {
+                lengthMenu: 'Show _MENU_ entries',
+                },
                 ajax: "{{ route('delivery_zone.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',

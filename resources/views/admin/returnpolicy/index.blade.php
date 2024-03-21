@@ -98,6 +98,9 @@
         var table = $('.data-table').DataTable({
             processing: true,
             serverSide: true,
+            language: {
+                lengthMenu: 'Show _MENU_ entries',
+            },
             ajax: "{{ route('return_policy.index') }}",
             columns: [{
                     data: 'DT_RowIndex',

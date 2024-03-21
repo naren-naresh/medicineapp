@@ -126,6 +126,9 @@
             var table = $('.data-table').DataTable({
                 processing: true,
                 serverSide: true,
+                language: {
+                lengthMenu: 'Show _MENU_ entries',
+                },
                 ajax: "{{ route('category.index') }}",
                 columns: [{
                         data: 'DT_RowIndex',
@@ -157,7 +160,7 @@
                         searchable: false
                     },
                 ]
-            }); 
+            });
 
             /*Edit product*/
             $('body').on('click', '.editProduct', function() {

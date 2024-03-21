@@ -114,6 +114,9 @@
         var table = $('.data-table').DataTable({
             processing: true,
             serverSide: true,
+            language: {
+                lengthMenu: 'Show _MENU_ entries',
+            },
             ajax: "{{ route('brand.index') }}",
             columns: [{
                     data: 'DT_RowIndex',
