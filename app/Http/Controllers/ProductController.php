@@ -228,6 +228,8 @@ class ProductController extends Controller
         $name['manufacturers'] = Manufacturer::all();
         $name['returnPolicies'] = ReturnPolicy::all();
         $name['product'] = Product::find($id);
+        $name['parentCatId'] = Category::where('id',$name['product']->category_id)->value('parent_category_id');
+        $name['childCatId'] = Category::where('id',$name['product']->category_id)->value('id');
         if ($request ->ajax()) {
             $data = Category::where('parent_category_id', $request->parentId)->get();
              return response()->json($data);

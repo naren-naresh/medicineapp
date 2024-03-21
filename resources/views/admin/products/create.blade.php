@@ -40,7 +40,7 @@
                     <div class="row mt-2">
                         <div class="col-6">
                             <label for="parentCategoryList" class="required py-1">Category</label>
-                            <ul class="bg-white my-2 list-unstyled border border-bottom-0" id="parentCategoryList">
+                            <ul class="bg-white my-2 list-unstyled border border-bottom-0" id="parentCategoryList" style="height: 180px; overflow-y:auto">
                                 @foreach ($categories as $categoryName)
                                     <li parentCatID="{{ $categoryName->id }}"
                                         class="parent-category border-bottom px-2 py-2" role="button"
@@ -309,13 +309,13 @@
                 </div>
             </form>
         </div>
-         <!-- data attributes for global routes -->
         @pushOnce('styles')
             <link rel="stylesheet" href="{{ asset('assets/css/product.css')}}">
         @endPushOnce
         @pushOnce('scripts')
          <!-- Quil Editor cdn -->
             <script src="{{ asset('assets/plugins/quill/quill.js')}}"></script>
+            <!-- data attributes for global routes -->
             <script>
                 var productIndexRoute = "{{ route ('product.add')}}";
                 var productVariantRoute = "{{ route ('productVariant')}}";

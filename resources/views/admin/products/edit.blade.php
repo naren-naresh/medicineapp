@@ -41,7 +41,8 @@
                     <div class="row mt-2">
                         <div class="col-6">
                             <label for="parentCategoryList" class="required py-1">Category</label>
-                            <ul class="bg-white my-2 list-unstyled border border-bottom-0" id="parentCategoryList">
+                            <ul class="bg-white my-2 list-unstyled border border-bottom-0" id="parentCategoryList"
+                                style="height: 180px; overflow-y:auto">
                                 @foreach ($categories as $categoryName)
                                     <li parentCatID="{{ $categoryName->id }}"
                                         class="parent-category border-bottom px-2 py-2" role="button"
@@ -66,7 +67,7 @@
                     <hr style="color:#b3b3b3;">
                     <div class="row mt-2 w-100 ps-3">
                         <label for="descriptionContent" class="mb-2 p-0 py-1 required">Product Description</label>
-                        <div name="description" id="description" style="height: 200px ">{{ $product->description}}</div>
+                        <div name="description" id="description" style="height: 200px ">{{ $product->description }}</div>
                         <textarea name="descriptionContent" id="descriptionContent" class="d-none"></textarea>
                         <span id="descriptionContent-error" class="error p-0">Product description is required.</span>
                         @if ($errors->has('descriptionContent'))
@@ -81,8 +82,6 @@
                                 <label for="coverImage"
                                     class="mb-3 coverImage d-flex justify-content-center align-items-center ms-3"
                                     tabIndex="0">
-                                    <i class="fa fa-plus-circle position-absolute" id="imgIcon"
-                                        style="font-size: 1.5rem"></i>
                                     <img src="" class="w-100" id="coverImgPreview"></label>
                                 <input type="file" name="coverImage" id="coverImage" class="d-none" accept="image/*">
                             </div>
@@ -129,8 +128,9 @@
                             <select class="form-control mt-2" name="manufacturer" id="manufacturer">
                                 <option value="option_select" disabled selected>Select manufacturer</option>
                                 @foreach ($manufacturers as $manufacturer)
-                                    <option value="{{ $manufacturer->id }}" @if ($product->manufacturer_id === $manufacturer->id) selected
-                                        @endif >{{ $manufacturer->name }}</option>
+                                    <option value="{{ $manufacturer->id }}"
+                                        @if ($product->manufacturer_id === $manufacturer->id) selected @endif>{{ $manufacturer->name }}
+                                    </option>
                                 @endforeach
                             </select>
                             <span id="manufacturer-error" class="error">Product manufacturer is required.</span>
@@ -156,8 +156,9 @@
                             <select class="form-control mt-2" name="deliveryType" id="deliveryType">
                                 <option value="option_select" disabled selected>Select Delivery Mode</option>
                                 @foreach ($deliveryTypes as $deliveryType)
-                                <option value="{{ $deliveryType->id }}" @if ($product->delivery_type_id === $deliveryType->id) selected
-                                    @endif >{{ $deliveryType->types }}</option>
+                                    <option value="{{ $deliveryType->id }}"
+                                        @if ($product->delivery_type_id === $deliveryType->id) selected @endif>{{ $deliveryType->types }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -276,7 +277,8 @@
                         </div>
                         <div class="from-group col">
                             <label for="sku">Sku</label>
-                            <input type="text" name="sku" id="sku" class="form-control mt-2" value="{{ $product->sku }}">
+                            <input type="text" name="sku" id="sku" class="form-control mt-2"
+                                value="{{ $product->sku }}">
                         </div>
                         <div><button type="button" class="btn mt-3 float-end" id="generateVariation">Apply</button>
                         </div>
@@ -321,13 +323,21 @@
                 </div>
             </form>
         </div>
-        <!-- data attributes for global routes -->
         @pushOnce('styles')
             <link rel="stylesheet" href="{{ asset('assets/css/product.css') }}">
         @endPushOnce
         @pushOnce('scripts')
             <!-- quill editor -->
             <script src="{{ asset('assets/plugins/quill/quill.js') }}"></script>
-            <script src="{{ asset('assets/js/product_edit.js')}}"></script>
+            <!-- data attributes for global routes -->
+            <script>
+                var productIndexRoute = "{{ route('product.add') }}";
+                var productVariantRoute = "{{ route('productVariant') }}";
+                var oldParentCateId = "{{ $parentCatId }}"
+                var oldChildCateId = "{{ $childCatId }}"
+                var product_id = "{{ $product->id }}"
+                var coverImage = "{{ $product->cover_image}}"
+            </script>
+            <script src="{{ asset('assets/js/product_edit.js') }}"></script>
         @endPushOnce
     @endsection

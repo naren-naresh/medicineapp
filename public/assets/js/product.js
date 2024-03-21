@@ -41,7 +41,7 @@
         var flag = false;
         var string = {
             productName: null,
-            categoryName: null, 
+            categoryName: null,
         };
         /* passing parent id data to controller */
         $(".parent-category").click(function () {
