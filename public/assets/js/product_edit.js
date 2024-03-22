@@ -1,8 +1,10 @@
 $(document).ready(function () {
-    oldCategory(oldParentCateId,oldChildCateId);
+    oldCategory(oldParentCateId, oldChildCateId);
     // cover image show
-    $('#coverImgPreview').attr("src","/assets/images/products/"+product_id+"/"+coverImage+"");
-
+    $("#coverImgPreview").attr(
+        "src",
+        "/assets/images/products/" + product_id + "/" + coverImage + ""
+    );
 });
 const toolbarOptions = [
     ["bold", "italic", "underline", "strike"], // toggled buttons
@@ -356,6 +358,7 @@ $('input[name="is_variation"]').click(function () {
         $("#generateVariation").hide();
         $("#variationRow input").val("");
     }
+
 });
 
 // custom return policy option
@@ -377,11 +380,11 @@ $("#sellingPrice").keyup(function () {
     }
 });
 // Show category data form database
-function oldCategory(id,childID){
-       categoryPreview(id);
-    $('.parent-category ').each(function () {
-        if ($(this).attr('parentcatid') == id) {
-            $(this).addClass('active');
+function oldCategory(id, childID) {
+    categoryPreview(id);
+    $(".parent-category ").each(function () {
+        if ($(this).attr("parentcatid") == id) {
+            $(this).addClass("active");
             categoryObject.parentCategory = {
                 name: $(this).text(),
             };
@@ -402,7 +405,7 @@ function oldCategory(id,childID){
                     $("#childCategoryList").empty();
                     for (item of data) {
                         $("#childCategoryList").append(
-                            "<li class='child-category border-bottom py-1' role='button' childCatId=" +
+                            "<li class='child-category border-bottom py-1 px-2' role='button' childCatId=" +
                                 item.id +
                                 ">" +
                                 item.name +
@@ -410,7 +413,7 @@ function oldCategory(id,childID){
                         );
                     }
                     $(".child-category").each(function () {
-                        if ($(this).attr('childcatid') == childID) {
+                        if ($(this).attr("childcatid") == childID) {
                             let childCatId = childID;
                             $("#childCategoryList")
                                 .find(".child-category")
@@ -429,7 +432,7 @@ function oldCategory(id,childID){
                 },
             });
         }
-  });
+    });
 }
 //cover image preview
 $("#coverImage").change(function (e) {
@@ -440,3 +443,151 @@ $("#coverImage").change(function (e) {
     };
     imageReader.readAsDataURL(this.files[0]);
 });
+function thumbnailImage(id) {
+    let thumbnailImg_html =
+        `<label for='image` +
+        id +
+        `' class='ms-2 mb-3 picture d-flex justify-content-center align-items-center position-relative' index='` +
+        id +
+        `'>
+        <i class='fa fa-plus-circle position-absolute' id='plusIcon' style='font-size: 1.5rem'></i>
+        <img src='' id='imgPreview` +
+        id +
+        `' class='w-100'>
+        <i class='fa fa-close position-absolute imageCancel' style='top:4px;right:4px;'></i>
+    </label>
+    <input type='file' name='image[]' id='image` +
+        id +
+        `' class='mt-2 d-none upload_image' accept="image/*" multiple>`;
+    return thumbnailImg_html;
+}
+//  dynamic images and preview
+$(document).on("change", ".upload_image", function (e) {
+    $("#imgPreview,#plusIcon").hide();
+    var imageReader = new FileReader();
+    let thumbImgCount = $(".upload_image").length;
+    let thumbnailImgHtml = thumbnailImage(thumbImgCount);
+    $("#thumbImgDiv").append(thumbnailImgHtml);
+    imageReader.onload = function (e) {
+        $("#imgPreview" + (thumbImgCount - 1)).attr("src", e.target.result);
+    };
+    imageReader.readAsDataURL(this.files[0]);
+});
+// cancel selected image
+$(document).on("click", ".imageCancel", function (e) {
+    $(this).parent().remove();
+});
+$("#tax").hide();
+
+// custom tax for product
+var defaultTaxOption = $('input[name ="taxInclude"]:checked');
+$('input[name ="taxInclude"]').click(function () {
+    if ($(this).val() == "0") {
+        $("#tax").show();
+    }
+    if ($(this).val() === defaultTaxOption.val()) {
+        $("#tax").hide();
+    }
+});
+// expiry date functionality
+$("#manufacturerDate").change(function () {
+    $("#expiryDate").attr("min", $(this).val());
+    if ($("#expiryDate").val() < $(this).val()) {
+        // Clear expiry date value if it's before manufacturer date
+        $("#expiryDate").val("");
+    }
+});
+      // appending options and variations
+      $(document).on("click", ".addOptions", function () {
+        let optionVal = $("#options").val();
+        let opLength = $(".optionValue").length;
+        let varLength = $(".varContent .row").length;
+
+         checkOptionValidate();
+
+        if (optionFlag && optionVal !== "") {
+            let optionDesign =
+                '<div class="appendedOption' +
+                opLength +
+                ' d-flex justify-content-between input-group mt-2"><input type="text" name="options['+ (varLength - 1) + '][]" id="options' +
+                (opLength - 1) +
+                '" class="optionValue form-control"><i class="fa fa-close optionCancel input-group-text p-2" id="optionCancel"></i></div>';
+            $("#optionBlock" + (varLength - 1)).append(optionDesign);
+        }
+        //option cancel option
+        $(document).on("click", ".optionCancel", function () {
+            $(this).parent().remove();
+        });
+    });
+    // option validate
+    var optionFlag = false;
+    function checkOptionValidate() {
+        optionFlag = true;
+        $(".optionValue").each(function () {
+            let inputVal = $(this);
+            if (inputVal.val() === "") {
+                optionFlag = false;
+            }
+        });
+    }
+    var optionValid = false;
+    var varValid = false;
+
+    function checkVariantValidate() {
+        varValid = true;
+        optionValid = true;
+
+        $(".varContent .row").each(function () {
+            var variationBlock = $(this).find(".variationBlock");
+            var optionBlock = $(this).find(".optionBlock");
+
+            if (variationBlock.find(".variationName").val() === "") {
+                varValid = false;
+            }
+
+            if (optionBlock.find(".optionValue").val() === "") {
+                optionValid = false;
+            }
+        });
+    }
+    // additional variation
+    $(".addVariations").click(function () {
+        let optionVal = $("#options").val();
+        let variationVal = $("#variationName").val();
+        let varLength = $(".varContent .row").length;
+        let variantCount = varLength ++;
+
+        // Validate the input fields
+        checkVariantValidate();
+        // Validate the options input fields
+        checkOptionValidate();
+        // Check if both variation name and options are valid and varLength is within limit
+        if ( optionValid && varValid && optionFlag && varLength <= 3 && optionVal !== "" && variationVal !== "" ) {
+            let VarDesign =
+                '<div class="row my-2" id="varRow"><div class="col-6 variationBlock"><label for="variationName">Variation ' +
+                (varLength + 1) +
+                '</label><input type="text" name="variationName[]" class="varName form-control mt-1 variationName"><span class="variationCancel badge bg-danger" style="cursor:pointer">Remove</span></div><div class="col-6"><div class="optionBlock" id="optionBlock' +
+                (varLength -1) +
+                '"><label for="options">Options</label><input type="text" name="options['+variantCount+'][]" class="optionValue form-control mt-1"></div><label for="addOptions" class="addOptions form-control d-flex  align-items-center justify-content-center  mt-2" style="border: 1px solid rgb(102, 102, 102) ; border-style:dotted;"><i class="fa fa-plus-circle mx-2"></i> Add Options</label></div></div>';
+
+            $("#varContent").append(VarDesign);
+            $("#variants-error").hide();
+        } else {
+            $("#variants-error").show();
+        }
+    });
+    $(".varName,.optionValue").keyup(function (e) {
+        $("#variants-error").hide();
+    });
+     //option cancel Variation
+     $(document).on("click", ".variationCancel", function () {
+        $(this).parent().closest('#varRow').remove();
+    });
+    // selling price validation
+    $("#sellingPrice").keyup(function () {
+        let retailAmount = parseFloat($("#retailPrice").val());
+        let sellingAmount = parseFloat($("#sellingPrice").val());
+        if (retailAmount < sellingAmount) {
+            $("#sellingPrice").val(retailAmount);
+        }
+    });

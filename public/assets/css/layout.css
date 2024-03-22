@@ -86,6 +86,7 @@
  }
  .main{
     height: calc(100vh - 60px);
+    overflow: hidden;
  }
  /* -------------------- Header Styles ------------------------- */
  .navbar {

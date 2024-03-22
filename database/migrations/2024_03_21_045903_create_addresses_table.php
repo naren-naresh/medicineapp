@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('address');
             $table->string('postal_code');
             $table->string('contact_number')->nullable();
-            $table->boolean('status')->default('true');
+            $table->boolean('status')->default(true);
             $table->dateTime('created_at');
             $table->dateTime('updated_at');
             $table->softDeletes();

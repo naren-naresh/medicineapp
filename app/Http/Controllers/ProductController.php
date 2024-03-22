@@ -49,7 +49,6 @@ class ProductController extends Controller
                 ->rawColumns(['cover_image', 'name', 'category_id', 'status', 'stocks', 'action'])
                 ->make(true);
         }
-        $name['product'] = $request->session()->get('product');
         return view('admin.products.index');
     }
     public function add(Request $request){
@@ -127,7 +126,7 @@ class ProductController extends Controller
             $product_variantOptions = $request->variationName ?? [];
             $product_option_ids = [];
             foreach ($product_variantOptions as $key => $option) {
-                $product_option_ids[] =  ProductVariantOption::create(['product_id' => 1, 'variant' => $option])->id;
+                $product_option_ids[] =  ProductVariantOption::create(['product_id' =>$product_id , 'variant' => $option])->id;
             }
             $product_variant_option_values = $request->options ?? [];
             $product_variant_option_value_ids = [];
@@ -135,7 +134,7 @@ class ProductController extends Controller
                 $product_variant_option_value_ids[$key] = [];
                 foreach ($values as $value) {
                     $product_option_value_ids[$key][] = ProductVariantOptionValue::create([
-                        'product_id' => 1,
+                        'product_id' => $product_id,
                         'variant_option_id' => $product_option_ids[$key],
                         'variant_option_values' => $value
                     ])->id;
@@ -230,6 +229,8 @@ class ProductController extends Controller
         $name['product'] = Product::find($id);
         $name['parentCatId'] = Category::where('id',$name['product']->category_id)->value('parent_category_id');
         $name['childCatId'] = Category::where('id',$name['product']->category_id)->value('id');
+        $name['variant'] = ProductVariantOption::where('product_id',$id)->get('variant');
+        // dd($name['variant']);
         if ($request ->ajax()) {
             $data = Category::where('parent_category_id', $request->parentId)->get();
              return response()->json($data);

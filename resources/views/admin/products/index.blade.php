@@ -42,9 +42,6 @@
             </table>
         </div>
     </div>
-    <style>
-
-    </style>
     @pushOnce('scripts')
      <script>
         /* datatables*/
@@ -52,7 +49,7 @@
         processing: true,
         serverSide: true,
         language: {
-                lengthMenu: 'Show _MENU_ entries', // Customize the text for "Show [x] entries"
+                lengthMenu: 'Show _MENU_ entries',
             },
         ajax: "{{ route('product.index') }}",
         columns: [{
@@ -87,7 +84,6 @@
         },
         ]
         });
-        var entriesSelect = $('.dt-input');
       </script>
 
     @endPushOnce
