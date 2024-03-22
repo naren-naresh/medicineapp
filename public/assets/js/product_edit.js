@@ -358,6 +358,7 @@ $('input[name="is_variation"]').click(function () {
         $("#generateVariation").hide();
         $("#variationRow input").val("");
     }
+
 });
 
 // custom return policy option
@@ -488,3 +489,105 @@ $('input[name ="taxInclude"]').click(function () {
         $("#tax").hide();
     }
 });
+// expiry date functionality
+$("#manufacturerDate").change(function () {
+    $("#expiryDate").attr("min", $(this).val());
+    if ($("#expiryDate").val() < $(this).val()) {
+        // Clear expiry date value if it's before manufacturer date
+        $("#expiryDate").val("");
+    }
+});
+      // appending options and variations
+      $(document).on("click", ".addOptions", function () {
+        let optionVal = $("#options").val();
+        let opLength = $(".optionValue").length;
+        let varLength = $(".varContent .row").length;
+
+         checkOptionValidate();
+
+        if (optionFlag && optionVal !== "") {
+            let optionDesign =
+                '<div class="appendedOption' +
+                opLength +
+                ' d-flex justify-content-between input-group mt-2"><input type="text" name="options['+ (varLength - 1) + '][]" id="options' +
+                (opLength - 1) +
+                '" class="optionValue form-control"><i class="fa fa-close optionCancel input-group-text p-2" id="optionCancel"></i></div>';
+            $("#optionBlock" + (varLength - 1)).append(optionDesign);
+        }
+        //option cancel option
+        $(document).on("click", ".optionCancel", function () {
+            $(this).parent().remove();
+        });
+    });
+    // option validate
+    var optionFlag = false;
+    function checkOptionValidate() {
+        optionFlag = true;
+        $(".optionValue").each(function () {
+            let inputVal = $(this);
+            if (inputVal.val() === "") {
+                optionFlag = false;
+            }
+        });
+    }
+    var optionValid = false;
+    var varValid = false;
+
+    function checkVariantValidate() {
+        varValid = true;
+        optionValid = true;
+
+        $(".varContent .row").each(function () {
+            var variationBlock = $(this).find(".variationBlock");
+            var optionBlock = $(this).find(".optionBlock");
+
+            if (variationBlock.find(".variationName").val() === "") {
+                varValid = false;
+            }
+
+            if (optionBlock.find(".optionValue").val() === "") {
+                optionValid = false;
+            }
+        });
+    }
+    // additional variation
+    $(".addVariations").click(function () {
+        let optionVal = $("#options").val();
+        let variationVal = $("#variationName").val();
+        let varLength = $(".varContent .row").length;
+        let variantCount = varLength ++;
+
+        // Validate the input fields
+        checkVariantValidate();
+        // Validate the options input fields
+        checkOptionValidate();
+        // Check if both variation name and options are valid and varLength is within limit
+        if ( optionValid && varValid && optionFlag && varLength <= 3 && optionVal !== "" && variationVal !== "" ) {
+            let VarDesign =
+                '<div class="row my-2" id="varRow"><div class="col-6 variationBlock"><label for="variationName">Variation ' +
+                (varLength + 1) +
+                '</label><input type="text" name="variationName[]" class="varName form-control mt-1 variationName"><span class="variationCancel badge bg-danger" style="cursor:pointer">Remove</span></div><div class="col-6"><div class="optionBlock" id="optionBlock' +
+                (varLength -1) +
+                '"><label for="options">Options</label><input type="text" name="options['+variantCount+'][]" class="optionValue form-control mt-1"></div><label for="addOptions" class="addOptions form-control d-flex  align-items-center justify-content-center  mt-2" style="border: 1px solid rgb(102, 102, 102) ; border-style:dotted;"><i class="fa fa-plus-circle mx-2"></i> Add Options</label></div></div>';
+
+            $("#varContent").append(VarDesign);
+            $("#variants-error").hide();
+        } else {
+            $("#variants-error").show();
+        }
+    });
+    $(".varName,.optionValue").keyup(function (e) {
+        $("#variants-error").hide();
+    });
+     //option cancel Variation
+     $(document).on("click", ".variationCancel", function () {
+        $(this).parent().closest('#varRow').remove();
+    });
+    // selling price validation
+    $("#sellingPrice").keyup(function () {
+        let retailAmount = parseFloat($("#retailPrice").val());
+        let sellingAmount = parseFloat($("#sellingPrice").val());
+        if (retailAmount < sellingAmount) {
+            $("#sellingPrice").val(retailAmount);
+        }
+    });

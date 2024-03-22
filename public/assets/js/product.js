@@ -503,8 +503,8 @@
             if ( optionValid && varValid && optionFlag && varLength <= 3 && optionVal !== "" && variationVal !== "" ) {
                 let VarDesign =
                     '<div class="row my-2" id="varRow"><div class="col-6 variationBlock"><label for="variationName">Variation ' +
-                    (varLength + 1) +
-                    '</label><input type="text" name="variationName[]" class="varName form-control mt-1 variationName"><span class="variationCancel badge bg-danger">Remove</span></div><div class="col-6"><div class="optionBlock" id="optionBlock' +
+                    (varLength) +
+                    '</label><input type="text" name="variationName[]" class="varName form-control mt-1 variationName"><span class="variationCancel badge bg-danger" style="cursor:pointer">Remove</span></div><div class="col-6"><div class="optionBlock" id="optionBlock' +
                     (varLength -1) +
                     '"><label for="options">Options</label><input type="text" name="options['+variantCount+'][]" class="optionValue form-control mt-1"></div><label for="addOptions" class="addOptions form-control d-flex  align-items-center justify-content-center  mt-2" style="border: 1px solid rgb(102, 102, 102) ; border-style:dotted;"><i class="fa fa-plus-circle mx-2"></i> Add Options</label></div></div>';
 

@@ -45,56 +45,56 @@
             </table>
         </div>
     </div>
-@pushOnce('scripts')
-    <script>
-        /* datatables*/
-        var table = $('.data-table').DataTable({
-            processing: true,
-            serverSide: true,
-            language: {
-                lengthMenu: 'Show _MENU_ entries',
-            },
-            ajax: "{{ route('customer.index') }}",
-            columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex'
+    @pushOnce('scripts')
+        <script>
+            /* datatables*/
+            var table = $('.data-table').DataTable({
+                processing: true,
+                serverSide: true,
+                language: {
+                    lengthMenu: 'Show _MENU_ entries',
                 },
-                {
-                    data: 'image',
-                    name: 'image',
-                },
-                {
-                    data: 'first_name',
-                    name: 'first_name',
-                },
-                {
-                    data: 'last_name',
-                    name: 'last_name',
-                },
-                {
-                    data: 'email',
-                    name: 'email',
-                },
-                {
-                    data: 'phone_number',
-                    name: 'phone_number',
-                },
-                {
-                    data: 'gender',
-                    name: 'gender',
-                },
-                {
-                    data: 'dob',
-                    name: 'dob',
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: false,
-                    searchable: false
-                },
-            ]
-        });
-    </script>
-@endPushOnce
+                ajax: "{{ route('customer.index') }}",
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        data: 'image',
+                        name: 'image',
+                    },
+                    {
+                        data: 'first_name',
+                        name: 'first_name',
+                    },
+                    {
+                        data: 'last_name',
+                        name: 'last_name',
+                    },
+                    {
+                        data: 'email',
+                        name: 'email',
+                    },
+                    {
+                        data: 'phone_number',
+                        name: 'phone_number',
+                    },
+                    {
+                        data: 'gender',
+                        name: 'gender',
+                    },
+                    {
+                        data: 'dob',
+                        name: 'dob',
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
+                ]
+            });
+        </script>
+    @endPushOnce
 @endsection
