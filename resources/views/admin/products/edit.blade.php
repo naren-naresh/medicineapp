@@ -208,11 +208,11 @@
                             <fieldset>
                                 <legend class="mb-1" style=" font-size:16px;font-weight:unset !important;">Is had
                                     variation ?</legend>
-                                <input type="radio" name="is_variation" id="variant_yes" value="1"
+                                <input type="radio" name="is_variation" id="variant_yes" value="1"{{ $product->have_variation == '1' ? 'checked' : '' }}
                                     class="variation">
                                 <label for="variant_yes" class="me-2 ms-1">Yes</label>
-                                <input type="radio" name="is_variation" id="variant_no" value="0"
-                                    class="variation" checked>
+                                <input type="radio" name="is_variation" id="variant_no" value="0"{{ $product->have_variation == '0' ? 'checked' : '' }}
+                                    class="variation">
                                 <label for="variant_no" class="ms-1">No</label>
                             </fieldset>
                             <label class="ms-1 error" id="variation-error"></label>
@@ -222,17 +222,25 @@
                     <div class="row mt-2">
                         <div class="row" id="variationRow">
                             <div class="row varContent" id="varContent">
+                                <?php $flag = 1 ?>
+                                @foreach ( $variants as $dbVariant )
                                 <div class="row">
                                     <div class="col-6" id="variationBlock">
-                                        <label for="variationName">Variation 1</label>
+                                        <label for="variationName">Variation {{$flag}}</label>
                                         <input type="text" name="variationName[]" id="variationName"
-                                            class="varName form-control mt-1">
+                                            class="varName form-control mt-1" value="{{$dbVariant->variant}}">
                                     </div>
                                     <div class="col-6">
-                                        <div class="optionBlock" id="optionBlock0">
-                                            <label for="options0">Options</label>
-                                            <input type="text" name="options[0][]" id="options0"
-                                                class="optionValue form-control mt-1">
+                                        <div class="optionBlock" id="optionBlock{{$flag-1}}">
+                                            <?php $opFlag=0;?>
+                                            @php
+                                                $optionValues = $options->where('variant_option_id', $dbVariant->id);
+                                            @endphp
+                                            <label for="options{{$opFlag}}">Options</label>
+                                            @foreach ( $optionValues as $opValue )
+                                                <input type="text" name="options[{{$flag-1}}][]" id="options{{$opFlag}}" class="optionValue form-control mt-1" value="{{ $opValue->variant_option_values}}">
+                                                <? $opFlag++;?>
+                                            @endforeach
                                         </div>
                                         <label id="addOptions"
                                             class="addOptions form-control d-flex align-items-center justify-content-center mt-2"
@@ -240,6 +248,8 @@
                                                 class="fa fa-plus-circle mx-2"></i> Add Options</label>
                                     </div>
                                 </div>
+                                 <?php $flag++; ?>
+                                @endforeach
                             </div>
                             <div id="addVar" class="col-6">
                                 <label id="addVariations"
@@ -282,6 +292,7 @@
                         </div>
                         <div><button type="button" class="btn mt-3 float-end" id="generateVariation">Apply</button>
                         </div>
+                        <div id="existingProductPreview" class="my-4"> @include('admin.products.editvariants')</div>
                         <div id="productPreview" class="my-4"></div>
                     </div>
                     <hr style="color: #b3b3b3">
@@ -332,11 +343,15 @@
             <!-- data attributes for global routes -->
             <script>
                 var productIndexRoute = "{{ route('product.add') }}";
+                var productVariantRoute = "{{ route('editProductVariant')}}"
                 var productVariantRoute = "{{ route('productVariant') }}";
                 var oldParentCateId = "{{ $parentCatId }}"
                 var oldChildCateId = "{{ $childCatId }}"
                 var product_id = "{{ $product->id }}"
                 var coverImage = "{{ $product->cover_image}}"
+                var thumbnailImages = {!! $thumbnailImages !!};
+                var variants = {!! $variants !!};
+                var options = {!! $options !!}
             </script>
             <script src="{{ asset('assets/js/product_edit.js') }}"></script>
         @endPushOnce
