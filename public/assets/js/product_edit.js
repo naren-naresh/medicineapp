@@ -1,10 +1,56 @@
 $(document).ready(function () {
+    var id = 0;
+    thumbnailImages.forEach(function(image) {
+        let thumbnailImgHtml = oldThumbnailImage(id,image);
+         $("#thumbImgDiv").append(thumbnailImgHtml);
+         id ++;
+    });
+    let AddThumbnailImgHtml = thumbnailImage(id);
+    $("#thumbImgDiv").append(AddThumbnailImgHtml);
     oldCategory(oldParentCateId, oldChildCateId);
     // cover image show
     $("#coverImgPreview").attr(
         "src",
         "/assets/images/products/" + product_id + "/" + coverImage + ""
     );
+    function oldThumbnailImage(id,data) {
+        let thumbnailImg_html =
+            `<label for='image` +
+            id +
+            `' class='ms-2 mb-3 picture d-flex justify-content-center align-items-center position-relative' index='` +
+            id +
+            `'>
+            <img src='/assets/images/products/` + product_id + `/`+data.image+`' id='imgPreview` +
+            id +
+            `' class='w-100'>
+            <i class='fa fa-close position-absolute imageCancel' style='top:4px;right:4px;'></i>
+        </label>
+        <input type='file' name='image[]' id='image` +
+            id +
+            `' class='mt-2 d-none upload_image' accept="image/*" multiple>`;
+        return thumbnailImg_html;
+    }
+        // Prepare data to send
+        var requestData = {
+            selected_variants: allVariants,
+            retailPrice: getRetailPrice,
+            sellingPrice: getSellingPrice,
+            sku: getSKU,
+            stocks: getStock,
+            thresholdQty: getThresholdQty
+        };
+        console.log(requestData);
+        // AJAX call
+        $.ajax({
+            url: productVariantRoute,
+            type: "POST",
+            data: requestData,
+            success: function(response) {
+                // Handle success response here
+                console.log("Data sent successfully!");
+            }
+        });
+
 });
 const toolbarOptions = [
     ["bold", "italic", "underline", "strike"], // toggled buttons
@@ -284,7 +330,6 @@ $("#step_3").click(function () {
         $(".step-3").show();
     }
 });
-
 //back button of multi step form
 $(".prev-step").each(function () {
     $(this).click(function () {
@@ -348,16 +393,22 @@ $("#taxType").change(function () {
 $("#variationRow").hide();
 $("#generateVariation").hide();
 var defaultVarOption = $('input[name="is_variation"]:checked');
-$('input[name="is_variation"]').click(function () {
+$('input[name="is_variation"]').each(function () {
     if ($(this).val() == "1") {
         $("#variationRow").show();
         $("#generateVariation").show();
     }
-    if ($(this).val() === defaultVarOption.val()) {
-        $("#variationRow").hide();
-        $("#generateVariation").hide();
-        $("#variationRow input").val("");
-    }
+    $('input[name="is_variation"]').click(function () {
+        if ($(this).val() == "1") {
+            $("#variationRow").show();
+            $("#generateVariation").show();
+        }
+        if ($(this).val() === "0") {
+            $("#variationRow").hide();
+            $("#generateVariation").hide();
+            $("#variationRow input").val("");
+        }
+    });
 
 });
 
@@ -435,12 +486,20 @@ function oldCategory(id, childID) {
     });
 }
 //cover image preview
+var imageChecked = false;
 $("#coverImage").change(function (e) {
     var imageReader = new FileReader();
     imageReader.onload = function (e) {
         $("#imgIcon").hide();
         $("#coverImgPreview").attr("src", e.target.result);
     };
+    let thumbImgCount = $('.upload_image').length;
+    // The thumbnail label appends only onces
+    if (this.value && !imageChecked) {
+        let thumbnailImgHtml = thumbnailImage(thumbImgCount);
+        $("#thumbImgDiv").append(thumbnailImgHtml);
+        imageChecked = true;
+    }
     imageReader.readAsDataURL(this.files[0]);
 });
 function thumbnailImage(id) {
@@ -565,11 +624,10 @@ $("#manufacturerDate").change(function () {
         if ( optionValid && varValid && optionFlag && varLength <= 3 && optionVal !== "" && variationVal !== "" ) {
             let VarDesign =
                 '<div class="row my-2" id="varRow"><div class="col-6 variationBlock"><label for="variationName">Variation ' +
-                (varLength + 1) +
+                (varLength)+
                 '</label><input type="text" name="variationName[]" class="varName form-control mt-1 variationName"><span class="variationCancel badge bg-danger" style="cursor:pointer">Remove</span></div><div class="col-6"><div class="optionBlock" id="optionBlock' +
                 (varLength -1) +
                 '"><label for="options">Options</label><input type="text" name="options['+variantCount+'][]" class="optionValue form-control mt-1"></div><label for="addOptions" class="addOptions form-control d-flex  align-items-center justify-content-center  mt-2" style="border: 1px solid rgb(102, 102, 102) ; border-style:dotted;"><i class="fa fa-plus-circle mx-2"></i> Add Options</label></div></div>';
-
             $("#varContent").append(VarDesign);
             $("#variants-error").hide();
         } else {
@@ -591,3 +649,73 @@ $("#manufacturerDate").change(function () {
             $("#sellingPrice").val(retailAmount);
         }
     });
+
+     // variant generator
+     $('#generateVariation').click(function () {
+        checkVariantValidate();
+        checkOptionValidate();
+        var allVariants = {};
+        var getRetailPrice = $("#retailPrice").val();
+        var getSellingPrice = $("#sellingPrice").val();
+        var getSKU = $("#sku").val();
+        var getStock = $("#stocks").val();
+        var getThresholdQty = $("#thresholdQty").val();
+        if ($('.variation').val() == 1) {
+            var varFlag = false;
+            $('.varName').filter( function (){
+                 if ($(this).val() != '') {
+                     varFlag = true;
+                     let varOptionValues = [];
+                     let varValue = this.value;
+                     $(this).closest(".row").find(".optionValue").each(function () {
+                        varOptionValues.push($(this).val());
+                    });
+                    allVariants[varValue] = varOptionValues;
+                    return false;
+                 }
+            });
+            if (varFlag && stepThree() && optionFlag) {
+                $.ajax({
+                    type: "POST",
+                    url: productVariantRoute,
+                    data: {
+                        selected_variants: allVariants,
+                        retail_price: getRetailPrice,
+                        selling_price: getSellingPrice,
+                        sku: getSKU,
+                        stock: getStock,
+                        threshold_qty: getThresholdQty,
+                    },
+                    success: function (response) {
+                        $("#productPreview").html(response);
+                        selectRefresh();
+                    },
+                });
+            }else if (!varFlag) {
+                Swal.fire({
+                    position: "center",
+                    icon: "warning",
+                    text: " At least one variant is required!",
+                    showConfirmButton: false,
+                    timer: 2500,
+                });
+            }else if (!stepThree()) {
+                stepThree();
+                Swal.fire({
+                    position: "center",
+                    icon: "warning",
+                    text: "Please fill all required field.",
+                    showConfirmButton: false,
+                    timer: 2500,
+                });
+            } else if (!optionFlag) {
+                Swal.fire({
+                    position: "center",
+                    icon: "warning",
+                    text: "At least one option is required!",
+                    showConfirmButton: false,
+                    timer: 2500,
+                });
+            }
+        }
+     });

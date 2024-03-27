@@ -190,8 +190,7 @@ class ProductController extends Controller
             return view('admin.products.create')->with('error', 'Something Went Wrong Please Try Again!');
         }
     }
-
-    function Combinations($arr) // the input variable is an nested array
+    public function Combinations($arr) // the input variable is an nested array
     {
         if (count($arr) == 0) return [];
         $n = count($arr);
@@ -229,8 +228,25 @@ class ProductController extends Controller
         $name['product'] = Product::find($id);
         $name['parentCatId'] = Category::where('id',$name['product']->category_id)->value('parent_category_id');
         $name['childCatId'] = Category::where('id',$name['product']->category_id)->value('id');
-        $name['variant'] = ProductVariantOption::where('product_id',$id)->get('variant');
-        // dd($name['variant']);
+        $name['variants'] = ProductVariantOption::where('product_id',$id)->get();
+        $name['options'] = ProductVariantOptionValue :: where('product_id',$id)->get();
+        // existing combinations
+        $allVariants = []; // empty array
+        foreach ($name['variants'] as $varValue) {
+           $varVariant = $varValue->variant;
+           $allVariants[$varVariant] = [];// store variants name in one dimensional
+           $optionValues = $name['options']->where('variant_option_id',$varValue->id); // separate the option values for each variants
+           foreach ($optionValues as $opValue) {
+            $allVariants[$varVariant][] = $opValue->variant_option_values; // Add option value to another dimensional
+           }
+        }
+        $combArray=[]; // another empty array to hold the values of options
+        foreach ($allVariants as $key => $value) {
+          $combArray[] = $value;
+        }
+        $name['existOptions'] = $this->Combinations($combArray);
+        // end of the existing combination section 
+        $name['thumbnailImages'] =json_encode( ProductThumbnailImage :: where('product_id',$id)->get('image'));
         if ($request ->ajax()) {
             $data = Category::where('parent_category_id', $request->parentId)->get();
              return response()->json($data);
