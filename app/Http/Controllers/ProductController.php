@@ -51,6 +51,7 @@ class ProductController extends Controller
         }
         return view('admin.products.index');
     }
+
     public function add(Request $request){
         $name['categories'] = Category::where('parent_category_id', null)->orderBy('name', 'asc')->get();
         $name['deliveryTypes'] = DeliveryTypes::all();
@@ -190,6 +191,7 @@ class ProductController extends Controller
             return view('admin.products.create')->with('error', 'Something Went Wrong Please Try Again!');
         }
     }
+
     public function Combinations($arr) // the input variable is an nested array
     {
         if (count($arr) == 0) return [];
@@ -219,6 +221,7 @@ class ProductController extends Controller
         }
         return $all_variants;
     }
+
     public function edit(Request $request,$id){
         $name['categories'] = Category::where('parent_category_id', null)->orderBy('name', 'asc')->get();
         $name['deliveryTypes'] = DeliveryTypes::all();
@@ -245,14 +248,32 @@ class ProductController extends Controller
           $combArray[] = $value;
         }
         $name['existOptions'] = $this->Combinations($combArray);
-        // end of the existing combination section 
-        $name['thumbnailImages'] =json_encode( ProductThumbnailImage :: where('product_id',$id)->get('image'));
+        // end of the existing combination section
+        $name['thumbnailImages'] =json_encode( ProductThumbnailImage :: where('product_id',$id)->get());
         if ($request ->ajax()) {
             $data = Category::where('parent_category_id', $request->parentId)->get();
              return response()->json($data);
         }
+        $name['comboArray'] = json_encode($allVariants);
         return view('admin.products.edit', $name);
     }
+
+    // delete the existing variant
+    public function destroyVariant(Request $request){
+          if ($request->ajax()) {
+              ProductVariant::where('product_id',$request->product_id)->delete();
+              ProductVariantGroup::where('product_id',$request->product_id)->delete();
+              ProductVariantOption::where('product_id',$request->product_id)->delete();
+              ProductVariantOptionValue::where('product_id',$request->product_id)->delete();
+              // separate thumbnail images deletion using thumbImgId
+              ProductThumbnailImage::where('id',$request->thumbImgId)->delete();
+          }
+    }
+
+    public function update(Request $request){
+        dd($request->all());
+    }
+
     /** delete category */
     public function destroy($id)
     {
