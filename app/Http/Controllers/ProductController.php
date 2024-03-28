@@ -51,6 +51,7 @@ class ProductController extends Controller
         }
         return view('admin.products.index');
     }
+
     public function add(Request $request){
         $name['categories'] = Category::where('parent_category_id', null)->orderBy('name', 'asc')->get();
         $name['deliveryTypes'] = DeliveryTypes::all();
@@ -191,7 +192,7 @@ class ProductController extends Controller
         }
     }
 
-    function Combinations($arr) // the input variable is an nested array
+    public function Combinations($arr) // the input variable is an nested array
     {
         if (count($arr) == 0) return [];
         $n = count($arr);
@@ -220,6 +221,7 @@ class ProductController extends Controller
         }
         return $all_variants;
     }
+
     public function edit(Request $request,$id){
         $name['categories'] = Category::where('parent_category_id', null)->orderBy('name', 'asc')->get();
         $name['deliveryTypes'] = DeliveryTypes::all();
@@ -229,14 +231,49 @@ class ProductController extends Controller
         $name['product'] = Product::find($id);
         $name['parentCatId'] = Category::where('id',$name['product']->category_id)->value('parent_category_id');
         $name['childCatId'] = Category::where('id',$name['product']->category_id)->value('id');
-        $name['variant'] = ProductVariantOption::where('product_id',$id)->get('variant');
-        // dd($name['variant']);
+        $name['variants'] = ProductVariantOption::where('product_id',$id)->get();
+        $name['options'] = ProductVariantOptionValue :: where('product_id',$id)->get();
+        // existing combinations
+        $allVariants = []; // empty array
+        foreach ($name['variants'] as $varValue) {
+           $varVariant = $varValue->variant;
+           $allVariants[$varVariant] = [];// store variants name in one dimensional
+           $optionValues = $name['options']->where('variant_option_id',$varValue->id); // separate the option values for each variants
+           foreach ($optionValues as $opValue) {
+            $allVariants[$varVariant][] = $opValue->variant_option_values; // Add option value to another dimensional
+           }
+        }
+        $combArray=[]; // another empty array to hold the values of options
+        foreach ($allVariants as $key => $value) {
+          $combArray[] = $value;
+        }
+        $name['existOptions'] = $this->Combinations($combArray);
+        // end of the existing combination section
+        $name['thumbnailImages'] =json_encode( ProductThumbnailImage :: where('product_id',$id)->get());
         if ($request ->ajax()) {
             $data = Category::where('parent_category_id', $request->parentId)->get();
              return response()->json($data);
         }
+        $name['comboArray'] = json_encode($allVariants);
         return view('admin.products.edit', $name);
     }
+
+    // delete the existing variant
+    public function destroyVariant(Request $request){
+          if ($request->ajax()) {
+              ProductVariant::where('product_id',$request->product_id)->delete();
+              ProductVariantGroup::where('product_id',$request->product_id)->delete();
+              ProductVariantOption::where('product_id',$request->product_id)->delete();
+              ProductVariantOptionValue::where('product_id',$request->product_id)->delete();
+              // separate thumbnail images deletion using thumbImgId
+              ProductThumbnailImage::where('id',$request->thumbImgId)->delete();
+          }
+    }
+
+    public function update(Request $request){
+        dd($request->all());
+    }
+
     /** delete category */
     public function destroy($id)
     {

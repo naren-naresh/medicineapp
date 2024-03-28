@@ -22,9 +22,9 @@
             </div>
         </div>
         <div class="car-body px-4 py-3">
-            <form action="{{ route('product.store') }}" name="productForm" id="productForm" method="post"
-                enctype="multipart/form-data">
+            <form action="{{ route('product.update',$product->id) }}" name="productForm" id="productForm" method="post" enctype="multipart/form-data">
                 @csrf
+                @method('PUT')
                 <!--basic info-->
                 <div class="step step-1">
                     <div class="row">
@@ -68,7 +68,7 @@
                     <div class="row mt-2 w-100 ps-3">
                         <label for="descriptionContent" class="mb-2 p-0 py-1 required">Product Description</label>
                         <div name="description" id="description" style="height: 200px ">{{ $product->description }}</div>
-                        <textarea name="descriptionContent" id="descriptionContent" class="d-none"></textarea>
+                        <textarea name="descriptionContent" id="descriptionContent" class="d-none">{{ $product->description }}</textarea>
                         <span id="descriptionContent-error" class="error p-0">Product description is required.</span>
                         @if ($errors->has('descriptionContent'))
                             <span class="text-danger">{{ $errors->first('descriptionContent') }}</span>
@@ -84,9 +84,11 @@
                                     tabIndex="0">
                                     <img src="" class="w-100" id="coverImgPreview"></label>
                                 <input type="file" name="coverImage" id="coverImage" class="d-none" accept="image/*">
+                                <input type="hidden" name="oldCoverImage" value="{{ $product->cover_image }}">
                             </div>
                             <!--Thumbnail images-->
                             <div class="d-flex align-items-center" id="thumbImgDiv"></div>
+                            <input type="hidden" name="oldThumbnailImage" value="{{ $product->thumbnail_images }}">
                         </div>
                     </div>
                     <span id="coverImage-error" class="error">At least one product image is required.</span>
@@ -169,11 +171,9 @@
                                         <legend class="mb-1" style=" font-size:15px;font-weight:unset !important;">Tax
                                             Include ?
                                         </legend>
-                                        <input type="radio" name="taxInclude" id="yes" value="1"
-                                            class="taxInclude" checked>
+                                        <input type="radio" name="taxInclude" id="yes" value="1" class="taxInclude" {{ $product->tax_include == '1' ? 'checked' : '' }}>
                                         <label for="yes" class="me-2 ms-1">Yes</label>
-                                        <input type="radio" name="taxInclude" id="taxNo" value="0"
-                                            class="taxInclude">
+                                        <input type="radio" name="taxInclude" id="taxNo" value="0" class="taxInclude" {{ $product->tax_include == '0' ? 'checked' : '' }}>
                                         <label for="taxNo" class="ms-1">No</label>
                                     </fieldset>
                                     <label class="ms-1 error" id="taxInclude-error"></label>
@@ -182,7 +182,7 @@
                                     <label for="texValue" class="mb-1">Tax Amount:</label>
                                     <div class="form-inline d-flex justify-content-between">
                                         <input type="text" oninput="process(this)" name="texValue" id="texValue"
-                                            maxlength="6" class="form-control" style="width: 100px">
+                                            maxlength="6" class="form-control" style="width: 100px" value="{{ $product->tax}}">
                                         <select name="taxType" id="taxType" class="form-control" style="width: 100px">
                                             <option value="1">Percentage</option>
                                             <option value="2" selected>Fixed</option>
@@ -208,11 +208,11 @@
                             <fieldset>
                                 <legend class="mb-1" style=" font-size:16px;font-weight:unset !important;">Is had
                                     variation ?</legend>
-                                <input type="radio" name="is_variation" id="variant_yes" value="1"
+                                <input type="radio" name="is_variation" id="variant_yes" value="1"{{ $product->have_variation == '1' ? 'checked' : '' }}
                                     class="variation">
                                 <label for="variant_yes" class="me-2 ms-1">Yes</label>
-                                <input type="radio" name="is_variation" id="variant_no" value="0"
-                                    class="variation" checked>
+                                <input type="radio" name="is_variation" id="variant_no" value="0"{{ $product->have_variation == '0' ? 'checked' : '' }}
+                                    class="variation">
                                 <label for="variant_no" class="ms-1">No</label>
                             </fieldset>
                             <label class="ms-1 error" id="variation-error"></label>
@@ -222,17 +222,26 @@
                     <div class="row mt-2">
                         <div class="row" id="variationRow">
                             <div class="row varContent" id="varContent">
+                                <?php $flag = 1 ?>
+                                @if ($variants->count() > 0)
+                                @foreach ( $variants as $dbVariant )
                                 <div class="row">
                                     <div class="col-6" id="variationBlock">
-                                        <label for="variationName">Variation 1</label>
+                                        <label for="variationName">Variation {{$flag}}</label>
                                         <input type="text" name="variationName[]" id="variationName"
-                                            class="varName form-control mt-1">
+                                            class="varName form-control mt-1" value="{{$dbVariant->variant}}">
                                     </div>
                                     <div class="col-6">
-                                        <div class="optionBlock" id="optionBlock0">
-                                            <label for="options0">Options</label>
-                                            <input type="text" name="options[0][]" id="options0"
-                                                class="optionValue form-control mt-1">
+                                        <div class="optionBlock" id="optionBlock{{$flag-1}}">
+                                            <?php $opFlag=0;?>
+                                            @php
+                                                $optionValues = $options->where('variant_option_id', $dbVariant->id);
+                                            @endphp
+                                            <label for="options{{$opFlag}}">Options</label>
+                                            @foreach ( $optionValues as $opValue )
+                                                <input type="text" name="options[{{$flag-1}}][]" id="options{{$opFlag}}" class="optionValue form-control mt-1" value="{{ $opValue->variant_option_values}}">
+                                                <?php $opFlag++;?>
+                                            @endforeach
                                         </div>
                                         <label id="addOptions"
                                             class="addOptions form-control d-flex align-items-center justify-content-center mt-2"
@@ -240,6 +249,29 @@
                                                 class="fa fa-plus-circle mx-2"></i> Add Options</label>
                                     </div>
                                 </div>
+                                 <?php $flag++; ?>
+                                @endforeach
+                                @else
+                                    <div class="row">
+                                        <div class="col-6" id="variationBlock">
+                                            <label for="variationName">Variation 1</label>
+                                            <input type="text" name="variationName[]" id="variationName"
+                                                class="varName form-control mt-1">
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="optionBlock" id="optionBlock0">
+                                                    <label for="options0">Options</label>
+                                                    <input type="text" name="options[0][]" id="options0"
+                                                    class="optionValue form-control mt-1">
+                                            </div>
+                                            <label id="addOptions"
+                                                class="addOptions form-control d-flex align-items-center justify-content-center mt-2"
+                                                style="border: 1px solid rgb(102, 102, 102) ; border-style:dotted;"><i
+                                                    class="fa fa-plus-circle mx-2"></i> Add Options</label>
+                                        </div>
+                                    </div>
+                                @endif
+
                             </div>
                             <div id="addVar" class="col-6">
                                 <label id="addVariations"
@@ -252,7 +284,7 @@
                         </div>
                     </div>
                     <hr style="color:#b3b3b3;">
-                    <div class="row my-2 justify-content-between">
+                    <div class="row my-2 justify-content-between" id="priceRow">
                         <div class="from-group col">
                             <label for="retailPrice" class="required">Retail Price</label>
                             <input type="text" name="retailPrice" maxlength="8" id="retailPrice"
@@ -284,6 +316,9 @@
                         </div>
                         <div id="productPreview" class="my-4"></div>
                     </div>
+                    @if ($variants->count() > 0)
+                    <div id="existingProductPreview" class="my-4"> @include('admin.products.editvariants')</div>
+                    @endif
                     <hr style="color: #b3b3b3">
                     <div class="row mt-3">
                         <div class="col-2">
@@ -293,11 +328,9 @@
                                         return
                                         policy ?
                                     </legend>
-                                    <input type="radio" name="returnPolicy" id="policy_yes" value="1"
-                                        class="returnPolicy">
+                                    <input type="radio" name="returnPolicy" id="policy_yes" value="1" class="returnPolicy" {{ $product->return_policy_applicable == '1' ? 'checked' : '' }}>
                                     <label for="policy_yes" class="me-2 ms-1">Yes</label>
-                                    <input type="radio" name="returnPolicy" id="policy_no" value="0"
-                                        class="returnPolicy" checked>
+                                    <input type="radio" name="returnPolicy" id="policy_no" value="0" class="returnPolicy" {{ $product->return_policy_applicable == '0' ? 'checked' : '' }}>
                                     <label for="policy_no" class="ms-1">No</label>
                                 </fieldset>
                                 <label class="ms-1 error" id="returnPolicy-error"></label>
@@ -323,6 +356,12 @@
                 </div>
             </form>
         </div>
+        <style>
+              .disabled-label {
+        opacity: 0.5;
+        cursor: default;
+        }
+        </style>
         @pushOnce('styles')
             <link rel="stylesheet" href="{{ asset('assets/css/product.css') }}">
         @endPushOnce
@@ -332,11 +371,17 @@
             <!-- data attributes for global routes -->
             <script>
                 var productIndexRoute = "{{ route('product.add') }}";
+                var destroyProductVariantRoute = "{{ route('product.destroyVariant')}}"
                 var productVariantRoute = "{{ route('productVariant') }}";
                 var oldParentCateId = "{{ $parentCatId }}"
                 var oldChildCateId = "{{ $childCatId }}"
                 var product_id = "{{ $product->id }}"
                 var coverImage = "{{ $product->cover_image}}"
+                var thumbnailImages = {!! $thumbnailImages !!};
+                var variants = {!! $variants !!};
+                var options = {!! $options !!}
+                var product = {!! $product !!}
+                var oldCombo = {!! $comboArray !!}
             </script>
             <script src="{{ asset('assets/js/product_edit.js') }}"></script>
         @endPushOnce

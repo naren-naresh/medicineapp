@@ -9,7 +9,6 @@ use App\Http\Controllers\DeliveryZoneController;
 use App\Http\Controllers\ManufacturerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReturnPolicyController;
-use App\Models\Customer;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,6 +54,8 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::post('product_variant','ProductController@productVariant')->name('productVariant');
         Route::get('product_add','ProductController@add')->name('product.add');
         Route::get('product_destroy','ProductController@destroy')->name('product.destroy');
+        Route::post('product_edit_variant','ProductController@editProductVariant')->name('editProductVariant');
+        Route::post('product_variant_destroy','ProductController@destroyVariant')->name('product.destroyVariant');
         /** Brand resource routes */
         Route::resource('brand', BrandController::class);
         /** Manufacturer resource routes */

@@ -20,9 +20,9 @@
     <div class="card w-100 mt-2 mb-5">
         <div class="card-header d-flex justify-content-between">
             <h5 class="card-title">All Customers</h5>
-            <div class="card-tools">
+            {{-- <div class="card-tools">
                 <a href="" class="btn">Add</a>
-            </div>
+            </div> --}}
         </div>
         <div class="card-body">
             <!-- Datatables -->
