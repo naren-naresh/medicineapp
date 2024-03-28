@@ -19,7 +19,7 @@
             <tr>
                 @foreach ($option as $key => $value)
                     <td>
-                        <input type="hidden" name="product_variants[{{ $count }}][value][]" value="{{ $value }}">
+                        <input type="hidden" name="old_product_variants[{{ $count }}][value][]" value="{{ $value }}">
                         {{ $value }}
                     </td>
                 @endforeach
@@ -52,3 +52,4 @@
         @endforeach
     </tbody>
 </table>
+<button type="button" class="btn" id="changeBtn">Change</button>
