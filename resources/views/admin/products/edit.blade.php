@@ -84,11 +84,11 @@
                                     tabIndex="0">
                                     <img src="" class="w-100" id="coverImgPreview"></label>
                                 <input type="file" name="coverImage" id="coverImage" class="d-none" accept="image/*">
-                                <input type="hidden" name="oldCoverImage" value="{{ $product->cover_image }}">
+                                {{-- <input type="hidden" name="oldCoverImage" value="{{ $product->cover_image }}"> --}}
                             </div>
                             <!--Thumbnail images-->
                             <div class="d-flex align-items-center" id="thumbImgDiv"></div>
-                            <input type="hidden" name="oldThumbnailImage" value="{{ $product->thumbnail_images }}">
+                            {{-- <input type="hidden" name="oldThumbnailImage" value="{{ $product->thumbnail_images }}"> --}}
                         </div>
                     </div>
                     <span id="coverImage-error" class="error">At least one product image is required.</span>

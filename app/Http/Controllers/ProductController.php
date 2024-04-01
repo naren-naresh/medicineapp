@@ -17,6 +17,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 
+use function Laravel\Prompts\alert;
+
 class ProductController extends Controller
 {
     public function index(Request $request)
@@ -267,11 +269,60 @@ class ProductController extends Controller
               ProductVariantOptionValue::where('product_id',$request->product_id)->delete();
               // separate thumbnail images deletion using thumbImgId
               ProductThumbnailImage::where('id',$request->thumbImgId)->delete();
+              $old_thumbnail_image = ProductThumbnailImage::where('id','$request->thumbImgId')->value('image');
+              unlink(public_path('/assets/images/products/'.$request->product_id.'/'.$old_thumbnail_image));
+
           }
     }
 
-    public function update(Request $request){
-        dd($request->all());
+    public function update(Request $request , $id){
+        $old_cover_image =  Product::where('id',$id)->value('cover_image');
+        if ($request->hasFile('coverImage')) {
+             // cover image
+             unlink(public_path('/assets/images/products/'.$id.'/'.$old_cover_image));
+             $imageName = time() . "." . $request->file("coverImage")->extension();
+             $request->coverImage->move(public_path('/assets/images/products/' . $id . ''), $imageName);
+        }else{
+            $imageName = $old_cover_image;
+        }
+        // dd($imageName);
+        Product::where('id',$id)->update([
+            'name' => $request->productName,
+            'category_id' => $request->category,
+            'description' => $request->descriptionContent,
+            'cover_image' => $imageName,
+            'thumbnail_images' => null,
+            'status' => $request->status,
+            'brand_id' => $request->brand,
+            'manufacturer_id' => $request->manufacturer,
+            'manufacturer_date' => $request->manufacturerDate,
+            'expiry_date' => $request->expiryDate,
+            'delivery_type_id' => $request->deliveryType,
+            'tax_include' => $request->taxInclude,
+            'tax' => $request->texValue,
+            'have_variation' => $request->is_variation,
+            'variation_name' => json_encode($request->variationName),
+            'retail_price' => $request->retailPrice,
+            'selling_price' => $request->sellingPrice,
+            'stock' => $request->stocks,
+            'threshold_qty' => $request->thresholdQty,
+            'sku' => $request->sku,
+            'return_policy_applicable' => $request->returnPolicy,
+            'return_policy_id' => $request->policyType,
+        ]);
+         // thumbnail images
+         $thumbnailImgData = $request->image ?? [];
+         $thumbImgID=[];
+         foreach ($thumbnailImgData as $tImage) {
+             $thumbImageName =  uniqid() . '.' . $tImage->extension();
+             $tImage->move(public_path('/assets/images/products/' . $id . ''), $thumbImageName);
+             $thumbImgID[]=ProductThumbnailImage::create([
+                 'product_id' => $id,
+                 'image' => $thumbImageName,
+             ])->id;
+         }
+        // dd($request->all());
+        return redirect()->route('product.index')->with('message','Product updated successfully.');
     }
 
     /** delete category */
