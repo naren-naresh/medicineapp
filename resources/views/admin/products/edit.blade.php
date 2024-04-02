@@ -97,10 +97,9 @@
                             <fieldset>
                                 <legend class="py-1" style=" font-size:15px;font-weight:unset !important;">Status
                                 </legend>
-                                <input type="radio" name="status" id="active" value="1" class="status"
-                                    checked>
+                                <input type="radio" name="status" id="active" value="1" class="status"  {{ $product->status == '1' ? 'checked' : '' }}>
                                 <label for="active" class="me-2 ms-1">Active</label>
-                                <input type="radio" name="status" id="inactive" value="0" class="status">
+                                <input type="radio" name="status" id="inactive" value="0" class="status" {{ $product->status == '0' ? 'checked' : '' }}>
                                 <label for="inactive" class="ms-1">InActive</label>
                             </fieldset>
                             <label for="active" class="ms-1 error" id="status-error"></label>
