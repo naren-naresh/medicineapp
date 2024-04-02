@@ -120,7 +120,7 @@
                             <select class="form-control mt-2" name="brand" id="brand">
                                 <option value="option_select" disabled selected>Select product brand</option>
                                 @foreach ($brands as $brand)
-                                    <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                    <option value="{{ $brand->id }}" @if ($product->brand_id === $brand->id) selected @endif>{{ $brand->name }}</option>
                                 @endforeach
                             </select>
                         </div>

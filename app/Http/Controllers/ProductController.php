@@ -43,9 +43,9 @@ class ProductController extends Controller
                 ->addColumn('stocks', function ($product) {
                     return $product->stock;
                 })
-                ->addColumn('action', function ($category) {
-                    $btn = '<a href="' . route('product.edit',$category->id) . '" class="edit btn  btn-sm editProduct">Edit</a>
-                            <a href="'. route('product.destroy',$category->id) . '" class="btn btn-sm deleteProduct">Delete</a>';
+                ->addColumn('action', function ($product) {
+                    $btn = '<a href="' . route('product.edit',$product->id) . '" class="edit btn  btn-sm editProduct">Edit</a>
+                            <a href="'. route('product.destroy',$product->id) . '" class="btn btn-sm deleteProduct">Delete</a>';
                     return $btn;
                 })
                 ->rawColumns(['cover_image', 'name', 'category_id', 'status', 'stocks', 'action'])
@@ -270,8 +270,7 @@ class ProductController extends Controller
               ProductVariantOptionValue::where('product_id',$request->product_id)->delete();
               // separate thumbnail images deletion using thumbImgId
               ProductThumbnailImage::where('id',$request->thumbImgId)->delete();
-            //   dd($old_thumbnail_image);
-              unlink(public_path('/assets/images/products/'.$request->product_id.'/'.$old_thumbnail_image));
+              unlink(public_path('/assets/images/products/'.$request->product_id.'/'.$old_thumbnail_image));// unlink the image from storage
 
           }
     }
@@ -287,7 +286,7 @@ class ProductController extends Controller
         }else{
             $imageName = $old_cover_image;
         }
-        $product = Product::find($id);
+        $product = Product::where('id',$id)->first();
         Product::where('id',$id)->update([
             'name' => $request->productName,
             'category_id' => $request->category,
@@ -295,22 +294,22 @@ class ProductController extends Controller
             'cover_image' => $imageName,
             'thumbnail_images' => null,
             'status' => $request->status,
-            'brand_id' => $request->brand,
-            'manufacturer_id' => $request->manufacturer,
-            'manufacturer_date' => $request->manufacturerDate,
-            'expiry_date' => $request->expiryDate,
-            'delivery_type_id' => $request->deliveryType,
-            'tax_include' => $request->taxInclude,
-            'tax' => $request->texValue,
-            'have_variation' => $request->is_variation,
-            'variation_name' => json_encode($request->variationName),
-            'retail_price' => $request->retailPrice,
-            'selling_price' => $request->sellingPrice,
-            'stock' => $request->stocks,
-            'threshold_qty' => $request->thresholdQty,
-            'sku' => $request->sku,
-            'return_policy_applicable' => $request->returnPolicy,
-            'return_policy_id' => $request->policyType,
+            'brand_id' => $request->brand ?? $product->brand_id,
+            'manufacturer_id' => $request->manufacturer ?? $product->manufacturer_id,
+            'manufacturer_date' => $request->manufacturerDate ?? $product->manufacturer_date,
+            'expiry_date' => $request->expiryDate ?? $product->expiry_date,
+            'delivery_type_id' => $request->deliveryType ?? $product->delivery_type_id,
+            'tax_include' => $request->taxInclude ?? $product->tax_include,
+            'tax' => $request->texValue ?? $product->tax,
+            'have_variation' => $request->is_variation ?? $product->have_variation,
+            'variation_name' => json_encode($request->variationName) ?? json_encode($product->variation_name),
+            'retail_price' => $request->retailPrice ?? $product->retail_price,
+            'selling_price' => $request->sellingPrice ?? $product->selling_price,
+            'stock' => $request->stocks ?? $product->stock,
+            'threshold_qty' => $request->thresholdQty ?? $product->threshold_qty,
+            'sku' => $request->sku ?? $product->sku,
+            'return_policy_applicable' => $request->returnPolicy ?? $product->return_policy_applicable,
+            'return_policy_id' => $request->policyType ?? $product->return_policy_id,
         ]);
          // thumbnail images
          $thumbnailImgData = $request->image ?? [];
@@ -327,9 +326,8 @@ class ProductController extends Controller
             Product::where('id',$id)->update(array('thumbnail_images' => $thumbImgID));
         }
         // update variants and it's values
-        // if ($request->is_variation) {
+        if ($request->is_variation) {
            if ($request->has('product_variants') && !$request->has('old_product_variants')) {
-            // dd($request->product_variants);
             $product_variantOptions = $request->variationName ?? [];
             $product_option_ids = [];
             foreach ($product_variantOptions as $key => $option) {
@@ -369,13 +367,11 @@ class ProductController extends Controller
                         'product_variant_option_id' => $option_id,
                         'product_variant_option_value_id' => $option_value_id,
                     ]);
-                    // dd($check);
                 }
             }
            }
-        // }
+        }
         if ($request->has('old_product_variants') && !$request->has('product_variants')) {
-            // dd('old');
             $existing_product_variants = $request->old_product_variants ?? [];
             foreach ($existing_product_variants as $existVariant) {
                 $checkVariant = ProductVariant::where('product_id',$id)->where('id',$existVariant['variant_id'])->first();
@@ -396,6 +392,7 @@ class ProductController extends Controller
     /** delete category */
     public function destroy($id)
     {
+        dd('deletion');
         Product::find($id)->delete();
         return redirect()->route('product.index')->with('message','Product deleted successfully.');
     }
