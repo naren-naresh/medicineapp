@@ -117,7 +117,7 @@
     <!--datatable-->
     <script src="{{ asset('assets/plugins/datatable/datatable.js')}}"></script>
     <!--sweet alert-->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{asset('assets/plugins/sweetalter/sweetalter.js')}}"></script>
     @stack('scripts')
     <script>
         // password hide and show eye toggle

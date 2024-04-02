@@ -234,8 +234,8 @@ class ProductController extends Controller
         $name['parentCatId'] = Category::where('id',$name['product']->category_id)->value('parent_category_id');
         $name['childCatId'] = Category::where('id',$name['product']->category_id)->value('id');
         $name['variants'] = ProductVariantOption::where('product_id',$id)->get();
-        $name['options'] = ProductVariantOptionValue :: where('product_id',$id)->get();
-        $name['product_variants'] = ProductVariant:: where('product_id',$id)->get();
+        $name['options'] = ProductVariantOptionValue ::where('product_id',$id)->get();
+        $name['product_variants'] = ProductVariant::where('product_id',$id)->get();
         $allVariants = []; // empty array
         foreach ($name['variants'] as $varValue) {
            $varVariant = $varValue->variant;
@@ -287,6 +287,7 @@ class ProductController extends Controller
         }else{
             $imageName = $old_cover_image;
         }
+        $product = Product::find($id);
         Product::where('id',$id)->update([
             'name' => $request->productName,
             'category_id' => $request->category,
@@ -326,12 +327,13 @@ class ProductController extends Controller
             Product::where('id',$id)->update(array('thumbnail_images' => $thumbImgID));
         }
         // update variants and it's values
-        if ($request->is_variation) {
+        // if ($request->is_variation) {
            if ($request->has('product_variants') && !$request->has('old_product_variants')) {
+            // dd($request->product_variants);
             $product_variantOptions = $request->variationName ?? [];
             $product_option_ids = [];
             foreach ($product_variantOptions as $key => $option) {
-                $product_option_ids[] =  ProductVariantOption::create(['product_id' =>$id , 'variant' => $option])->id;
+                $product_option_ids[] =  ProductVariantOption::create(['product_id' =>$product->id , 'variant' => $option])->id;
             }
             $product_variant_option_values = $request->options ?? [];
             $product_variant_option_value_ids = [];
@@ -339,7 +341,7 @@ class ProductController extends Controller
                 $product_variant_option_value_ids[$key] = [];
                 foreach ($values as $value) {
                     $product_option_value_ids[$key][] = ProductVariantOptionValue::create([
-                        'product_id' => $id,
+                        'product_id' =>$product->id,
                         'variant_option_id' => $product_option_ids[$key],
                         'variant_option_values' => $value
                     ])->id;
@@ -348,7 +350,7 @@ class ProductController extends Controller
             $product_variants = $request->product_variants ?? [];
             foreach ($product_variants as $variants) {
                 $product_variants_id = ProductVariant::create([
-                    'product_id' => $id,
+                    'product_id' => $product->id,
                     'retail_price' => $variants['retail_price'],
                     'selling_price' => $variants['selling_price'],
                     'stock' => $variants['stock'],
@@ -362,16 +364,18 @@ class ProductController extends Controller
                     $option_value_index = array_search($variantValue, $product_variant_option_values[$key]);
                     $option_value_id = $product_option_value_ids[$key][$option_value_index];
                     ProductVariantGroup::create([
-                        'product_id' => $id,
+                        'product_id' => $product->id,
                         'product_variant_id' => $product_variants_id,
                         'product_variant_option_id' => $option_id,
                         'product_variant_option_value_id' => $option_value_id,
                     ]);
+                    // dd($check);
                 }
             }
            }
-        }
+        // }
         if ($request->has('old_product_variants') && !$request->has('product_variants')) {
+            // dd('old');
             $existing_product_variants = $request->old_product_variants ?? [];
             foreach ($existing_product_variants as $existVariant) {
                 $checkVariant = ProductVariant::where('product_id',$id)->where('id',$existVariant['variant_id'])->first();
