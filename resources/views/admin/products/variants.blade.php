@@ -46,7 +46,7 @@
                     <input type="text" class="form-control" name="product_variants[{{ $count }}][threshold_qty]"  onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="{{ $threshold_qty  }}" maxlength="4" placeholder="0">
                 </td>
                 <td>
-                    <a data-count="{{ $count }}" class="remove-variant">Remove</a>
+                    <a data-count="{{ $count }}" class="remove-variant"><span class="badge bg-danger"> Remove </span></a>
                 </td>
             <?php $count++;  ?>
         @endforeach

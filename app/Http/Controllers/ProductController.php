@@ -269,9 +269,14 @@ class ProductController extends Controller
               ProductVariantOption::where('product_id',$request->product_id)->delete();
               ProductVariantOptionValue::where('product_id',$request->product_id)->delete();
               // separate thumbnail images deletion using thumbImgId
-              ProductThumbnailImage::where('id',$request->thumbImgId)->delete();
+              if ($request->thumbImgId) {
+                ProductThumbnailImage::where('id',$request->thumbImgId)->delete();
               unlink(public_path('/assets/images/products/'.$request->product_id.'/'.$old_thumbnail_image));// unlink the image from storage
-
+              }
+              // single variant deletion using variant_id
+              if ($request->variant_id) {
+                ProductVariant::where('id',$request->variant_id)->delete();
+              }
           }
     }
 

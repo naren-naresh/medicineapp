@@ -609,3 +609,8 @@
             }
         }
      });
+     $('.remove-variant').each(function () {
+        $(this).click(function () {
+            $(this).closest('tr').remove();
+        });
+     });
