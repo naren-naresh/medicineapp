@@ -22,6 +22,12 @@
     border: 1px dashed;
     cursor: pointer;
   }
+  img[src=""] {
+    display: none;/* To hide no image icon in image tag. */
+  }
+  img{
+    object-fit: unset !important;
+  }
  /*---------------------Multi Step Form Styles-------------------*/
 
  .step-circle {

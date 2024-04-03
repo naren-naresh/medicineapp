@@ -92,7 +92,7 @@ class ProductController extends Controller
             'expiry_date' => $request->expiryDate,
             'delivery_type_id' => $request->deliveryType,
             'tax_include' => $request->taxInclude,
-            'tax' => $request->texValue,
+            'tax' => $request->taxValue,
             'have_variation' => $request->is_variation,
             'variation_name' => json_encode($request->variationName),
             'retail_price' => $request->retailPrice,
@@ -101,7 +101,7 @@ class ProductController extends Controller
             'threshold_qty' => $request->thresholdQty,
             'sku' => $request->sku,
             'return_policy_applicable' => $request->returnPolicy,
-            'return_policy_id' => $request->policyType,
+            'return_policy_id' => $request->policyType ,
             'created_by' => Auth::user()->id
         ]);
 
@@ -300,7 +300,7 @@ class ProductController extends Controller
             'expiry_date' => $request->expiryDate ?? $product->expiry_date,
             'delivery_type_id' => $request->deliveryType ?? $product->delivery_type_id,
             'tax_include' => $request->taxInclude ?? $product->tax_include,
-            'tax' => $request->texValue ?? $product->tax,
+            'tax' => $request->taxValue,
             'have_variation' => $request->is_variation ?? $product->have_variation,
             'variation_name' => json_encode($request->variationName) ?? json_encode($product->variation_name),
             'retail_price' => $request->retailPrice ?? $product->retail_price,
@@ -309,7 +309,7 @@ class ProductController extends Controller
             'threshold_qty' => $request->thresholdQty ?? $product->threshold_qty,
             'sku' => $request->sku ?? $product->sku,
             'return_policy_applicable' => $request->returnPolicy ?? $product->return_policy_applicable,
-            'return_policy_id' => $request->policyType ?? $product->return_policy_id,
+            'return_policy_id' => $request->policyType,
         ]);
          // thumbnail images
          $thumbnailImgData = $request->image ?? [];
@@ -375,14 +375,16 @@ class ProductController extends Controller
             $existing_product_variants = $request->old_product_variants ?? [];
             foreach ($existing_product_variants as $existVariant) {
                 $checkVariant = ProductVariant::where('product_id',$id)->where('id',$existVariant['variant_id'])->first();
-                $checkVariant->update([
-                    'retail_price' => $existVariant['retail_price'],
-                    'selling_price' => $existVariant['selling_price'],
-                    'stock' => $existVariant['stock'],
-                    'threshold_qty' => $existVariant['threshold_qty'],
-                    'sku' => $existVariant['sku'],
-                    'status' => isset($existVariant['status']) ? $existVariant['status'] : 0,
-                ]);
+                if ($checkVariant) {
+                    $checkVariant->update([
+                        'retail_price' => $existVariant['retail_price'],
+                        'selling_price' => $existVariant['selling_price'],
+                        'stock' => $existVariant['stock'],
+                        'threshold_qty' => $existVariant['threshold_qty'],
+                        'sku' => $existVariant['sku'],
+                        'status' => isset($existVariant['status']) ? $existVariant['status'] : 0,
+                    ]);
+                }
             }
 
         }

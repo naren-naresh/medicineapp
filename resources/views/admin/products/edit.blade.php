@@ -82,7 +82,7 @@
                                 <label for="coverImage"
                                     class="mb-3 coverImage d-flex justify-content-center align-items-center ms-3"
                                     tabIndex="0">
-                                    <img src="" class="w-100" id="coverImgPreview"></label>
+                                    <img src="" class="w-100 m-0 p-0" id="coverImgPreview"></label>
                                 <input type="file" name="coverImage" id="coverImage" class="d-none" accept="image/*">
                                 {{-- <input type="hidden" name="oldCoverImage" value="{{ $product->cover_image }}"> --}}
                             </div>
@@ -180,7 +180,7 @@
                                 <div id="tax" class="col-3">
                                     <label for="texValue" class="mb-1">Tax Amount:</label>
                                     <div class="form-inline d-flex justify-content-between">
-                                        <input type="text" oninput="process(this)" name="texValue" id="texValue"
+                                        <input type="text" oninput="process(this)" name="taxValue" id="taxValue"
                                             maxlength="6" class="form-control" style="width: 100px" value="{{ $product->tax}}">
                                         <select name="taxType" id="taxType" class="form-control" style="width: 100px">
                                             <option value="1">Percentage</option>
@@ -337,10 +337,10 @@
                         </div>
                         <div class="col-3" id="policyTypeContent">
                             <label for="policyType">Select your policy</label>
-                            <select class="form-control mt-2" name="policyType " id="policyType">
+                            <select class="form-control mt-2" name="policyType" id="policyType">
                                 <option value="option_select" disabled selected>Select policy Type</option>
                                 @foreach ($returnPolicies as $policy)
-                                    <option value="{{ $policy->id }}">{{ $policy->policy_name }}</option>
+                                    <option value="{{ $policy->id }}" @if ($product->return_policy_id === $policy->id) selected @endif>{{ $policy->policy_name }}</option>
                                 @endforeach
                             </select>
                         </div>
