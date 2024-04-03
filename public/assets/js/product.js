@@ -22,8 +22,8 @@
 
         // getting values from the quill editor
         quill.on('text-change', function() {
-            const quillText = quill.getText(); // Extract text from Quill editor
-            $("#descriptionContent").val(quillText); // Set text in textarea
+            // const quillText = quill.getText(); // Extract text from Quill editor
+            $("#descriptionContent").val(quill.root.innerHTML); // Set text in textarea
         });
 
         /* csrf token*/

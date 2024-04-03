@@ -110,6 +110,9 @@
      border-left: 2px solid white;
  }
 
+ .ql-container {
+    height: unset !important;
+ }
  /* --------------------- End Header Styles --------------------- */
  #sidebar-wrapper {
      background-color: #385399;

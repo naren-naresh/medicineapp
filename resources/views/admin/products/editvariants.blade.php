@@ -31,7 +31,7 @@
                     <input type="text" class="form-control" name="old_product_variants[{{ $count }}][stock]"  onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="{{ $productVariant->stock }}" maxlength="4" placeholder="0">
                 </td>
                 <td>
-                    <input type="text" class="form-control" name="old_product_variants[{{ $count }}][sku]" value="{{ $productVariant->sku ? $productVariant->sku.$count : null }}">
+                    <input type="text" class="form-control" name="old_product_variants[{{ $count }}][sku]" value="{{ $productVariant->sku ? $productVariant->sku: null }}">
                 </td>
                 <td>
                     <label class="switch">

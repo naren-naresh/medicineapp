@@ -34,32 +34,18 @@ $(document).ready(function () {
         return thumbnailImg_html;
     }
 });
-const toolbarOptions = [
-    ["bold", "italic", "underline", "strike"], // toggled buttons
-    ["blockquote", "code-block"],
-    ["link", "image", "video", "formula"],
-    [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
-    [{ direction: "rtl" }], // text direction
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-    [{ font: [] }],
-    [{ align: [] }],
-    ["clean"], // remove formatting button
-];
 
 // quill editor configuration
-const quill = new Quill("#description", {
+var quill = new Quill('#description-editor-container', {
     modules: {
-        toolbar: toolbarOptions,
+        formula: true,
+        syntax: true,
+        toolbar: '#toolbar-container'
     },
-    theme: "snow",
+    placeholder: 'Product description',
+    theme: 'snow'
 });
-
-// getting values from the quill editor
-quill.on('text-change', function() {
-    const quillText = quill.getText(); // Extract text from Quill editor
-    $("#descriptionContent").val(quillText); // Set text in textarea
-});
+window.quill = quill;
 
 /* csrf token*/
 $(function () {
@@ -263,6 +249,7 @@ $("#sellingPrice").keyup(function (e) {
 
 // first step validation
 $("#firstNext").click(function () {
+    $("#descriptionContent").val(quill.root.innerHTML);
     if (stepOne()) {
     $("#step_1").css("border-bottom", "unset");
     $("#step_2").css("border-bottom", "2px solid #385399");

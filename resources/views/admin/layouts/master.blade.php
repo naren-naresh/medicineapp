@@ -21,7 +21,9 @@
     <!-- Data Table css-->
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatable/datatable.css')}}">
     <!-- Quil editor-->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/quill/quill.snow.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/quill/monokai-sublime.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/quill/katex.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/quill/quill.snow.css') }}">
     <!-- Custom Style & Inbuilt Styles -->
     @stack('styles')
 </head>
@@ -116,6 +118,10 @@
     <script src="{{ asset('assets/plugins/jquery/steps.min.js')}}"></script>
     <!--datatable-->
     <script src="{{ asset('assets/plugins/datatable/datatable.js')}}"></script>
+    <!-- quill editor -->
+    <script src="{{ asset('assets/plugins/quill/katex.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/quill/highlight.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/quill/quill.min.js') }}"></script>
     <!--sweet alert-->
     <script src="{{asset('assets/plugins/sweetalter/sweetalter.js')}}"></script>
     @stack('scripts')
