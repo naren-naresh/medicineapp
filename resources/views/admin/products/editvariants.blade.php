@@ -15,35 +15,33 @@
     </thead>
     <tbody>
         <?php $count = 1; ?>
-        @foreach ($existOptions as $option)
+        @foreach ($product_variants as $productVariant )
             <tr>
-                @foreach ($option as $key => $value)
-                    <td>
-                        <input type="hidden" name="old_product_variants[{{ $count }}][value][]" value="{{ $value }}">
-                        {{ $value }}
-                    </td>
+                @foreach ($variants as $value)
+                    <td>{{$productVariant->getOptionValue($productVariant['id'],$value['id'])}}</td>
                 @endforeach
                 <td>
-                    <input type="text" class="form-control retail-price currency" name="old_product_variants[{{ $count }}][retail_price]" value="{{ $product->retail_price }}" maxlength="10"  placeholder="0.00">
+                    <input type="text" class="form-control retail-price currency" name="old_product_variants[{{ $count }}][retail_price]" value="{{ $productVariant->retail_price }}" maxlength="10"  placeholder="0.00">
                     <span class="error generated-retail-price-error d-none">Retail price is required</span>
                 </td>
                 <td>
-                    <input type="text" class="form-control selling-price currency" name="old_product_variants[{{ $count }}][selling_price]" value="{{ $product->selling_price }}" maxlength="10" placeholder="0.00">
+                    <input type="text" class="form-control selling-price currency" name="old_product_variants[{{ $count }}][selling_price]" value="{{ $productVariant->selling_price }}" maxlength="10" placeholder="0.00">
                 </td>
                 <td>
-                    <input type="text" class="form-control" name="old_product_variants[{{ $count }}][stock]"  onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="{{ $product->stock }}" maxlength="4" placeholder="0">
+                    <input type="text" class="form-control" name="old_product_variants[{{ $count }}][stock]"  onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="{{ $productVariant->stock }}" maxlength="4" placeholder="0">
                 </td>
                 <td>
-                    <input type="text" class="form-control" name="old_product_variants[{{ $count }}][sku]" value="{{ $product->sku ? $product->sku.$count : null }}">
+                    <input type="text" class="form-control" name="old_product_variants[{{ $count }}][sku]" value="{{ $productVariant->sku ? $productVariant->sku.$count : null }}">
                 </td>
                 <td>
                     <label class="switch">
-                        <input type="checkbox" name="old_product_variants[{{ $count }}][status]" checked value="1">
+                        <input type="checkbox" name="old_product_variants[{{ $count }}][status]" @if($productVariant['status']) checked @endif value="1">
                         <span class="slider round"></span>
                     </label>
+                    <input type="hidden" name="old_product_variants[{{ $count }}][variant_id]" value="{{ $productVariant['id'] }}" class="variant-id">
                 </td>
                 <td>
-                    <input type="text" class="form-control" name="old_product_variants[{{ $count }}][threshold_qty]"  onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="{{ $product->threshold_qty  }}" maxlength="4" placeholder="0">
+                    <input type="text" class="form-control" name="old_product_variants[{{ $count }}][threshold_qty]"  onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="{{ $productVariant->threshold_qty  }}" maxlength="4" placeholder="0">
                 </td>
                 <td>
                     <a data-count="{{ $count }}" class="remove-variant">Remove</a>

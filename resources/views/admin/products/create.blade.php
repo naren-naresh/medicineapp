@@ -171,7 +171,7 @@
                                 <div id="tax" class="col-3">
                                     <label for="texValue" class="mb-1">Tax Amount:</label>
                                     <div class="form-inline d-flex justify-content-between">
-                                        <input type="text" oninput="process(this)" name="texValue" id="texValue" maxlength="6" class="form-control" style="width: 100px">
+                                        <input type="text" oninput="process(this)" name="taxValue" id="taxValue" maxlength="6" class="form-control" style="width: 100px">
                                         <select name="taxType" id="taxType" class="form-control" style="width: 100px">
                                             <option value="1">Percentage</option>
                                             <option value="2" selected >Fixed</option>
@@ -293,7 +293,7 @@
                         </div>
                         <div class="col-3" id="policyTypeContent">
                             <label for="policyType">Select your policy</label>
-                            <select class="form-control mt-2" name="policyType " id="policyType">
+                            <select class="form-control mt-2" name="policyType" id="policyType">
                                 <option value="option_select" disabled selected>Select policy Type</option>
                                 @foreach ($returnPolicies as $policy)
                                     <option value="{{ $policy->id }}">{{ $policy->policy_name }}</option>

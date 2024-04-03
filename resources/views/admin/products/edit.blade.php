@@ -82,7 +82,7 @@
                                 <label for="coverImage"
                                     class="mb-3 coverImage d-flex justify-content-center align-items-center ms-3"
                                     tabIndex="0">
-                                    <img src="" class="w-100" id="coverImgPreview"></label>
+                                    <img src="" class="w-100 m-0 p-0" id="coverImgPreview"></label>
                                 <input type="file" name="coverImage" id="coverImage" class="d-none" accept="image/*">
                                 {{-- <input type="hidden" name="oldCoverImage" value="{{ $product->cover_image }}"> --}}
                             </div>
@@ -97,10 +97,9 @@
                             <fieldset>
                                 <legend class="py-1" style=" font-size:15px;font-weight:unset !important;">Status
                                 </legend>
-                                <input type="radio" name="status" id="active" value="1" class="status"
-                                    checked>
+                                <input type="radio" name="status" id="active" value="1" class="status"  {{ $product->status == '1' ? 'checked' : '' }}>
                                 <label for="active" class="me-2 ms-1">Active</label>
-                                <input type="radio" name="status" id="inactive" value="0" class="status">
+                                <input type="radio" name="status" id="inactive" value="0" class="status" {{ $product->status == '0' ? 'checked' : '' }}>
                                 <label for="inactive" class="ms-1">InActive</label>
                             </fieldset>
                             <label for="active" class="ms-1 error" id="status-error"></label>
@@ -121,7 +120,7 @@
                             <select class="form-control mt-2" name="brand" id="brand">
                                 <option value="option_select" disabled selected>Select product brand</option>
                                 @foreach ($brands as $brand)
-                                    <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                    <option value="{{ $brand->id }}" @if ($product->brand_id === $brand->id) selected @endif>{{ $brand->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -181,7 +180,7 @@
                                 <div id="tax" class="col-3">
                                     <label for="texValue" class="mb-1">Tax Amount:</label>
                                     <div class="form-inline d-flex justify-content-between">
-                                        <input type="text" oninput="process(this)" name="texValue" id="texValue"
+                                        <input type="text" oninput="process(this)" name="taxValue" id="taxValue"
                                             maxlength="6" class="form-control" style="width: 100px" value="{{ $product->tax}}">
                                         <select name="taxType" id="taxType" class="form-control" style="width: 100px">
                                             <option value="1">Percentage</option>
@@ -338,10 +337,10 @@
                         </div>
                         <div class="col-3" id="policyTypeContent">
                             <label for="policyType">Select your policy</label>
-                            <select class="form-control mt-2" name="policyType " id="policyType">
+                            <select class="form-control mt-2" name="policyType" id="policyType">
                                 <option value="option_select" disabled selected>Select policy Type</option>
                                 @foreach ($returnPolicies as $policy)
-                                    <option value="{{ $policy->id }}">{{ $policy->policy_name }}</option>
+                                    <option value="{{ $policy->id }}" @if ($product->return_policy_id === $policy->id) selected @endif>{{ $policy->policy_name }}</option>
                                 @endforeach
                             </select>
                         </div>

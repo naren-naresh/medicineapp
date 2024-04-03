@@ -21,9 +21,9 @@
         });
 
         // getting values from the quill editor
-        $("#description").on("input", function () {
-            var quillContent = quill.getText();
-            $("#descriptionContent").text(quillContent);
+        quill.on('text-change', function() {
+            const quillText = quill.getText(); // Extract text from Quill editor
+            $("#descriptionContent").val(quillText); // Set text in textarea
         });
 
         /* csrf token*/
@@ -522,7 +522,7 @@
             $(this).parent().closest('#varRow').remove();
         });
         // selling price validation
-        $("#sellingPrice").keyup(function () {
+        $("#sellingPrice").on("input paste", function () {
             let retailAmount = parseFloat($("#retailPrice").val());
             let sellingAmount = parseFloat($("#sellingPrice").val());
             if (retailAmount < sellingAmount) {

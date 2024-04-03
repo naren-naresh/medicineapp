@@ -43,9 +43,9 @@ class ProductController extends Controller
                 ->addColumn('stocks', function ($product) {
                     return $product->stock;
                 })
-                ->addColumn('action', function ($category) {
-                    $btn = '<a href="' . route('product.edit',$category->id) . '" class="edit btn  btn-sm editProduct">Edit</a>
-                            <a href="'. route('product.destroy',$category->id) . '" class="btn btn-sm deleteProduct">Delete</a>';
+                ->addColumn('action', function ($product) {
+                    $btn = '<a href="' . route('product.edit',$product->id) . '" class="edit btn  btn-sm editProduct">Edit</a>
+                            <a href="'. route('product.destroy',$product->id) . '" class="btn btn-sm deleteProduct">Delete</a>';
                     return $btn;
                 })
                 ->rawColumns(['cover_image', 'name', 'category_id', 'status', 'stocks', 'action'])
@@ -92,7 +92,7 @@ class ProductController extends Controller
             'expiry_date' => $request->expiryDate,
             'delivery_type_id' => $request->deliveryType,
             'tax_include' => $request->taxInclude,
-            'tax' => $request->texValue,
+            'tax' => $request->taxValue,
             'have_variation' => $request->is_variation,
             'variation_name' => json_encode($request->variationName),
             'retail_price' => $request->retailPrice,
@@ -101,7 +101,7 @@ class ProductController extends Controller
             'threshold_qty' => $request->thresholdQty,
             'sku' => $request->sku,
             'return_policy_applicable' => $request->returnPolicy,
-            'return_policy_id' => $request->policyType,
+            'return_policy_id' => $request->policyType ,
             'created_by' => Auth::user()->id
         ]);
 
@@ -234,8 +234,8 @@ class ProductController extends Controller
         $name['parentCatId'] = Category::where('id',$name['product']->category_id)->value('parent_category_id');
         $name['childCatId'] = Category::where('id',$name['product']->category_id)->value('id');
         $name['variants'] = ProductVariantOption::where('product_id',$id)->get();
-        $name['options'] = ProductVariantOptionValue :: where('product_id',$id)->get();
-        // existing combinations
+        $name['options'] = ProductVariantOptionValue ::where('product_id',$id)->get();
+        $name['product_variants'] = ProductVariant::where('product_id',$id)->get();
         $allVariants = []; // empty array
         foreach ($name['variants'] as $varValue) {
            $varVariant = $varValue->variant;
@@ -262,6 +262,7 @@ class ProductController extends Controller
 
     // delete the existing variant
     public function destroyVariant(Request $request){
+        $old_thumbnail_image = ProductThumbnailImage::where('id',$request->thumbImgId)->value('image');
           if ($request->ajax()) {
               ProductVariant::where('product_id',$request->product_id)->delete();
               ProductVariantGroup::where('product_id',$request->product_id)->delete();
@@ -269,13 +270,13 @@ class ProductController extends Controller
               ProductVariantOptionValue::where('product_id',$request->product_id)->delete();
               // separate thumbnail images deletion using thumbImgId
               ProductThumbnailImage::where('id',$request->thumbImgId)->delete();
-              $old_thumbnail_image = ProductThumbnailImage::where('id','$request->thumbImgId')->value('image');
-              unlink(public_path('/assets/images/products/'.$request->product_id.'/'.$old_thumbnail_image));
+              unlink(public_path('/assets/images/products/'.$request->product_id.'/'.$old_thumbnail_image));// unlink the image from storage
 
           }
     }
 
     public function update(Request $request , $id){
+        // dd($request->all());
         $old_cover_image =  Product::where('id',$id)->value('cover_image');
         if ($request->hasFile('coverImage')) {
              // cover image
@@ -285,7 +286,7 @@ class ProductController extends Controller
         }else{
             $imageName = $old_cover_image;
         }
-        // dd($imageName);
+        $product = Product::where('id',$id)->first();
         Product::where('id',$id)->update([
             'name' => $request->productName,
             'category_id' => $request->category,
@@ -293,21 +294,21 @@ class ProductController extends Controller
             'cover_image' => $imageName,
             'thumbnail_images' => null,
             'status' => $request->status,
-            'brand_id' => $request->brand,
-            'manufacturer_id' => $request->manufacturer,
-            'manufacturer_date' => $request->manufacturerDate,
-            'expiry_date' => $request->expiryDate,
-            'delivery_type_id' => $request->deliveryType,
-            'tax_include' => $request->taxInclude,
-            'tax' => $request->texValue,
-            'have_variation' => $request->is_variation,
-            'variation_name' => json_encode($request->variationName),
-            'retail_price' => $request->retailPrice,
-            'selling_price' => $request->sellingPrice,
-            'stock' => $request->stocks,
-            'threshold_qty' => $request->thresholdQty,
-            'sku' => $request->sku,
-            'return_policy_applicable' => $request->returnPolicy,
+            'brand_id' => $request->brand ?? $product->brand_id,
+            'manufacturer_id' => $request->manufacturer ?? $product->manufacturer_id,
+            'manufacturer_date' => $request->manufacturerDate ?? $product->manufacturer_date,
+            'expiry_date' => $request->expiryDate ?? $product->expiry_date,
+            'delivery_type_id' => $request->deliveryType ?? $product->delivery_type_id,
+            'tax_include' => $request->taxInclude ?? $product->tax_include,
+            'tax' => $request->taxValue,
+            'have_variation' => $request->is_variation ?? $product->have_variation,
+            'variation_name' => json_encode($request->variationName) ?? json_encode($product->variation_name),
+            'retail_price' => $request->retailPrice ?? $product->retail_price,
+            'selling_price' => $request->sellingPrice ?? $product->selling_price,
+            'stock' => $request->stocks ?? $product->stock,
+            'threshold_qty' => $request->thresholdQty ?? $product->threshold_qty,
+            'sku' => $request->sku ?? $product->sku,
+            'return_policy_applicable' => $request->returnPolicy ?? $product->return_policy_applicable,
             'return_policy_id' => $request->policyType,
         ]);
          // thumbnail images
@@ -321,13 +322,79 @@ class ProductController extends Controller
                  'image' => $thumbImageName,
              ])->id;
          }
-        // dd($request->all());
+         if ($thumbImgID) {
+            Product::where('id',$id)->update(array('thumbnail_images' => $thumbImgID));
+        }
+        // update variants and it's values
+        if ($request->is_variation) {
+           if ($request->has('product_variants') && !$request->has('old_product_variants')) {
+            $product_variantOptions = $request->variationName ?? [];
+            $product_option_ids = [];
+            foreach ($product_variantOptions as $key => $option) {
+                $product_option_ids[] =  ProductVariantOption::create(['product_id' =>$product->id , 'variant' => $option])->id;
+            }
+            $product_variant_option_values = $request->options ?? [];
+            $product_variant_option_value_ids = [];
+            foreach ($product_variant_option_values as $key => $values) {
+                $product_variant_option_value_ids[$key] = [];
+                foreach ($values as $value) {
+                    $product_option_value_ids[$key][] = ProductVariantOptionValue::create([
+                        'product_id' =>$product->id,
+                        'variant_option_id' => $product_option_ids[$key],
+                        'variant_option_values' => $value
+                    ])->id;
+                }
+            }
+            $product_variants = $request->product_variants ?? [];
+            foreach ($product_variants as $variants) {
+                $product_variants_id = ProductVariant::create([
+                    'product_id' => $product->id,
+                    'retail_price' => $variants['retail_price'],
+                    'selling_price' => $variants['selling_price'],
+                    'stock' => $variants['stock'],
+                    'threshold_qty' => $variants['threshold_qty'],
+                    'sku' => $variants['sku'],
+                    'status' => $variants['status'] ?? null
+                ])->id;
+                $variant_values = $variants['value'] ?? [];
+                foreach ($variant_values as $key => $variantValue) {
+                    $option_id = $product_option_ids[$key];
+                    $option_value_index = array_search($variantValue, $product_variant_option_values[$key]);
+                    $option_value_id = $product_option_value_ids[$key][$option_value_index];
+                    ProductVariantGroup::create([
+                        'product_id' => $product->id,
+                        'product_variant_id' => $product_variants_id,
+                        'product_variant_option_id' => $option_id,
+                        'product_variant_option_value_id' => $option_value_id,
+                    ]);
+                }
+            }
+           }
+        }
+        if ($request->has('old_product_variants') && !$request->has('product_variants')) {
+            $existing_product_variants = $request->old_product_variants ?? [];
+            foreach ($existing_product_variants as $existVariant) {
+                $checkVariant = ProductVariant::where('product_id',$id)->where('id',$existVariant['variant_id'])->first();
+                if ($checkVariant) {
+                    $checkVariant->update([
+                        'retail_price' => $existVariant['retail_price'],
+                        'selling_price' => $existVariant['selling_price'],
+                        'stock' => $existVariant['stock'],
+                        'threshold_qty' => $existVariant['threshold_qty'],
+                        'sku' => $existVariant['sku'],
+                        'status' => isset($existVariant['status']) ? $existVariant['status'] : 0,
+                    ]);
+                }
+            }
+
+        }
         return redirect()->route('product.index')->with('message','Product updated successfully.');
     }
 
     /** delete category */
     public function destroy($id)
     {
+        dd('deletion');
         Product::find($id)->delete();
         return redirect()->route('product.index')->with('message','Product deleted successfully.');
     }
