@@ -66,9 +66,56 @@
                     </div>
                     <hr style="color:#b3b3b3;">
                     <div class="row mt-2 w-100 ps-3">
-                        <label for="descriptionContent" class="mb-2 p-0 py-1 required">Product Description</label>
-                        <div name="description" id="description" style="height: 200px ">{{ $product->description }}</div>
-                        <textarea name="descriptionContent" id="descriptionContent" class="d-none">{{ $product->description }}</textarea>
+                        <label for="descriptionContent">Product description  <span class="text-danger">*</span></label>
+                        <textarea style="display: none" name="descriptionContent" id="descriptionContent">{!! $product->description !!}</textarea>
+                        <div id="standalone-container">
+                            <div id="toolbar-container">
+                                <span class="ql-formats">
+                                    <select class="ql-font"></select>
+                                    <select class="ql-size"></select>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-bold"></button>
+                                    <button class="ql-italic"></button>
+                                    <button class="ql-underline"></button>
+                                    <button class="ql-strike"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <select class="ql-color"></select>
+                                    <select class="ql-background"></select>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-script" value="sub"></button>
+                                    <button class="ql-script" value="super"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-header" value="1"></button>
+                                    <button class="ql-header" value="2"></button>
+                                    <button class="ql-blockquote"></button>
+                                    <button class="ql-code-block"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-list" value="ordered"></button>
+                                    <button class="ql-list" value="bullet"></button>
+                                    <button class="ql-indent" value="-1"></button>
+                                    <button class="ql-indent" value="+1"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-direction" value="rtl"></button>
+                                    <select class="ql-align"></select>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-link"></button>
+                                    <button class="ql-image"></button>
+                                    <button class="ql-video"></button>
+                                    <button class="ql-formula"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-clean"></button>
+                                </span>
+                            </div>
+                            <div class="quill-editor" id="description-editor-container">{!! $product->description !!}</div>
+                        </div>
                         <span id="descriptionContent-error" class="error p-0">Product description is required.</span>
                         @if ($errors->has('descriptionContent'))
                             <span class="text-danger">{{ $errors->first('descriptionContent') }}</span>
@@ -365,8 +412,6 @@
             <link rel="stylesheet" href="{{ asset('assets/css/product.css') }}">
         @endPushOnce
         @pushOnce('scripts')
-            <!-- quill editor -->
-            <script src="{{ asset('assets/plugins/quill/quill.js') }}"></script>
             <!-- data attributes for global routes -->
             <script>
                 var productIndexRoute = "{{ route('product.add') }}";
