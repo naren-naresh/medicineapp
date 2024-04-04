@@ -331,7 +331,6 @@ class ProductController extends Controller
             Product::where('id',$id)->update(array('thumbnail_images' => $thumbImgID));
         }
         // update variants and it's values
-        if ($request->is_variation) {
            if ($request->has('product_variants') && !$request->has('old_product_variants')) {
             $product_variantOptions = $request->variationName ?? [];
             $product_option_ids = [];
@@ -374,8 +373,10 @@ class ProductController extends Controller
                     ]);
                 }
             }
+            if ($product_variants_id) {
+                Product::where('id',$product->id)->update(['variation_name' => json_encode($request->variationName)]);
+            }
            }
-        }
         if ($request->has('old_product_variants') && !$request->has('product_variants')) {
             $existing_product_variants = $request->old_product_variants ?? [];
             foreach ($existing_product_variants as $existVariant) {
