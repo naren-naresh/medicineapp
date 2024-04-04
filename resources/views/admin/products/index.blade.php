@@ -20,7 +20,7 @@
         <div class="card-header d-flex justify-content-between">
             <h5 class="card-title">All Products</h5>
             <div class="card-tools">
-                <a href="{{ route('product.add')}}" class="btn">Add</a>
+                <a href="{{ route('product.add') }}" class="btn">Add</a>
             </div>
         </div>
         <div class="card-body">
@@ -43,48 +43,71 @@
         </div>
     </div>
     @pushOnce('scripts')
-     <script>
-        /* datatables*/
-        var table = $('.data-table').DataTable({
-        processing: true,
-        serverSide: true,
-        language: {
-                lengthMenu: 'Show _MENU_ entries',
-            },
-        ajax: "{{ route('product.index') }}",
-        columns: [{
-        data: 'DT_RowIndex',
-        name: 'DT_RowIndex'
-        },
-        {
-            data: 'cover_image',
-            name: 'cover_image',
-        },
-        {
-        data: 'name',
-        name: 'name',
-        },
-        {
-        data: 'category_id',
-        name: 'category_id',
-        },
-        {
-        data: 'stock',
-        name: 'stock',
-        },
-        {
-        data: 'status',
-        name: 'status',
-        },
-        {
-        data: 'action',
-        name: 'action',
-        orderable: false,
-        searchable: false
-        },
-        ]
-        });
-      </script>
+        <script>
+            /* datatables*/
+            var table = $('.data-table').DataTable({
+                processing: true,
+                serverSide: true,
+                language: {
+                    lengthMenu: 'Show _MENU_ entries',
+                },
+                ajax: "{{ route('product.index') }}",
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex'
+                    },
+                    {
+                        data: 'cover_image',
+                        name: 'cover_image',
+                    },
+                    {
+                        data: 'name',
+                        name: 'name',
+                    },
+                    {
+                        data: 'category_id',
+                        name: 'category_id',
+                    },
+                    {
+                        data: 'stock',
+                        name: 'stock',
+                    },
+                    {
+                        data: 'status',
+                        name: 'status',
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
+                ]
+            });
 
+            $(document).ready(function() {
+                $(document).on('click', '.delete-product', function(event) {
+                    event.preventDefault();
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "You won't be able to revert this!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Yes, delete it!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your file has been deleted.",
+                                icon: "success"
+                            });
+                            $(this).closest("form").submit();
+                        }
+                    });
+                });
+            });
+        </script>
     @endPushOnce
 @endsection

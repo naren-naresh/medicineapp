@@ -609,8 +609,24 @@
             }
         }
      });
-     $('.remove-variant').each(function () {
-        $(this).click(function () {
-            $(this).closest('tr').remove();
-        });
-     });
+     // remove specific product combination
+    $(document).on('click','.remove-variant',function(){
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, remove it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire({
+                title: "Removed!",
+                text: "Your file has been removed.",
+                icon: "success"
+              });
+              $(this).closest('tr').remove();
+            }
+        })
+    });
