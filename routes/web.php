@@ -50,19 +50,21 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         /** Delivery Types resource route */
         Route::resource('delivery_types', DeliveryTypeController::class);
         /** Products resource routes */
-        Route::resource('product',ProductController::class)->except(['show']);
-        Route::post('product_variant','ProductController@productVariant')->name('productVariant');
-        Route::get('product_add','ProductController@add')->name('product.add');
+        Route::resource('product', ProductController::class)->except(['show']);
+        Route::post('product_variant', 'ProductController@productVariant')->name('productVariant');
+        Route::get('product_add', 'ProductController@add')->name('product.add');
         // Route::get('product_destroy','ProductController@destroy')->name('product.destroy');
-        Route::post('product_edit_variant','ProductController@editProductVariant')->name('editProductVariant');
-        Route::post('product_variant_destroy','ProductController@destroyVariant')->name('product.destroyVariant');
+        Route::post('product_edit_variant', 'ProductController@editProductVariant')->name('editProductVariant');
+        Route::post('product_variant_destroy', 'ProductController@destroyVariant')->name('product.destroyVariant');
         /** Brand resource routes */
         Route::resource('brand', BrandController::class);
         /** Manufacturer resource routes */
-        Route::resource('manufacturer',ManufacturerController::class);
+        Route::resource('manufacturer', ManufacturerController::class);
         /** Return policy resource routes */
-        Route::resource('return_policy',ReturnPolicyController::class);
+        Route::resource('return_policy', ReturnPolicyController::class);
         /** Customers routes */
         Route::resource('customer', CustomerController::class);
     });
 });
+/** Frontend routes  */
+Route::get('home', 'HomePageController@index')->name('home');
