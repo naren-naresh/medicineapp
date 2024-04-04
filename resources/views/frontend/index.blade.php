@@ -25,7 +25,9 @@
      <!-- page navbar block start-->
      @include('frontend.layouts.navbar')
      <!-- page navbar block end -->
-
+     <!--page footer Start-->
+      <div class="mt-5">@include('frontend.layouts.footer')</div>
+     <!--page footer end-->
     <!--jquery plugin-->
     <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
     <!--bootstrap js plugin-->

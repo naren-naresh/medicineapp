@@ -8,6 +8,9 @@ a{
     text-decoration: none;
     color: black;
 }
+a:hover{
+    text-decoration: underline white;
+}
 .line1{
     font-size: 20px;
     font-weight:bold;
@@ -20,4 +23,14 @@ a{
 }
 .search-field input:focus{
     outline: none;
+}
+.footer-section{
+    background-color: #385399;
+    color: white;
+}
+.option-list{
+    list-style-type: none;
+}
+.option-list li a{
+    color: white;
 }
