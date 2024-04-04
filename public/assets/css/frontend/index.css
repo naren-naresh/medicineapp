@@ -1,0 +1,23 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+.line1{
+    font-size: 20px;
+    font-weight:bold;
+}
+.page-navbar{
+    background-color: #385399;
+}
+.navbar-nav .nav-link {
+    color: white;
+}
+.search-field input:focus{
+    outline: none;
+}
