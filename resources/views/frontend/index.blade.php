@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- csrf token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Meta title -->
     <title>Home</title>
     <!-- Fav Icon -->
@@ -106,8 +108,34 @@
         </div>
      </section>
      <!-- product block end-->
+     <!-- get order block-->
+     <section class="order-section py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h2><i class="far fa-paper-plane display-6"></i> &nbsp;New Customer?</h2>
+                </div>
+                <div class="col">
+                      <form action="#" method="post">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-8 p-0">
+                                    <input type="email" name="email" id="newCusMail" placeholder="Enter your email address..." class=" form-control">
+                                </div>
+                                <div class="col-4 p-0">
+                                    <button type="submit" id="subscribe" class="form-control">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                      </form>
+                </div>
+            </div>
+        </div>
+     </section>
+     <!-- get order block end-->
      <!--page footer Start-->
-      <div class="mt-5">@include('frontend.layouts.footer')</div>
+      @include('frontend.layouts.footer')
      <!--page footer end-->
     <!--jquery plugin-->
     <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>

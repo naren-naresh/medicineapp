@@ -10,9 +10,10 @@
                     <li class="nav-item"><a href="#" class="nav-link dropdown-toggle" id="navbarDropdown"
                             role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop by Category</a>
                         <ul class="dropdown-menu">
-                            @foreach ($parent_categories as $catName )
-                             <li><a href="#" class="dropdown-item">{{ $catName->name}}</a></li>
+                            @foreach ($categories as $catName )
+                             <li><a href="#" class="dropdown-item py-2">{{ $catName->name}}</a></li>
                             @endforeach
+                            <li><a href="#" class="dropdown-item py-2">More >></a></li>
                         </ul>
                     </li>
                     <li class="nav-item"><a href="#" class="nav-link">About Us</a></li>

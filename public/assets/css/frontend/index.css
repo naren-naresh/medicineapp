@@ -15,6 +15,7 @@ a{
     font-size: 20px;
     font-weight:bold;
 }
+/* navbar styling */
 .page-navbar{
     background-color: #385399;
 }
@@ -24,9 +25,17 @@ a{
 .nav-item:hover{
     background-color: #22325a;
 }
+.dropdown-item:hover{
+    background-color: #385399;
+    color: #fff;
+    border-left: 2.5px solid rgb(109, 226, 175);
+}
+/* search field in header */
 .search-field input:focus{
     outline: none;
 }
+/* navbar styling end */
+/* footer styles */
 .footer-section{
     background-color: #385399;
     color: white;
@@ -44,6 +53,7 @@ a{
 {
    border: 1px solid white;
 }
+/* footer style end */
 /* slider styles */
 #slider-section{
     width: 100% !important;
@@ -204,3 +214,27 @@ a{
     background: #385399;
     width: 100%
 }
+.pc-btn:hover{
+    color: #385399;
+    background-color: #fff;
+    border: 1px solid #385399;
+}
+/*  category block styling end */
+/* order block*/
+.order-section{
+    background: #385399;
+    color: #fff;
+    border-bottom: 5px solid  rgb(109, 226, 175);
+}
+#newCusMail{
+    padding: 15px 20px;
+    border-radius: 50px 0px 0px 50px;
+}
+#subscribe{
+    padding: 13.5px 20px;
+    border-radius: 0px 50px 50px 0px;
+    background-color: rgb(109, 226, 175);
+    color: #fff;
+    font-size: 16px;
+}
+/* order block end */
