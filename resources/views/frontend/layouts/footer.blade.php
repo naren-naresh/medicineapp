@@ -4,11 +4,10 @@
             <div class="col">
                 <h3>Shop By Category</h3>
                 <ul class="option-list p-0">
-                    <li><a href="#">product 1</a></li>
-                    <li><a href="#">product 2</a></li>
-                    <li><a href="#">product 3</a></li>
-                    <li><a href="#">product 4</a></li>
-                    <li><a href="#">product 5</a></li>
+                    @foreach ($categories as $pCat )
+                     <li><a href="#">{{$pCat->name}}</a></li>
+                    @endforeach
+                    <li><a href="#">All categories</a></li>
                 </ul>
             </div>
             <div class="col">
