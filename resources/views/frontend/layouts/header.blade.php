@@ -15,9 +15,10 @@
             </div>
             <div class="col d-flex align-items-center">
                 <div class="d-flex">
-                    <div class="search-field"><input type="text" placeholder="Search Products" class=" border-0 border-bottom"></div>
+                    <div class="search-field"><input type="text" placeholder="Search Products" class=" border-0 border-bottom" id="search-input"></div>
                     <div class="search-icon"><a href=""><img class="search-img" src="{{asset('assets/frontend/images/search1.png')}}" style="width: 30px"></a></div>
                 </div>
+                <ul class="search-result"></ul>
             </div>
             <div class="col d-flex align-items-center justify-content-around">
                    <div class="sign">

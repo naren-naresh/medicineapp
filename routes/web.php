@@ -68,3 +68,4 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 });
 /** Frontend routes  */
 Route::get('home', 'HomePageController@index')->name('home');
+Route::post('search','HomePageController@search')->name('search');
