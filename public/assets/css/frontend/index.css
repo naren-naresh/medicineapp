@@ -190,9 +190,12 @@ a{
     height: 150px;
     object-fit: contain;
 }
-.pc-title{
+.pc-title a{
      color: #646464;
      font-weight:400;
+}
+.pc-title a:hover{
+    color: rgb(109, 226, 175);
 }
 .price{
     font-size: 16px;

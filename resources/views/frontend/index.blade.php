@@ -94,7 +94,7 @@
                                 <span><a href="#"><i class="far fa-heart"></i></a></span>
                             </div>
                             <div class="pc-text py-3">
-                                <p class="pc-title">{{ Illuminate\Support\Str::limit($product->name, 40) }}</p>
+                                <p class="pc-title"><a href="#">{{ Illuminate\Support\Str::limit($product->name, 40) }}</a></p>
                                 <div class="price py-1">$ {{$product->selling_price}}</div>
                                 <span class="d-status text-success">Delivery available</span>
                                 <div class="pc-view pt-2">

@@ -52,6 +52,7 @@
                     class="text">Settings</span> <i class="fa fa-sort-down"></i></a>
             <ul class="list-unstyled text-white d-none" id="smenu">
                 <li><a href="{{ route('return_policy.index') }}"><i class="fa fa-angle-double-right ms-4"></i> Return Policy</a></li>
+                <li><a href="{{ route('slider_image.index') }}"><i class="fa fa-angle-double-right ms-4"></i>Slider Image</a></li>
             </ul>
         </li>
     </ul>
