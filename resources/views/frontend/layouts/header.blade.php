@@ -2,7 +2,7 @@
     <div class="container py-3">
         <div class="row">
             <div class="col d-flex align-items-center">
-                <a class="brand-logo d-flex align-items-center" href="{{ route('home')}}"><img class="logo" src="{{asset('assets/images/logo.png')}}" style="width: 160px"></a>
+                <a class="brand-logo d-flex align-items-center" href="{{ route('home')}}"><img class="logo" src="{{asset('assets/images/logo.png')}}" style="width: 200px"></a>
             </div>
             <div class="col d-flex flex-row justify-content-center align-items-center">
                 <div class="location-icon pe-2"><img class="icon" src="{{ asset('assets/frontend/images/location.png')}}" style="width: 27px"></div>
