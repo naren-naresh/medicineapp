@@ -135,7 +135,7 @@
     <!-- jquery steps plugin-->
     <script src="{{ asset('assets/plugins/jquery/steps.min.js') }}"></script>
     <!-- Custom js for the page-->
-    <script src="{{ asset('assets/css/frontend/index.js') }}"></script>
+    <script src="{{ asset('assets/js/frontend/index.js') }}"></script>
     <!-- routes url -->
     <script>
         var search = "{{ route('search') }}";

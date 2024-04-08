@@ -44,7 +44,7 @@ class ImageSliderController extends Controller
             $imageName = time() . "." . $request->file("image")->extension();
             $request->image->move(public_path('/assets/images/sliderimages'), $imageName);
             if ($oldimage) {
-                unlink(public_path('/assets/images/sliderimages' . $oldimage));
+                unlink(public_path('/assets/images/sliderimages/' . $oldimage));
             }
         } else {
             $imageName = $oldimage;

@@ -15,6 +15,7 @@ class HomePageController extends Controller
         $data['sliders'] = SliderImage::get();
         return view('frontend.index',$data);
      }
+     // search function for page
      public function search(Request $request){
          if ($request->ajax()) {
             $result = Product::where('name','Like','%'.$request->search_data.'%')->get();

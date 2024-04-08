@@ -59,21 +59,39 @@ $(function () {
         },
     });
 });
+let typingTimer;
+const doneTypingInterval = 500; // milliseconds
+
 $('#search-input').keyup(function () {
-    let searchData =  $(this).val();
-    // console.log(searchData);
-    $.ajax({
-        type: "post",
-        url: search,
-        data: {
-            search_data:searchData,
-        },
-        success: function (data) {
-            data.forEach(element => {
-             let content = `<li class='p-1'>`+element.name+`<li>`;
-             $('.search-result').append(content);
+    clearTimeout(typingTimer);
+    let searchData = $(this).val();
+
+    // Clear previous results
+    $('.search-result').empty();
+
+    if (searchData.length >= 1) {
+        typingTimer = setTimeout(function () {
+            $.ajax({
+                type: "post",
+                url: search,
+                data: {
+                    search_data: searchData,
+                },
+                success: function (data) {
+                    if (data.length > 0) {
+                        data.forEach(element => {
+                            let content = `<li>` + element.name + `<li>`;
+                            $('.search-result').append(content);
+                        });
+                    } else {
+                        $('.search-result').append("<li>No results found</li>");
+                    }
+                },
+                error: function (error) {
+                    console.error(error.responseText);
+                }
             });
-            console.log(data);
-        },
-    });
+        }, doneTypingInterval);
+    }
 });
+
