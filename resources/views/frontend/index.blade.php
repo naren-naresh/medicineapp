@@ -94,9 +94,9 @@
                                 <span><a href="#"><i class="far fa-heart"></i></a></span>
                             </div>
                             <div class="pc-text py-3">
-                                <h5 class="pc-title">{{$product->name}}</h5>
-                                <div class="price py-1" style="font-size: 16px">$ {{$product->selling_price}}</div>
-                                <span class="d-status text-danger">Only pickup available</span>
+                                <p class="pc-title">{{ Illuminate\Support\Str::limit($product->name, 40) }}</p>
+                                <div class="price py-1">$ {{$product->selling_price}}</div>
+                                <span class="d-status text-success">Delivery available</span>
                                 <div class="pc-view pt-2">
                                     <a href="#" class="pc-btn">View</a>
                                 </div>
@@ -121,10 +121,10 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-8 p-0">
-                                    <input type="email" name="email" id="newCusMail" placeholder="Enter your email address..." class=" form-control">
+                                    <input type="email" name="email" id="newCusMail" placeholder="Enter your email address..." class=" form-control" autocomplete="off">
                                 </div>
                                 <div class="col-4 p-0">
-                                    <button type="submit" id="subscribe" class="form-control">Submit</button>
+                                    <button type="button" id="subscribe" class="form-control">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -148,6 +148,10 @@
     <script src="{{ asset('assets/plugins/jquery/steps.min.js') }}"></script>
     <!-- Custom js for the page-->
     <script src="{{ asset('assets/css/frontend/index.js') }}"></script>
+    <!-- routes url -->
+    <script>
+        var search = "{{ route('search') }}";
+    </script>
 </body>
 
 </html>
