@@ -6,19 +6,12 @@ use App\Models\Category;
 use App\Models\Delivery_zone;
 use App\Models\Product;
 use App\Models\SliderImage;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 
 class HomePageController extends Controller
 {
-     public function index(Request $request){
-        if ($request->ajax()) {
-            $checkPostalCode=Delivery_zone::where('postal_code',$request->postal_code)->exists();
-            if ($checkPostalCode) {
-                return response()->json(['valid' => true]);
-            } else {
-                return response()->json(['valid' => false]);
-            }   
-        }
+     public function index(){
         $data['products'] = Product::orderByDesc('id')->limit(12)->get();
         $data['categories'] = Category::where('parent_category_id',null)->limit(6)->get();
         $data['sliders'] = SliderImage::get();
@@ -33,5 +26,17 @@ class HomePageController extends Controller
             return response()->json([]);
         }
         return response()->json($result);
+     }
+     // postal code check function
+     public function postalCheck(Request $request){
+        if ($request->ajax()) {
+            $checkPostalCode=Delivery_zone::where('postal_code',$request->postal_code)->exists();
+            if ($checkPostalCode) {
+                $request->session()->put('postal_code', $request->postal_code);
+                return response()->json(['valid' => true]);
+            } else {
+                return response()->json(['valid' => false,'message' => 'Please enter a valid code']);
+            }
+        }
      }
 }

@@ -9,7 +9,7 @@
                 <div class="text-content">
                     <p class="line1 m-0">Delivery Location</p>
                     <span>
-                        <p class="line2">PostCode &nbsp;<a href="#" style="color: #385399">Change</a> </p>
+                        <p class="line2">PostCode &nbsp;<span id="postal_code">{{session()->get('postal_code');}}</span> &nbsp;<a href="#" style="color: #385399" id="postalChange">Change</a> </p>
                     </span>
                 </div>
             </div>

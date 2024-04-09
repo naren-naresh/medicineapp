@@ -1,5 +1,8 @@
 jQuery(document).ready(function ($) {
+   var existCode = $('#postal_code').text();
+   if (!existCode) {
     showPostalCodePopup();
+   }
     // This is for the auto sliding
     setInterval(function () {
         moveRight();
@@ -103,7 +106,7 @@ $("#search-input").keyup(function () {
 var showPopup = true;
 
 // Function to show the SweetAlert popup
-function showPostalCodePopup(errorMessage = null) {
+function showPostalCodePopup(errorMessage) {
     if (showPopup) {
         var swalConfig = {
             // title: "Enter Postal Code",
@@ -153,14 +156,15 @@ function showPostalCodePopup(errorMessage = null) {
 function submitPostalCode(postalCode) {
     // Make an AJAX request to submit the postal code
     $.ajax({
-        type: "GET",
-        url: home,
+        type: "post",
+        url: postalCheck,
         data: {
             postal_code: postalCode,
         },
         success: function (response) {
             if (response.valid) {
                 showPopup = false;
+                location.reload();
             } else {
                 showPostalCodePopup(
                     "Invalid postal code. Please enter a valid four-digit postal code."
@@ -172,3 +176,6 @@ function submitPostalCode(postalCode) {
         },
     });
 }
+$('#postalChange').click(function (e) {
+    showPostalCodePopup();
+});
