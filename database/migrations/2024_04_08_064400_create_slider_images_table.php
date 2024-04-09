@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('image');
             $table->string('heading')->nullable();
-            $table->text('content')->nullable();
+            $table->string('content')->nullable();
+            $table->string('link')->nullable();
             $table->dateTime('created_at');
             $table->dateTime('updated_at');
             $table->softDeletes();

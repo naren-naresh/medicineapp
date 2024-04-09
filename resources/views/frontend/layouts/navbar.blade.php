@@ -1,6 +1,6 @@
 <div class="page-navbar">
     <div class="container">
-        <div class="navbar navbar-expand-lg" id="navbar">
+        <div class="navbar navbar-expand-lg p-0" id="navbar">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-collapse"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -11,9 +11,9 @@
                             role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop by Category</a>
                         <ul class="dropdown-menu">
                             @foreach ($categories as $catName )
-                             <li><a href="#" class="dropdown-item py-2">{{ $catName->name}}</a></li>
+                             <li><a href="#" class="dropdown-item py-1">{{ $catName->name}}</a></li>
                             @endforeach
-                            <li><a href="#" class="dropdown-item py-2">More >></a></li>
+                            <li><a href="#" class="dropdown-item py-1">More >></a></li>
                         </ul>
                     </li>
                     <li class="nav-item"><a href="#" class="nav-link">About Us</a></li>

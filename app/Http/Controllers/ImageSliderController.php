@@ -23,12 +23,15 @@ class ImageSliderController extends Controller
                 ->addColumn('content', function ($slideImage) {
                     return $slideImage->content;
                 })
+                ->addColumn('link', function ($slideImage) {
+                    return $slideImage->link;
+                })
                 ->addColumn('action', function ($slideImage) {
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $slideImage->id . '" data-original-title="Edit" class="edit btn  btn-sm editProduct">Edit</a>
                         <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $slideImage->id . '" data-original-title="Delete" class="btn btn-sm deleteProduct">Delete</a>';
                     return $btn;
                 })
-                ->rawColumns(['image','heading','content','action'])
+                ->rawColumns(['image','heading','content','link','action'])
                 ->make(true);
         }
         return view('admin.silderimages.index');
@@ -44,14 +47,14 @@ class ImageSliderController extends Controller
             $imageName = time() . "." . $request->file("image")->extension();
             $request->image->move(public_path('/assets/images/sliderimages'), $imageName);
             if ($oldimage) {
-                unlink(public_path('/assets/images/sliderimages' . $oldimage));
+                unlink(public_path('/assets/images/sliderimages/' . $oldimage));
             }
         } else {
             $imageName = $oldimage;
         }
         SliderImage::updateOrCreate([
             'id' => $request->id
-        ], ['image' => $imageName,'heading' => $request->heading,'content' => $request->content]);
+        ], ['image' => $imageName,'heading' => $request->heading,'content' => $request->content,'link' => $request->link]);
         return response()->json(['success' => 'Return policy saved successfully.']);
     }
     /** edit return slider images */
