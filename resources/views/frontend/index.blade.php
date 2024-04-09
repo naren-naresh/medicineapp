@@ -36,6 +36,7 @@
                         <div class="slider-title-wrapper">
                             <h3 class="slider-title"><span class="slider-title-h3">{{$slide->heading}}</span>
                     <span class="slider-subtitle">{{$slide->content}}</span></h3>
+                    <p class="slider-link"><a href="#" class="display-6 text-white">{{$slide->link}}</a></p>
                         </div>
                         <img src="{{ asset('assets/images/sliderimages/'.$slide->image.'') }}">
                     </li>
@@ -68,7 +69,7 @@
      </section>
      <!-- category block end -->
      <!-- product block -->
-     <section class="product-section">
+     <section class="product-section pb-5">
         <div class="container">
             <div class="section-title">
                 <h4 class="h4">Most Recent<small style="font-size: 16px"> Products</small></h4>
@@ -136,9 +137,13 @@
     <script src="{{ asset('assets/plugins/jquery/steps.min.js') }}"></script>
     <!-- Custom js for the page-->
     <script src="{{ asset('assets/js/frontend/index.js') }}"></script>
+    <!-- sweet alert -->
+    <script src="{{ asset('assets/plugins/sweetalter/sweetalter.js') }}"></script>
     <!-- routes url -->
     <script>
         var search = "{{ route('search') }}";
+        var home = "{{ route('home')}}";
+        var brandLogo = "{{ asset('assets/images/logo.png')}}"
     </script>
 </body>
 

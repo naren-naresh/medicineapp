@@ -8,19 +8,30 @@ a{
     text-decoration: none;
     color: black;
 }
+.form-control:focus {
+    border-color: #ced4da; /* default B5 color or set your own color*/
+    border: none !important; /* if you want to remove borders at all*/
+    outline: none !important;
+    box-shadow: none !important;
+  }
 .option-list a:hover{
     text-decoration: underline white;
 }
 .line1{
     font-size: 18px;
-    font-weight:bold;
+    font-weight:500;
 }
 /* navbar styling */
 .page-navbar{
     background-color: #385399;
+    line-height: 3;
 }
 .navbar-nav .nav-link {
     color: white;
+}
+.nav-item{
+    padding: 0px 10px;
+    font-size: 16px;
 }
 .nav-item:hover{
     background-color: #22325a;
@@ -29,6 +40,10 @@ a{
     background-color: #385399;
     color: #fff;
     border-left: 2.5px solid rgb(109, 226, 175);
+}
+/* header styling */
+.sign a{
+   font-size: 18px;
 }
 /* search field in header */
 .search-field input:focus{
@@ -41,18 +56,18 @@ a{
     list-style: none;
     padding: 0;
     margin: 0;
-    top: 63px;
+    top: 70px;
     /* width: 100%; */
     transition: all .3s;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-}
-.search-result li{
-    padding: 7px 10px 0px 15px;
 }
 .search-result li:hover{
     background-color: #385399;
     color: #fff;
     border-left: 2.5px solid rgb(109, 226, 175);
+}
+.search-result a:hover{
+    color: white;
 }
 /* navbar styling end */
 /* footer styles */
@@ -61,7 +76,7 @@ a{
     color: white;
 }
 .footer-section h3{
-   font-size: 1.5rem;
+   font-size: 1.7rem;
    font-weight: 400;
 }
 .option-list{
@@ -69,12 +84,14 @@ a{
 }
 .option-list li a{
     color: white;
+    font-size: 16px;
 }
 .option-list li{
     padding-top: 12px;
 }
 .social-item a img{
     padding: 5px 10px;
+    border: 1px solid transparent;
 }
 .social-item a img:hover
 {
@@ -101,7 +118,7 @@ a{
     float: left;
     margin: 0;
     padding: 0;
-    width: 1351px;
+    width: 1500px;
     height: 500px;
     background: #ccc;
     text-align: center;
@@ -163,14 +180,18 @@ a{
 }
 .cat-more{
     border-radius: 50%;
-    padding: 15px 5px;
+    padding: 25px 10px;
     background-color: #EEEE;
     color: #2c4175;
+}
+.cat-more:hover{
+    text-decoration: underline #b8b6b6ee;
 }
 .cat-text{
     text-align: center;
     color: #807e7e;
     padding-top: 10px;
+    font-size: 16px;
 }
 #category-row{
     background: #fff;
@@ -221,7 +242,7 @@ a{
     background-color: #fff;
     border: 1px solid #eee;
     cursor: pointer;
-    padding: 5px 7px;
+    padding: 3px 8px;
     border-radius: 50%;
 }
 .pc-img span i{

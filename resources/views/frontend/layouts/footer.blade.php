@@ -35,14 +35,14 @@
                 </div>
             </div>
         </div>
-        <div class="row py-5">
+        <div class="row py-5 align-items-center ">
             <div class="copyright col"><h5>&copy 2024 Medicine Plus. All Rights Reserved.</h5></div>
             <div class="social col-4">
-                <ul class="social-list list-unstyled d-flex justify-content-around">
+                <ul class="social-list list-unstyled d-flex justify-content-around align-items-center">
                     <li class="social-item"><a href="#"><img src="{{ asset('assets/frontend/images/fb.png') }}"></a></li>
-                    <li class="social-item"><a href="#"><img src="{{ asset('assets/frontend/images/tw.png') }}" alt=""></a></li>
-                    <li class="social-item"><a href="#"><img src="{{ asset('assets/frontend/images/in.png') }}" alt=""></a></li>
-                    <li class="social-item"><a href="#"><img src="{{ asset('assets/frontend/images/yt.png') }}" alt=""></a></li>
+                    <li class="social-item"><a href="#"><img src="{{ asset('assets/frontend/images/tw.png') }}"></a></li>
+                    <li class="social-item"><a href="#"><img src="{{ asset('assets/frontend/images/in.png') }}"></a></li>
+                    <li class="social-item"><a href="#"><img src="{{ asset('assets/frontend/images/yt.png') }}"></a></li>
                 </ul>
             </div>
         </div>

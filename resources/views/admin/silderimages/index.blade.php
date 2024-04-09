@@ -33,6 +33,7 @@
                         <th>Image</th>
                         <th>Heading</th>
                         <th>Content</th>
+                        <th>Link</th>
                         <th style="width: 150px;">Action</th>
                     </tr>
                 </thead>
@@ -68,7 +69,11 @@
                         </div>
                         <div class="form-group row pt-1">
                             <label for="content" class="mb-1 p-0">Content</label>
-                            <textarea name="content" id="content" cols="10" rows="5"></textarea>
+                            <input type="text" name="content" class="form-control" id="content">
+                        </div>
+                        <div class="form-group row pt-1">
+                            <label for="link" class="mb-1 p-0">Link</label>
+                            <input type="text" name="link" id="link"  class="form-control">
                         </div>
                         <div class="buttons my-2">
                             <button type="button" class="btn me-3" data-bs-dismiss="modal" id="cancel">Cancel</button>
@@ -122,6 +127,9 @@
                     data: 'content',
                     name: 'content',
                 },{
+                    data: 'link',
+                    name: 'link',
+                },{
                     data: 'action',
                     name: 'action',
                     orderable: false,
@@ -162,6 +170,7 @@
                 $('#id').val(data.id);
                 $('#heading').val(data.heading);
                 $('#content').val(data.content);
+                $('#link').val(data.link);
                 $('#modelHeading').html("Edit slider image");
                 $('#save').val("edit-image");
                 $('#sliderImageModel').modal('show');
