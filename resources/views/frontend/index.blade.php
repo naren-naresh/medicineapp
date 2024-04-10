@@ -102,7 +102,6 @@
         </section>
         <!-- get order block end-->
         @push('frontend-scripts')
-            <script src="{{ asset('assets/js/frontend/index.js') }}"></script>
             <!-- routes url -->
             <script>
                 var search = "{{ route('search') }}";
