@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Models\Delivery_zone;
 use App\Models\Product;
 use App\Models\SliderImage;
-use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 
 class HomePageController extends Controller
@@ -33,7 +32,7 @@ class HomePageController extends Controller
             $checkPostalCode=Delivery_zone::where('postal_code',$request->postal_code)->exists();
             if ($checkPostalCode) {
                 $request->session()->put('postal_code', $request->postal_code);
-                return response()->json(['valid' => true]);
+                return response()->json(['valid' => true,'message' => 'Delivery available your location.']);
             } else {
                 return response()->json(['valid' => false,'message' => 'Please enter a valid code']);
             }

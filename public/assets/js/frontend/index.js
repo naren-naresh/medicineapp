@@ -1,8 +1,8 @@
 jQuery(document).ready(function ($) {
-   var existCode = $('#postal_code').text();
-   if (!existCode) {
-    showPostalCodePopup();
-   }
+    var existCode = $("#postal_code").text();
+    if (!existCode) {
+        showPostalCodePopup();
+    }
     // This is for the auto sliding
     setInterval(function () {
         moveRight();
@@ -102,54 +102,44 @@ $("#search-input").keyup(function () {
     }
 });
 
-// Flag to track whether to show the popup
-var showPopup = true;
-
-// Function to show the SweetAlert popup
 function showPostalCodePopup(errorMessage) {
-    if (showPopup) {
-        var swalConfig = {
-            // title: "Enter Postal Code",
-            input: "text",
-            inputAutoFocus:false,
-            imageUrl: brandLogo,
-            imageWidth: 250,
-            inputPlaceholder: "Enter Your Postal Code",
-            showCancelButton: false,
-            confirmButtonText: "Submit",
-            confirmButtonColor: "#385399",
-            allowOutsideClick: false,
-            showCloseButton: false,
-            inputAttributes: {
-                maxlength: 4,
-                pattern: "\\d*",
-                onkeypress:
-                    "return event.charCode >= 48 && event.charCode <= 57",
-            },
-            inputValidator: (value) => {
-                if (!value) {
-                    return "Postal code is required!";
-                }
-                if (!/^\d{4}$/.test(value)) {
-                    return "Postal code must be exactly four digits!";
-                }
-            },
-        };
-
-        // Add error message to SweetAlert configuration if provided
-        if (errorMessage) {
-            swalConfig["inputErrorMessage"] = errorMessage;
-        }
-
-        // Show SweetAlert popup
-        Swal.fire(swalConfig).then((result) => {
-            if (result.isConfirmed) {
-                submitPostalCode(result.value);
-            } else {
-                // Redirect or handle cancellation
+    var swalConfig = {
+        // title: "Enter Postal Code",
+        input: "text",
+        inputAutoFocus: false,
+        imageUrl: brandLogo,
+        imageWidth: 250,
+        inputPlaceholder: "Enter Your Postal Code",
+        html: `<p style="font-size:16px">Enter delivery destination postal code.</p>
+        <span style="color: red">${errorMessage || ""}</span>`,
+        showCancelButton: false,
+        confirmButtonText: "Submit",
+        confirmButtonColor: "#385399",
+        allowOutsideClick: false,
+        showCloseButton: false,
+        inputAttributes: {
+            maxlength: 4,
+            pattern: "\\d*",
+            onkeypress: "return event.charCode >= 48 && event.charCode <= 57",
+        },
+        inputValidator: (value) => {
+            if (!value) {
+                return "Postal code is required!";
             }
-        });
-    }
+            if (!/^\d{4}$/.test(value)) {
+                return "Postal code must be exactly four digits!";
+            }
+        },
+    };
+    // Show SweetAlert popup
+    Swal.fire(swalConfig).then((result) => {
+        if (result.isConfirmed) {
+            submitPostalCode(result.value);
+        }
+        if (result.dismiss === Swal.DismissReason.cancel) {
+            location.reload();
+        }
+    });
 }
 
 // Function to submit the postal code
@@ -163,12 +153,28 @@ function submitPostalCode(postalCode) {
         },
         success: function (response) {
             if (response.valid) {
-                showPopup = false;
-                location.reload();
+                showPostalCodePopup(response.message);
+
+                var modalContainer = document.querySelector(".swal2-modal");
+                // Hide the input field by finding it within the modal container and setting its display style to 'none'
+                var inputField = modalContainer.querySelector(".swal2-input");
+                if (inputField) {
+                    inputField.style.display = "none";
+                }
+                Swal.update({
+                    showConfirmButton: false,
+                    showCancelButton: true,
+                    input: false,
+                    cancelButtonText: "Continue",
+                    html: `<div class="d-flex flex-column justify-content-between align-items-center"><img src=`+success+` style="width:100px">
+                    <span style="color: #79C043">Continue Shopping.</span></div>`,
+                });
             } else {
-                showPostalCodePopup(
-                    "Invalid postal code. Please enter a valid four-digit postal code."
-                );
+                showPostalCodePopup(response.message);
+                Swal.update({
+                    html: `<div class="d-flex flex-column justify-content-between align-items-center"><img src=`+error+` style="width:100px">
+                    <span style="color: red">Enter valid postal code.</span></div>`,
+                });
             }
         },
         error: function (error) {
@@ -176,6 +182,11 @@ function submitPostalCode(postalCode) {
         },
     });
 }
-$('#postalChange').click(function (e) {
+
+$("#postalChange").click(function (e) {
     showPostalCodePopup();
+    Swal.update({
+        input: false,
+        showCloseButton: true,
+    });
 });

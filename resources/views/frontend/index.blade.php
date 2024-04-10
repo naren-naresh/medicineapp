@@ -144,6 +144,8 @@
         var search = "{{ route('search') }}";
         var home = "{{ route('home')}}";
         var brandLogo = "{{ asset('assets/images/logo.png')}}"
+        var success = "{{asset('assets/frontend/images/successfully.png')}}"
+        var error = "{{asset('assets/frontend/images/error.png')}}"
         var postalCheck = "{{ route('postal') }}"
     </script>
 </body>
