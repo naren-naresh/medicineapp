@@ -9,6 +9,7 @@ use App\Http\Controllers\DeliveryZoneController;
 use App\Http\Controllers\ImageSliderController;
 use App\Http\Controllers\ManufacturerController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductListingController;
 use App\Http\Controllers\ReturnPolicyController;
 use Illuminate\Support\Facades\Route;
 
@@ -73,3 +74,4 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 Route::get('home', 'HomePageController@index')->name('home');
 Route::post('search','HomePageController@search')->name('search');
 Route::post('postal_code','HomePageController@postalCheck')->name('postal');
+Route::get('product-category','ProductListingController@index')->name('product_list');
