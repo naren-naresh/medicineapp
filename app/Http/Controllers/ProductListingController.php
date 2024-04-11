@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 
 class ProductListingController extends Controller
 {
-    public function index(){
-        // $data['products'] = Product::orderByDesc('id')->limit(12)->get();
+    public function index($id){
+        $parentCategory = Category::find($id);
+        $data['products'] = $parentCategory->catChildren;
         $data['categories'] = Category::where('parent_category_id',null)->get();
-        $data['childCategories'] = Category::where('parent_category_id',1)->get();
-        // dd($data['childCategories']);
+        $data['childCategories'] = Category::latest()->get();
         return view('frontend.product_list',$data);
     }
 }

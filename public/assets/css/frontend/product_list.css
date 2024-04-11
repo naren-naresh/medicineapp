@@ -49,4 +49,28 @@
     font-weight: 400;
     font-size: 16px;
 }
+.category-menu li a:hover{
+    color: #3a3a3a;
+}
+.child-cat-list {
+    list-style-type: none;
+    display: none;
+}
+
+.category-menu li:hover .child-cat-list {
+    display: block;
+}
+.child-cat-list li a {
+    display: block;
+    color: #969696;
+}
+/*product block*/
+.product-card {
+    padding: 10px;
+    background: #fff;
+    transition: all .3s;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+}
+
+
 /* product listing block styles end */

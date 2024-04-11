@@ -24,4 +24,8 @@ class Category extends Model
     public function children(){
         return $this->hasOne(self::class,'id');
     }
+    public function catChildren()
+    {
+        return $this->hasMany(Category::class, 'parent_category_id', 'id');
+    }
 }

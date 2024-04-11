@@ -25,7 +25,7 @@
                 <div class="row d-flex py-3 px-4" id="category-row">
                     <div class="category-list-block d-flex justify-content-around align-items-center">
                         @foreach ($categories as $cat)
-                            <a href="#" class="category-list text-center" style="width: 15.25%;">
+                            <a href="{{ route('product_list',$cat->id) }}" class="category-list text-center" style="width: 15.25%;">
                                 <div class="cat-con">
                                     <div class="cat-img"><img src="{{ asset('assets/images/' . $cat->image . '') }}"></div>
                                     <div class="cat-text">{{ $cat->name }}</div>
