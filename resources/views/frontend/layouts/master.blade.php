@@ -22,18 +22,22 @@
 </head>
 
 <body>
-    <!-- header start -->
-    @include('frontend.layouts.header')
-    <!-- header end -->
-    <!-- navbar start -->
-    @include('frontend.layouts.navbar')
-    <!-- navbar end -->
+    <div class="page-header">
+        <!-- header start -->
+        @include('frontend.layouts.header')
+        <!-- header end -->
+        <!-- navbar start -->
+        @include('frontend.layouts.navbar')
+        <!-- navbar end -->
+    </div>
     <div class="main-block">
         @yield('frontend-content')
     </div>
-    <!--footer start-->
-    @include('frontend.layouts.footer')
-    <!--footer end-->
+    <div class="page-footer">
+        <!--footer start-->
+        @include('frontend.layouts.footer')
+        <!--footer end-->
+    </div>
     <!--jquery plugin-->
     <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
     <!--bootstrap js plugin-->
