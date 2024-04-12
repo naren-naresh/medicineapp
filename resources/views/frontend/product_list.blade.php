@@ -150,7 +150,6 @@
                         sortType: sortType,
                     },
                     success: function(data) {
-                        console.log(data.data);
                        setTimeout(() => {
                         $('#sorted-view').html(data.sorted_view);
                         $('#pagination-links').html(data.pagination);
