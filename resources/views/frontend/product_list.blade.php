@@ -24,13 +24,14 @@
         <section class="category-listing py-5">
             <div class="container">
                 <div class="row">
-                    <div class="col-3 product-list">
-                        <h4>Shop by Category</h4>
+                    <div class="col-3 product-list" id="category-listing">
+                        <h4 class="border-bottom pt-0 py-4">Shop by Category</h4>
                         <div class="category-list-section">
                             <ul class="category-menu ps-0">
                                 @foreach ($categories as $category)
                                     @if ($category->parent_category_id == null)
-                                        <li class=" border-bottom parentCat"><a href="#"
+                                        <li class=" border-bottom parentCat"><a
+                                                href="{{ route('product_list', $category->id) }}"
                                                 class="parentCatLink">{{ $category->name }}</a>
                                             <ul class="child-cat-list">
                                                 @php
@@ -40,7 +41,9 @@
                                                     );
                                                 @endphp
                                                 @foreach ($childList as $childCat)
-                                                    <li><a href="#">{{ $childCat->name }}</a></li>
+                                                    <li><a
+                                                            href="{{ route('product_list', $childCat->id) }}">{{ $childCat->name }}</a>
+                                                    </li>
                                                 @endforeach
                                             </ul>
                                         </li>
@@ -50,48 +53,52 @@
                         </div>
                     </div>
                     <div class="col-9 product-card">
-                        <div class="row view-sort-option justify-content-center">
-                            <div class="view-option col-10">
-                                <div class="view-style">
-                                    <span class="gird">
-                                        <i class="fa fa-border-all" id="grid-view" style="cursor: pointer;"></i>
-                                    </span>
-                                    <span class="list">
-                                        <i class="fa fa-list" id='list-view' style="cursor: pointer;"></i>
-                                        <span class="records-tracker"></span>
-                                    </span>
+                        <div class="row justify-content-center">
+                            <div class="row view-sort-option align-items-center">
+                                <div class="view-option col-10">
+                                    <div class="view-style ps-1">
+                                        <span class="gird">
+                                            <i class="fa fa-border-all" id="grid-view"></i>
+                                        </span>
+                                        <span class="list ps-1">
+                                            <i class="fa fa-list" id='list-view'></i>
+                                            <span class="records-tracker ps-1"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="sort-option col-2">
+                                    <select name="inputs-sort" id="inputs-sort">
+                                        <option value="0" selected>Default Sorting</option>
+                                        <option value="1">Low to High</option>
+                                        <option value="2">High to Low</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="sort-option col-2">
-                                <select name="inputs-sort" id="inputs-sort">
-                                    <option value="0" class="selected">Default Sorting</option>
-                                    <option value="1">Low to High</option>
-                                    <option value="2">High to Low</option>
-                                </select>
-                            </div>
-                            @foreach ($products as $product)
-                                <div class="col-3 p-card pt-5">
-                                    <div class="pc-con">
-                                        <div class="pc-img">
-                                            <img
-                                                src="{{ asset('assets/images/products/' . $product->id . '/' . $product->cover_image . '') }}">
-                                            <span class="heartSpan"><a href="#"><i
-                                                        class="far fa-heart"></i></a></span>
-                                        </div>
-                                        <div class="pc-text py-3">
-                                            <p class="pc-title"><a
-                                                    href="#">{{ Illuminate\Support\Str::limit($product->name, 40) }}</a>
-                                            </p>
-                                            <div class="price py-1">$ {{ $product->selling_price }}</div>
-                                            <span class="d-status text-success">Delivery available</span>
-                                            <div class="pc-view pt-2">
-                                                <a href="#" class="pc-btn">View</a>
+                            <div class="row justify-content-center" id="sorted-view">
+                                @foreach ($products as $product)
+                                    <div class="p-card pt-5 col-3">
+                                        <div class="pc-con">
+                                            <div class="pc-img">
+                                                <img
+                                                    src="{{ asset('assets/images/products/' . $product->id . '/' . $product->cover_image . '') }}">
+                                                <span class="heartSpan"><a href="#"><i
+                                                            class="far fa-heart"></i></a></span>
+                                            </div>
+                                            <div class="pc-text py-3">
+                                                <p class="pc-title"><a
+                                                        href="#">{{ Illuminate\Support\Str::limit($product->name, 40) }}</a>
+                                                </p>
+                                                <div class="price py-1">$ {{ $product->selling_price }}</div>
+                                                <span class="d-status text-success">Delivery available</span>
+                                                <div class="pc-view pt-2">
+                                                    <a href="#" class="pc-btn">View</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endforeach
-                            <div class="pagination d-flex justify-content-center">
+                                @endforeach
+                            </div>
+                            <div class="pagination d-flex justify-content-center pt-3" id="pagination-links">
                                 {{ $products->links() }}
                             </div>
                         </div>
@@ -117,10 +124,14 @@
                 $('.p-card').addClass('listView2');
                 $('.pc-con').addClass('listView');
                 $('.heartSpan').addClass('spanView');
+                $("#grid-view").css("color", "unset");
+                $(this).css("color", "#385399");
             });
             $('#grid-view').click(function() {
                 $('.p-card').addClass('col-3');
                 $('.pc-con').removeClass('listView');
+                $("#list-view").css("color", "unset");
+                $(this).css("color", "#385399");
             });
             var productCount = {{ count($products) }};
 
@@ -129,16 +140,31 @@
             // sorting records using select menu
             $('#inputs-sort').change(function(e) {
                 var sortType = $(this).val();
+                var id = {{ request()->route('id') }};
+                function loadProducts(url) {
                 $.ajax({
                     type: "GET",
-                    url: " {{ route('product_list') }}",
+                    url: url,
                     data: {
+                        catId: id,
                         sortType: sortType,
                     },
-                    success: function(response) {
-                        console.log(response);
+                    success: function(data) {
+                        console.log(data.data);
+                        $('#sorted-view').html(data.sorted_view);
+                        $('#pagination-links').html(data.pagination);
                     }
                 });
+            }
+            // Initial load of products when the page loads
+            loadProducts('{{ route('product_list') }}');
+
+            // Pagination links click event
+            $(document).on('click', '.pagination a', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                loadProducts(url);
+            });
             });
         </script>
     @endPushOnce
