@@ -27,7 +27,7 @@
 /*breadcrumb styles */
 .breadcrumb{
     height: 25px;
-    background-color: #f1f3f6;
+    padding-top: 5px;
 }
 /*breadcrumb styles end */
 /* product listing block styles */
@@ -128,5 +128,13 @@
 #inputs-sort{
     color:#969696;
     padding: 5px 0px 5px 0px;
+    cursor: pointer;
 }
 /* product listing block styles end */
+/* control the product name length*/
+.pc-title{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width:350px; /* Adjust as needed */
+}

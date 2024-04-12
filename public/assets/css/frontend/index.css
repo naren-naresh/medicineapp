@@ -18,7 +18,7 @@ a{
     text-decoration: underline white;
 }
 .line1{
-    font-size: 18px;
+    font-size: 16px;
     font-weight:500;
 }
 /* navbar styling */
@@ -43,7 +43,7 @@ a{
 }
 /* header styling */
 .sign a{
-   font-size: 18px;
+   font-size: 17px;
 }
 /* search field in header */
 .search-field input:focus{
@@ -118,7 +118,7 @@ a{
     float: left;
     margin: 0;
     padding: 0;
-    width: 1500px;
+    width: 1351px;
     height: 500px;
     background: #ccc;
     text-align: center;
@@ -223,6 +223,13 @@ a{
     height: 150px;
     object-fit: contain;
 }
+/* control the product name length*/
+.pc-title{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
 .pc-title a{
      color: #646464;
      font-weight:400;
@@ -258,7 +265,6 @@ a{
     border: 1px solid #eee;
     margin-bottom: 15px;
     padding: 15px 25px;
-    height: 370px;
 }
 .pc-con:hover{
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);

@@ -5,7 +5,7 @@
                 <a class="brand-logo d-flex align-items-center" href="{{ route('home')}}"><img class="logo" src="{{asset('assets/images/logo.png')}}" style="width: 200px"></a>
             </div>
             <div class="col d-flex flex-row justify-content-center align-items-center">
-                <div class="location-icon pe-2"><i class="fas fa-map-marker-alt" style="color: #385399; font-size:2rem;"></i></div>
+                <div class="location-icon pe-2"><i class="fas fa-map-marker-alt" style="color: #385399; font-size:1.7rem;"></i></div>
                 <div class="text-content">
                     <p class="line1 m-0">Delivery Location</p>
                     <span>
@@ -27,7 +27,7 @@
                         <a href="#">Sign Up</a>
                    </div>
                    <div class="cart">
-                      <a href="#" class="d-flex align-items-center"><i class="fa fa-shopping-cart" style="color:#385399; font-size:2rem"></i><span></span> &nbsp;Cart</a>
+                      <a href="#" class="d-flex align-items-center"><i class="fa fa-shopping-cart" style="color:#385399; font-size:1.7rem"></i><span></span> &nbsp;Cart</a>
                    </div>
             </div>
         </div>

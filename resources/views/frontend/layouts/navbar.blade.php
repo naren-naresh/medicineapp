@@ -11,7 +11,7 @@
                             role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop by Category</a>
                         <ul class="dropdown-menu">
                             @foreach ($categories as $catName )
-                             <li><a href="#" class="dropdown-item py-1">{{ $catName->name}}</a></li>
+                             <li><a href="{{ route('product_list',$catName->id)}}" class="dropdown-item py-1">{{ $catName->name}}</a></li>
                             @endforeach
                             <li><a href="#" class="dropdown-item py-1">More >></a></li>
                         </ul>
