@@ -11,6 +11,7 @@ use App\Http\Controllers\ManufacturerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductListingController;
 use App\Http\Controllers\ReturnPolicyController;
+use App\Http\Controllers\SingleProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -75,3 +76,4 @@ Route::get('home', 'HomePageController@index')->name('home');
 Route::post('search','HomePageController@search')->name('search');
 Route::post('postal_code','HomePageController@postalCheck')->name('postal');
 Route::get('product-category/{id?}','ProductListingController@index')->name('product_list');
+Route::get('single/{id?}','SingleProductController@index')->name('single.product.view');

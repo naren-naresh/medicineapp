@@ -59,11 +59,11 @@
                                 </div>
                                 <div class="pc-text py-3">
                                     <p class="pc-title"><a
-                                            href="#">{{ $product->name }}</a></p>
+                                            href="{{ route('single.product.view',$product->id) }}">{{ $product->name }}</a></p>
                                     <div class="price py-1">$ {{ $product->selling_price }}</div>
                                     <span class="d-status text-success">Delivery available</span>
                                     <div class="pc-view pt-2">
-                                        <a href="#" class="pc-btn">View</a>
+                                        <a href="{{ route('single.product.view',$product->id)}}" class="pc-btn">View</a>
                                     </div>
                                 </div>
                             </div>
