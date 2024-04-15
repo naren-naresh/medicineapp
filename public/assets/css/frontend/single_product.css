@@ -1,108 +1,166 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box
-  }
-
-  .showImage {
-    width: 400px;
-    height: 400px;
-  }
-  #show-img{
-    width: 400px;
-  }
-  .small-img {
-    width: 350px;
-    height: 70px;
-    margin-top: 10px;
-    position: relative;
-    left: 25px;
-  }
-
-  .small-img .icon-left, .small-img .icon-right {
-    width: 12px;
-    height: 24px;
-    cursor: pointer;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin: auto 0;
-  }
-
-  .small-img .icon-left {
-     transform: rotate(180deg)
-     }
-
-  .small-img .icon-right {
-    right: 0;
- }
-
-  .small-img .icon-left:hover, .small-img .icon-right:hover {
-    opacity: .5;
 }
 
-  .small-container {
-    width: 310px;
-    height: 70px;
+#breadcrumb-product-name {
     overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 250px;
+    /* Adjust as needed */
+}
+
+.small-img {
+    width: 70px;
+    height: 350px;
+    margin-top: 10px;
+    position: relative;
+    top: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.small-img .icon-left,
+.small-img .icon-right {
+    width: 14px;
+    height: 20px;
+    cursor: pointer;
     position: absolute;
     left: 0;
     right: 0;
-    margin: 0 auto;
-  }
-
-  .small-container div {
-    width: 800%;
+    margin: auto;
+    margin-left: 37px;
+}
+.icon-right{
+  rotate: 90deg;
+}
+.icon-left{
+    rotate: -90deg;
+}
+.small-img .icon-right {
+    bottom: 0;
+}
+#showImage{
+    width: 400px;
+    max-height: 400px;
+}
+.small-container {
+    width: 70px;
+    height: 310px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+.small-container div {
+    height: 800%;
     position: relative;
-  }
+}
 
-  .small-container .show-small-img {
+.small-container .show-small-img {
     width: 70px;
     height: 70px;
-    margin-right: 6px;
+    margin-bottom: 6px;
     cursor: pointer;
-    float: left;
-  }
+}
 
-  .small-container .show-small-img:last-of-type {
-    margin-right: 0;
-}
 .product-name {
-	font-size: 22px;
-	font-weight: 500;
-	line-height: 22px;
-	margin-bottom: 4px;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 22px;
+    margin-bottom: 4px;
 }
+
 .product-price-discount {
-	font-size: 22px;
+    font-size: 22px;
     font-weight: 400;
     padding: 10px 0;
     clear: both;
 }
-.product-price-discount #sellingPrice{
-    font-size: 16px;
+
+.product-price-discount #sellingPrice {
+    font-size: 20px;
 }
+
 .product-price-discount span.line-through {
-	text-decoration: line-through;
-    margin-left: 10px;
-    font-size: 14px;
+    text-decoration: line-through;
+    /* margin-left: 10px; */
+    font-size: 16px;
     vertical-align: middle;
     color: #a5a5a5;
 }
-.product-variant-options span{
+
+.product-variant-options span {
     border: 1px solid #385399;
     text-align: center;
     width: 31%;
     margin-left: 10px;
 }
-.product-variant{
+
+.product-variant {
+    font-size: 20px;
+}
+
+.product-variant-options span:hover {
+    color: #fff;
+    background-color: #385399;
+    cursor: pointer;
+}
+
+#desHead {
+    border-bottom: 1px solid #d2d2d2;
+}
+
+#desHead span {
+    font-size: 22px;
+    background-color: #385399;
+    color: #fff;
+    padding: 4px 20px;
+    border-radius: 5px 5px 0px 0px;
+}
+
+.buy-btn {
+    padding: 10px;
+    background: #385399;
+    color: #fff;
     font-size: 18px;
+    border-radius: 3px;
+    border-color: #385399;
 }
-.product-variant-options span:hover{
-      color: #fff;
-      background-color: #385399;
-      cursor: pointer;
+
+.buy-btn:hover {
+    background-color: #fff;
+    color: #385399;
+    border: 1px solid #385399;
 }
-#desHead{
-    border-bottom: 1px solid #969696;
+
+.product-info h6 {
+    font-size: 16px;
+}
+
+/* description styles start*/
+.desContent {
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.desContent::-webkit-scrollbar {
+    display: none;
+    /* width of the entire scrollbar */
+}
+
+/* description styles end */
+#rpHead {
+    border-bottom: 1px solid #d2d2d2;
+}
+
+#rpHead span {
+    font-size: 22px;
+    background-color: #385399;
+    color: #fff;
+    padding: 4px 20px;
+    border-radius: 5px 5px 0px 0px;
 }

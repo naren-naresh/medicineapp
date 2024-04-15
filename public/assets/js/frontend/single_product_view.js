@@ -1,6 +1,6 @@
 //Initialize product gallery
 $(document).ready(function() {
-    $('.show').zoomImage(); // Adjust the selector according to your HTML structure
+    $('.showImage').zoomImage();
 });
 $('.show-small-img:first-of-type').css({'border': 'solid 1px #385399', 'padding': '2px'})
 $('.show-small-img:first-of-type').attr('alt', 'now').siblings().removeAttr('alt')
