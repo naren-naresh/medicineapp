@@ -22,9 +22,9 @@
             </div>
             <div class="col d-flex align-items-center justify-content-around">
                    <div class="sign">
-                        <a href="#">Sign In</a>
+                        <a href="#" class="btn" data-bs-toggle="modal" data-bs-target="#signModal"'>Sign In</a>
                         <span>|</span>
-                        <a href="#">Sign Up</a>
+                        <a href="#" class="btn" data-bs-toggle="modal" data-bs-target="#signUpModal"'>Sign Up</a>
                    </div>
                    <div class="cart">
                       <a href="#" class="d-flex align-items-center"><i class="fa fa-shopping-cart" style="color:#385399; font-size:1.7rem"></i><span></span> &nbsp;Cart</a>

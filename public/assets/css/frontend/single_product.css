@@ -144,7 +144,7 @@
 .product-info h6 {
     font-size: 16px;
 }
-.product-info {
+.product-info > div:not(.options-buy , .product-name , .product-variant-options) {
     opacity: .8;
 }
 /* description styles start*/
