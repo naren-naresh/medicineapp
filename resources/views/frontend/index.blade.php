@@ -53,8 +53,8 @@
                         <div class="col-3 p-card">
                             <div class="pc-con">
                                 <div class="pc-img">
-                                    <img
-                                        src="{{ asset('assets/images/products/' . $product->id . '/' . $product->cover_image . '') }}">
+                                   <a href="{{ route('single.product.view',$product->id) }}"> <img
+                                    src="{{ asset('assets/images/products/' . $product->id . '/' . $product->cover_image . '') }}"></a>
                                     <span><a href="#"><i class="far fa-heart"></i></a></span>
                                 </div>
                                 <div class="pc-text py-3">

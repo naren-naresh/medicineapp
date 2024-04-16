@@ -90,18 +90,19 @@
                                             ₹{{ $product->selling_price }}</span></div>
                                     @if ($product->variation_name)
                                         @foreach ($variantNames as $variantName)
-                                        <div class="product-variant pt-2">
-                                            {{ $variantName->variant }}
-                                        </div>
-                                        @php
-                                            $optionValues = $variantOptions->where('variant_option_id',$variantName->id) ?? [];
-                                        @endphp
-                                        <div class="product-variant-options row">
-                                            @foreach ($optionValues as $option)
-                                                <span class="p-3 p-1 mt-2"
-                                                    optionId={{ $option->id }}>{{ $option->variant_option_values }}</span>
-                                            @endforeach
-                                        </div>
+                                            <div class="product-variant pt-2" variantId ="{{ $variantName->id }}">
+                                                {{ $variantName->variant }}
+                                            </div>
+                                            @php
+                                                $optionValues =
+                                                    $variantOptions->where('variant_option_id', $variantName->id) ?? [];
+                                            @endphp
+                                            <div class="product-variant-options row">
+                                                @foreach ($optionValues as $option)
+                                                    <span class="p-3 p-1 mt-2"
+                                                        optionId="{{ $option->id }}">{{ $option->variant_option_values }}</span>
+                                                @endforeach
+                                            </div>
                                         @endforeach
                                     @endif
                                     <div class="quantity-option pt-3">
@@ -159,8 +160,8 @@
                                     <div class="p-card pt-5 col-3">
                                         <div class="pc-con">
                                             <div class="pc-img">
-                                                <img
-                                                    src="{{ asset('assets/images/products/' . $relatedProduct->id . '/' . $relatedProduct->cover_image . '') }}">
+                                                <a href="{{ route('single.product.view', $relatedProduct->id) }}"><img
+                                                    src="{{ asset('assets/images/products/' . $relatedProduct->id . '/' . $relatedProduct->cover_image . '') }}"></a>
                                                 <span class="heartSpan"><a href="#"><i
                                                             class="far fa-heart"></i></a></span>
                                             </div>

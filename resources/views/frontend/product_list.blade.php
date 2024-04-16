@@ -79,8 +79,8 @@
                                     <div class="p-card pt-5 col-3">
                                         <div class="pc-con">
                                             <div class="pc-img">
-                                                <img
-                                                    src="{{ asset('assets/images/products/' . $product->id . '/' . $product->cover_image . '') }}">
+                                                <a href="{{ route('single.product.view',$product->id)}}"><img
+                                                    src="{{ asset('assets/images/products/' . $product->id . '/' . $product->cover_image . '') }}"></a>
                                                 <span class="heartSpan"><a href="#"><i
                                                             class="far fa-heart"></i></a></span>
                                             </div>

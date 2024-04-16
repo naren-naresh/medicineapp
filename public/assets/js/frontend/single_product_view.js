@@ -152,7 +152,7 @@ $('#quantity').keypress(function () {
 });
 /** select variant options */
 $('.product-variant-options span').click(function () {
-    $('.product-variant-options span').removeClass('activeSelect');
+    $(this).siblings().removeClass('activeSelect');
     $(this).addClass('activeSelect');
 });
 /** postal check functionality */
