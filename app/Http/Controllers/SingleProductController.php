@@ -20,7 +20,9 @@ class SingleProductController extends Controller
             $thumbId = json_decode($tId->thumbnail_images) ?? [];
             $manufacturersId = $tId->manufacturer_id;
             $returnId = $tId->return_policy_id;
+            $catId = $tId->category_id;
         }
+        $data['relatedProducts'] = Product::where('category_id',$catId)->whereNotIn('id',[$id])->get();// get all related product from the category exclude current one.
         $data['manufacturers'] = Manufacturer::where('id',$manufacturersId)->get();
         $data['returnPolicies'] = ReturnPolicy :: where('id',$returnId)->get();
         $data['variantOptions'] = ProductVariantOptionValue::where('product_id',$id)->get();

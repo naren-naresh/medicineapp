@@ -8,11 +8,26 @@ a{
     text-decoration: none;
     color: black;
 }
+.error{
+    color: red;
+}
 .form-control:focus {
-    border-color: #ced4da; /* default B5 color or set your own color*/
-    border: none !important; /* if you want to remove borders at all*/
+    border-color: #ced4da;
+    border: none !important;
     outline: none !important;
     box-shadow: none !important;
+  }
+  #signModal .form-control{
+    border-radius: unset;
+  }
+  #signModal .form-control:focus {
+    border: 1px solid #385399 !important;
+  }
+  #signUpModal .form-control{
+    border-radius: unset;
+  }
+  #signUpModal .form-control:focus {
+    border: 1px solid #385399 !important;
   }
 .option-list a:hover{
     text-decoration: underline white;
@@ -44,6 +59,7 @@ a{
 /* header styling */
 .sign a{
    font-size: 17px;
+   padding: unset;
 }
 /* search field in header */
 .search-field input:focus{
@@ -311,3 +327,30 @@ a{
     font-size: 16px;
 }
 /* order block end */
+/* modal styling */
+.modal-heading .modal-title{
+    font-size: 22px;
+}
+.modal-body .form-group > div:not(input){
+    opacity: .7;
+}
+.modal-body .form-group i{
+    color: #385399;
+    font-size: 16px;
+}
+.buttons button{
+    background-color:#385399;
+    color:#fff;
+    font-size:16px
+}
+.forget-password{
+    opacity: .7;
+}
+.buttons button:hover{
+    background-color: #fff;
+    color:#385399;
+    border: 1px solid #385399 !important;
+}
+.form-group i{
+    cursor: pointer;
+}
