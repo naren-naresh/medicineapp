@@ -77,3 +77,6 @@ Route::post('search','HomePageController@search')->name('search');
 Route::post('postal_code','HomePageController@postalCheck')->name('postal');
 Route::get('product-category/{id?}','ProductListingController@index')->name('product_list');
 Route::get('single/{id?}','SingleProductController@index')->name('single.product.view');
+Route::post('postalCheck', 'SingleProductController@postalCodeCheck')->name('postalCheck');
+
+

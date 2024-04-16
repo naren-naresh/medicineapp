@@ -222,7 +222,7 @@ $("#postalChange").click(function (e) {
             required: true,
             minlength: 6,
             maxlength: 15,
-            equalTo: '#password',
+            equalTo: '#password1',
         },
     },
  });

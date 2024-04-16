@@ -99,7 +99,7 @@
                         </div>
                         <div class="row">
                             <div class="col pe-0 form-group position-relative">
-                                <input type="password"  class="form-control mt-2 py-3 password1" name="password" id="password" placeholder="Password*">
+                                <input type="password"  class="form-control mt-2 py-3 password1" name="password" id="password1" placeholder="Password*">
                                 <i class="fas fa-eye-slash position-absolute top-50 end-0 translate-middle-y pe-2" id="eyeIcon1"></i>
                             </div>
                             <div class="col form-group position-relative">

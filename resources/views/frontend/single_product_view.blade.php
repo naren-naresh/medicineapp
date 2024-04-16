@@ -60,6 +60,7 @@
                             <div class="product-detail">
                                 <div class="product-info">
                                     <div class="product-name">{{ $product->name }}</div>
+                                    <div class="sku pt-3">SKU - {{ $product->sku }}</div>
                                     <div class="manufacturer pt-3">
                                         <h6 class="mb-1">Manufacturer/Marketer</h6>
                                         @foreach ($manufacturers as $manufacturer)
@@ -88,80 +89,106 @@
                                             ₹{{ $product->retail_price }}</span><span id="sellingPrice">
                                             ₹{{ $product->selling_price }}</span></div>
                                     @if ($product->variation_name)
-                                        <div class="product-variant">
-                                            @php
-                                                $variantNames = json_decode($product->variation_name) ?? [];
-                                            @endphp
-                                            @foreach ($variantNames as $variantName)
-                                                {{ $variantName }}
+                                        @foreach ($variantNames as $variantName)
+                                        <div class="product-variant pt-2">
+                                            {{ $variantName->variant }}
                                         </div>
+                                        @php
+                                            $optionValues = $variantOptions->where('variant_option_id',$variantName->id) ?? [];
+                                        @endphp
                                         <div class="product-variant-options row">
-                                            @foreach ($variantOptions as $option)
-                                                <span class="p-3 p-1 mt-2">{{ $option->variant_option_values }}</span>
+                                            @foreach ($optionValues as $option)
+                                                <span class="p-3 p-1 mt-2"
+                                                    optionId={{ $option->id }}>{{ $option->variant_option_values }}</span>
                                             @endforeach
                                         </div>
-                                    @endforeach
-                @endif
-                <div class="options-buy row justify-content-center pt-5">
-                    <div class="buy-now col-6">
-                        <form action="" method="post">
-                            <input type="hidden" name="Product_id">
-                            <button type="submit" class="buy-btn form-control">Buy Now</button>
-                        </form>
-                    </div>
-                    <div class="add-cart col-6">
-                        <form action="" method="post">
-                            <input type="hidden" name="Product_id">
-                            <button type="submit" class="buy-btn form-control">Add to Cart</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-    </div>
-    </div>
-    </div>
-    <div class="product-description row pt-5">
-        <div class="container">
-            <h3 id="desHead"><span>Description</span></h3>
-            <div class="desContent py-4">
-                {!! $product->description !!}
-            </div>
-        </div>
-    </div>
-    <div class="related-products row pt-5">
-        <div class="container">
-            <h3 id="rpHead"><span>Related Products</span></h3>
-            <div class="rpContent row justify-content-center py-4">
-                @foreach ($relatedProducts as $relatedProduct)
-                    <div class="p-card pt-5 col-3">
-                        <div class="pc-con">
-                            <div class="pc-img">
-                                <img
-                                    src="{{ asset('assets/images/products/' . $relatedProduct->id . '/' . $relatedProduct->cover_image . '') }}">
-                                <span class="heartSpan"><a href="#"><i class="far fa-heart"></i></a></span>
-                            </div>
-                            <div class="pc-text py-3">
-                                <p class="pc-title"><a
-                                        href="{{ route('single.product.view', $relatedProduct->id) }}">{{ $relatedProduct->name }}</a>
-                                </p>
-                                <div class="price py-1">$ {{ $relatedProduct->selling_price }}</div>
-                                <span class="d-status text-success">Delivery available</span>
-                                <div class="pc-view pt-2">
-                                    <a href="{{ route('single.product.view', $relatedProduct->id) }}"
-                                        class="pc-btn">View</a>
+                                        @endforeach
+                                    @endif
+                                    <div class="quantity-option pt-3">
+                                        <h6 class="mb-2">Quantity</h6>
+                                        <div class="input-group d-flex align-items-center">
+                                            <button type="button" value="-" class="p-1 px-2 border"
+                                                id="minus">-</button>
+                                            <input type="text" name="quantity" id="quantity" class="p-1 text-center"
+                                                maxlength="5">
+                                            <button type="button" value="+" class="p-1 px-2 border"
+                                                id="plus">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="options-buy row justify-content-center pt-5">
+                                        <div class="buy-now col-6">
+                                            <form action="" method="post">
+                                                <input type="hidden" name="Product_id">
+                                                <button type="submit" class="buy-btn form-control">Buy Now</button>
+                                            </form>
+                                        </div>
+                                        <div class="add-cart col-6">
+                                            <form action="" method="post">
+                                                <input type="hidden" name="Product_id">
+                                                <button type="submit" class="buy-btn form-control">Add to Cart</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="delivery-availability pt-5 w-50">
+                                    <h6 class="mb-2">Delivery Address</h6>
+                                    <div class="input-group  d-flex align-items-center pt-1">
+                                        <input type="text" name="postalCode" id="postalCode" class="form-control w-75"
+                                            placeholder="Postal Code" onkeyup="process(this)" minlength="6"
+                                            maxlength="6">
+                                        <button type="button" class="w-25" id="postalCodeCheck">Check</button>
+                                        <span id="checkDisplay"></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                @endforeach
+                    <div class="product-description row pt-5">
+                        <div class="container">
+                            <h3 id="desHead"><span>Description</span></h3>
+                            <div class="desContent py-4">
+                                {!! $product->description !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="related-products row pt-5">
+                        <div class="container">
+                            <h3 id="rpHead"><span>Related Products</span></h3>
+                            <div class="rpContent row justify-content-center py-4">
+                                @foreach ($relatedProducts as $relatedProduct)
+                                    <div class="p-card pt-5 col-3">
+                                        <div class="pc-con">
+                                            <div class="pc-img">
+                                                <img
+                                                    src="{{ asset('assets/images/products/' . $relatedProduct->id . '/' . $relatedProduct->cover_image . '') }}">
+                                                <span class="heartSpan"><a href="#"><i
+                                                            class="far fa-heart"></i></a></span>
+                                            </div>
+                                            <div class="pc-text py-3">
+                                                <p class="pc-title"><a
+                                                        href="{{ route('single.product.view', $relatedProduct->id) }}">{{ $relatedProduct->name }}</a>
+                                                </p>
+                                                <div class="price py-1">$ {{ $relatedProduct->selling_price }}</div>
+                                                <span class="d-status text-success">Delivery available</span>
+                                                <div class="pc-view pt-2">
+                                                    <a href="{{ route('single.product.view', $relatedProduct->id) }}"
+                                                        class="pc-btn">View</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
             </div>
-        </div>
-    </div>
-    </div>
-    @endforeach
-    </section>
+            @endforeach
+        </section>
     </div>
     @pushOnce('frontend-scripts')
+        <script>
+            var DeliveryCode = "{{ route('postalCheck') }}";
+        </script>
         <script src="{{ asset('assets/js/frontend/zoom-in_image.js') }}"></script>
         <script src="{{ asset('assets/js/frontend/single_product_view.js') }}"></script>
     @endPushOnce
