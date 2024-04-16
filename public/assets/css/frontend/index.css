@@ -234,9 +234,11 @@ a{
   margin-left: 10px;
   border-top: 1px solid #cdcbcbee;
 }
+.pc-img{
+    height: 150px;
+}
 .pc-img img{
     width: 150px;
-    height: 150px;
     object-fit: contain;
 }
 /* control the product name length*/

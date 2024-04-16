@@ -133,3 +133,71 @@ $("#prev-img").click(function () {
         }
     }
 });
+/** quantity field logic */
+var x=1;
+$('#quantity').attr('value',x);
+$('.quantity-option #minus').click(function () {
+    if($('#quantity').val()>1){
+        $('#quantity').attr('value',--x);
+    }
+});
+$('.quantity-option #plus').click(function () {
+    $('#quantity').attr('value',++x);
+});
+$('#quantity').keypress(function () {
+    const currentValue = $(this).val();
+    let newValue = currentValue.replace(/[^0-9]/g, "");
+    newValue = Math.max(1, newValue);
+    $(this).val(newValue);
+});
+/** select variant options */
+$('.product-variant-options span').click(function () {
+    $('.product-variant-options span').removeClass('activeSelect');
+    $(this).addClass('activeSelect');
+});
+/** postal check functionality */
+/* csrf token*/
+$(function () {
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+    });
+});
+$('#postalCodeCheck').click(function () {
+    var postalCode = $('#postalCode').val();
+    if (postalCode.length >= 4) {
+        $.ajax({
+            type: 'post',
+            url: DeliveryCode,
+            data: {
+                postalCode: postalCode,
+            },
+            success: function(response) {
+              if (response.success) {
+                $('#checkDisplay').html(response.success);
+                $('#checkDisplay').removeClass('text-danger');
+                $('#checkDisplay').addClass('text-success');
+              }
+              if (response.error) {
+                $('#checkDisplay').html(response.error);
+                $('#checkDisplay').removeClass('text-success');
+                $('#checkDisplay').addClass('text-danger');
+              }
+            },
+        });
+    }else{
+        $('#checkDisplay').html('Postal code must contain four digits.');
+        $('#checkDisplay').removeClass('text-success');
+        $('#checkDisplay').addClass('text-danger');
+    }
+});
+// restrict price input fields
+function process(input) {
+    let value = input.value;
+    // Remove all non-numeric characters except the decimal point
+    let validNumber = value.replace(/[^\d.]/g, "");
+    // Ensure only one decimal point is present
+    let cleanedValue = validNumber.replace(/(\..*)\./g, "$1");
+    input.value = cleanedValue; // Update the input value
+}
