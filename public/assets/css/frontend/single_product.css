@@ -99,7 +99,7 @@
     color: #a5a5a5;
 }
 #price{
-    font-size: 18px;
+    font-size: 16px;
 }
 .product-variant-options span {
     border: 1px solid #385399;
@@ -109,7 +109,7 @@
 }
 
 .product-variant {
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .product-variant-options span:hover {

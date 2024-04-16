@@ -99,7 +99,7 @@
                                             @endphp
                                             <div class="product-variant-options row">
                                                 @foreach ($optionValues as $option)
-                                                    <span class="p-3 p-1 mt-2"
+                                                    <span class="p-1 mt-2"
                                                         optionId="{{ $option->id }}">{{ $option->variant_option_values }}</span>
                                                 @endforeach
                                             </div>
