@@ -190,3 +190,76 @@ $("#postalChange").click(function (e) {
         showCloseButton: true,
     });
 });
+/** signIn form validation */
+ $("#signInForm").validate({
+    rules:{
+        email: {
+            required: true,
+            email: true
+          },
+          password:{
+            required:true,
+            minlength:8,
+            maxlength:16,
+          }
+    },
+ });
+
+ /** signUp form validation */
+ $("#signUpForm").validate({
+    rules:{
+        firstName:"required",
+        email: {
+            required: true,
+            email: true
+          },
+          password:{
+            required:true,
+            minlength:8,
+            maxlength:16,
+          },
+          confirmPassword: {
+            required: true,
+            minlength: 6,
+            maxlength: 15,
+            equalTo: '#password',
+        },
+    },
+ });
+/** password hide and show  */
+ $('#eyeIcon').mousedown(function() {
+    $('.password').attr('type', 'text');
+    $(this).removeClass('fa-eye-slash');
+    $(this).addClass('fa-eye');
+
+});
+
+$('#eyeIcon').on('mouseup mouseleave', function() {
+    $('.password').attr('type', 'password');
+    $(this).addClass('fa-eye-slash');
+    $(this).removeClass('fa-eye');
+});
+/** singUp form */
+$('#eyeIcon1').mousedown(function() {
+    $('.password1').attr('type', 'text');
+    $(this).removeClass('fa-eye-slash');
+    $(this).addClass('fa-eye');
+});
+
+$('#eyeIcon1').on('mouseup mouseleave', function() {
+    $('.password1').attr('type', 'password');
+    $(this).addClass('fa-eye-slash');
+    $(this).removeClass('fa-eye');
+});
+/** confirm password  */
+$('#cIcon').mousedown(function() {
+    $('.confirmPassword').attr('type', 'text');
+    $(this).removeClass('fa-eye-slash');
+    $(this).addClass('fa-eye');
+});
+
+$('#cIcon').on('mouseup mouseleave', function() {
+    $('.confirmPassword').attr('type', 'password');
+    $(this).addClass('fa-eye-slash');
+    $(this).removeClass('fa-eye');
+});

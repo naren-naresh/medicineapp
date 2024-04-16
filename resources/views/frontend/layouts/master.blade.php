@@ -43,8 +43,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <button type="button" class="btn-close" aria-label="Close" style="position: absolute; top: 10px; right: 10px; z-index: 999;" data-bs-dismiss="modal"></button>
-                <div class="modal-body p-5 text-center">
-                      <div class="modal-heading">
+                <div class="modal-body p-5">
+                      <div class="modal-heading text-center">
                         <h5 class="modal-title" id="modelHeading">Sign In</h5>
                         <p>If you have an account with us, Please Sign In.</p>
                       </div>
@@ -56,8 +56,8 @@
                             <i class="fas fa-envelope position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                         </div>
                         <div class="form-group position-relative">
-                            <input type="password"  class="form-control mt-2 py-3" name="password" id="password" placeholder="Password">
-                            <i class="fas fa-lock position-absolute top-50 end-0 translate-middle-y pe-2"></i>
+                            <input type="password"  class="form-control mt-2 py-3 password" name="password" id="password" placeholder="Password">
+                            <i class="fas fa-eye-slash position-absolute top-50 end-0 translate-middle-y pe-2" id="eyeIcon"></i>
                         </div>
                         <div class="buttons my-2">
                             <button type="submit" name="save" id="save" class="form-control btn border py-2 my-1">LOGIN</button>
@@ -78,8 +78,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <button type="button" class="btn-close" aria-label="Close" style="position: absolute; top: 10px; right: 10px; z-index: 999;" data-bs-dismiss="modal"></button>
-                <div class="modal-body p-5 text-center">
-                      <div class="modal-heading">
+                <div class="modal-body p-5">
+                      <div class="modal-heading  text-center">
                         <h5 class="modal-title" id="modelHeading">Sign Up</h5>
                         <p>New Login</p>
                       </div>
@@ -88,10 +88,10 @@
                         <input type="hidden" name="id" id="id">
                         <div class="row mt-2">
                               <div class="col pe-0"><input type="text" class="form-control py-3" name="firstName" id="firstName" placeholder="First Name*"></div>
-                              <div class="col"><input type="text" class="form-control  py-3" name="lastName" id="lastName" placeholder="last Name*"></div>
+                              <div class="col"><input type="text" class="form-control  py-3" name="lastName" id="lastName" placeholder="last Name"></div>
                         </div>
                         <div class="form-group position-relative">
-                            <input type="email" class="form-control mt-2 py-3" name="email" id="email" placeholder="Email">
+                            <input type="email" class="form-control mt-2 py-3" name="email" id="email" placeholder="Email*">
                             <i class="fas fa-envelope position-absolute top-50 end-0 translate-middle-y pe-2"></i>
                         </div>
                         <div class="form-group mt-2">
@@ -99,12 +99,12 @@
                         </div>
                         <div class="row">
                             <div class="col pe-0 form-group position-relative">
-                                <input type="password"  class="form-control mt-2 py-3" name="password" id="password" placeholder="Password*">
-                                <i class="fas fa-lock position-absolute top-50 end-0 translate-middle-y pe-2"></i>
+                                <input type="password"  class="form-control mt-2 py-3 password1" name="password" id="password" placeholder="Password*">
+                                <i class="fas fa-eye-slash position-absolute top-50 end-0 translate-middle-y pe-2" id="eyeIcon1"></i>
                             </div>
                             <div class="col form-group position-relative">
-                                <input type="password"  class="form-control mt-2 py-3" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password *">
-                            <i class="fas fa-lock position-absolute top-50 end-0 translate-middle-y pe-4"></i>
+                                <input type="password"  class="form-control mt-2 py-3 confirmPassword" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password *">
+                            <i class="fas fa-eye-slash position-absolute top-50 end-0 translate-middle-y pe-4" id="cIcon"></i>
                             </div>
                         </div>
                         <div class="buttons my-2">
