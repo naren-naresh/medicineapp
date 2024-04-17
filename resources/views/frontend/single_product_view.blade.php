@@ -60,14 +60,14 @@
                             <div class="product-detail">
                                 <div class="product-info">
                                     <div class="product-name">{{ $product->name }}</div>
-                                    <div class="sku pt-3">SKU - {{ $product->sku }}</div>
-                                    <div class="manufacturer pt-3">
+                                    <div class="sku pt-2">SKU - {{ $product->sku }}</div>
+                                    <div class="manufacturer pt-2">
                                         <h6 class="mb-1">Manufacturer/Marketer</h6>
                                         @foreach ($manufacturers as $manufacturer)
                                             <div>{{ $manufacturer->company_name }}</div>
                                         @endforeach
                                     </div>
-                                    <div class="return-policy  pt-3">
+                                    <div class="return-policy  pt-2">
                                         <h6 class="mb-1">Return Policy</h6>
                                         @if ($product->return_policy_applicable == 1)
                                             @foreach ($returnPolicies as $returnType)
@@ -78,44 +78,57 @@
                                             <div>Not Returnable</div>
                                         @endif
                                     </div>
-                                    <div class="expiry-date pt-3">
+                                    <div class="expiry-date pt-2">
                                         <div>
                                             <h6 class="mb-1"> Expires on or after</h6>
                                             <div>{{ Carbon\Carbon::parse($product->expiry_date)->format('F j') }}</div>
                                         </div>
                                     </div>
-                                    <div class="product-price-discount"><span id="price">Price :</span>&nbsp;<span
+                                    <div class="product-price-discount p-0"><span id="price">Price :</span>&nbsp;<span
                                             class="line-through">
                                             ₹{{ $product->retail_price }}</span><span id="sellingPrice">
                                             ₹{{ $product->selling_price }}</span></div>
                                     @if ($product->variation_name)
                                         @foreach ($variantNames as $variantName)
-                                        <div class="product-variant pt-2">
-                                            {{ $variantName->variant }}
-                                        </div>
-                                        @php
-                                            $optionValues = $variantOptions->where('variant_option_id',$variantName->id) ?? [];
-                                        @endphp
-                                        <div class="product-variant-options row">
-                                            @foreach ($optionValues as $option)
-                                                <span class="p-3 p-1 mt-2"
-                                                    optionId={{ $option->id }}>{{ $option->variant_option_values }}</span>
-                                            @endforeach
-                                        </div>
+                                            <div class="product-variant pt-2" variantId ="{{ $variantName->id }}">
+                                               <h6> {{ $variantName->variant }}</h6>
+                                            </div>
+                                            @php
+                                                $optionValues =
+                                                    $variantOptions->where('variant_option_id', $variantName->id) ?? [];
+                                            @endphp
+                                            <div class="product-variant-options row">
+                                                @foreach ($optionValues as $option)
+                                                    <span class="p-1 mt-1"
+                                                        optionId="{{ $option->id }}">{{ $option->variant_option_values }}</span>
+                                                @endforeach
+                                            </div>
                                         @endforeach
                                     @endif
-                                    <div class="quantity-option pt-3">
-                                        <h6 class="mb-2">Quantity</h6>
-                                        <div class="input-group d-flex align-items-center">
-                                            <button type="button" value="-" class="p-1 px-2 border"
-                                                id="minus">-</button>
-                                            <input type="text" name="quantity" id="quantity" class="p-1 text-center"
-                                                maxlength="5">
-                                            <button type="button" value="+" class="p-1 px-2 border"
-                                                id="plus">+</button>
+                                    <div class="row quantity-deliveryAvailability pt-4  align-items-center">
+                                        <div class="quantity-option col-3">
+                                            <h6 class="mb-2">Quantity</h6>
+                                            <div class="input-group">
+                                                <button type="button" value="-" class="p-1 px-2 border"
+                                                    id="minus">-</button>
+                                                <input type="text" name="quantity" id="quantity" class="p-1 text-center"
+                                                    maxlength="5">
+                                                <button type="button" value="+" class="p-1 px-2 border"
+                                                    id="plus">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="delivery-availability col">
+                                            <h6 class="mb-1">Delivery Address</h6>
+                                            <div class="input-group pt-1 postalContent w-50">
+                                                <input type="text" name="postalCode" id="postalCode"
+                                                    class="form-control w-50" placeholder="Postal Code"
+                                                    onkeyup="process(this)" minlength="6" maxlength="6">
+                                                <button type="button" class="" id="postalCodeCheck" style="width: 70px">Check</button>
+                                                <span id="checkDisplay"></span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="options-buy row justify-content-center pt-5">
+                                    <div class="options-buy row justify-content-center pt-4">
                                         <div class="buy-now col-6">
                                             <form action="" method="post">
                                                 <input type="hidden" name="Product_id">
@@ -128,16 +141,6 @@
                                                 <button type="submit" class="buy-btn form-control">Add to Cart</button>
                                             </form>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="delivery-availability pt-5 w-50">
-                                    <h6 class="mb-2">Delivery Address</h6>
-                                    <div class="input-group  d-flex align-items-center pt-1">
-                                        <input type="text" name="postalCode" id="postalCode" class="form-control w-75"
-                                            placeholder="Postal Code" onkeyup="process(this)" minlength="6"
-                                            maxlength="6">
-                                        <button type="button" class="w-25" id="postalCodeCheck">Check</button>
-                                        <span id="checkDisplay"></span>
                                     </div>
                                 </div>
                             </div>
@@ -153,14 +156,15 @@
                     </div>
                     <div class="related-products row pt-5">
                         <div class="container">
+                            @if (count($relatedProducts) >1)
                             <h3 id="rpHead"><span>Related Products</span></h3>
                             <div class="rpContent row justify-content-center py-4">
                                 @foreach ($relatedProducts as $relatedProduct)
                                     <div class="p-card pt-5 col-3">
                                         <div class="pc-con">
                                             <div class="pc-img">
-                                                <img
-                                                    src="{{ asset('assets/images/products/' . $relatedProduct->id . '/' . $relatedProduct->cover_image . '') }}">
+                                                <a href="{{ route('single.product.view', $relatedProduct->id) }}"><img
+                                                        src="{{ asset('assets/images/products/' . $relatedProduct->id . '/' . $relatedProduct->cover_image . '') }}"></a>
                                                 <span class="heartSpan"><a href="#"><i
                                                             class="far fa-heart"></i></a></span>
                                             </div>
@@ -179,6 +183,7 @@
                                     </div>
                                 @endforeach
                             </div>
+                            @endif
                         </div>
                     </div>
             </div>

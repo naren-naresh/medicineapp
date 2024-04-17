@@ -131,6 +131,10 @@
     <script src="{{ asset('assets/js/frontend/index.js') }}"></script>
     <!-- sweet alert -->
     <script src="{{ asset('assets/plugins/sweetalter/sweetalter.js') }}"></script>
+    <script>
+        var search = "{{ route('search') }}";
+        var singleProductUrl = "{{ route('single.product.view',':id') }}";
+    </script>
     @stack('frontend-scripts')
 </body>
 
