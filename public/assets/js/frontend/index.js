@@ -84,8 +84,10 @@ $("#search-input").keyup(function () {
                 success: function (data) {
                     if (data.length > 0) {
                         data.forEach((element) => {
+                            console.log(element.category_id);
+                            var categoryUrl = singleProductUrl.replace(':id', element.id);
                             let content =
-                                `<li class ="py-1 px-2"><a href=''>` +
+                                `<li class ="py-1 px-2"><a href='`+categoryUrl+`'>` +
                                 element.name +
                                 `</a><li>`;
                             $(".search-result").append(content);

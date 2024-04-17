@@ -13,7 +13,6 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 250px;
-    /* Adjust as needed */
 }
 .breadcrumb .breadcrumb-item a{
     color: #385399;
@@ -100,6 +99,8 @@
 }
 #price{
     font-size: 16px;
+    font-weight: 500;
+    opacity:.8;
 }
 .product-variant-options span {
     border: 1px solid #385399;
@@ -147,8 +148,9 @@
 
 .product-info h6 {
     font-size: 16px;
+    opacity: .8;
 }
-.product-info > div:not(.options-buy , .product-name , .product-variant-options,.delivery-availability,.quantity-option) {
+.product-info > div:not(.options-buy , .product-name , .product-variant-options,.quantity-deliveryAvailability) {
     opacity: .8;
 }
 /* description styles start*/
@@ -207,7 +209,7 @@
     border: unset !important;
     border: 1px solid #385399 !important;
 }
-.form-control:focus{
+.delivery-availability .form-control:focus{
     border:1px solid #385399 !important;
     background-color: unset !important;
 }

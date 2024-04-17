@@ -104,7 +104,6 @@
         @push('frontend-scripts')
             <!-- routes url -->
             <script>
-                var search = "{{ route('search') }}";
                 var home = "{{ route('home') }}";
                 var brandLogo = "{{ asset('assets/images/logo.png') }}"
                 var success = "{{ asset('assets/frontend/images/successfully.png') }}"

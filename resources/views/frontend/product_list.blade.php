@@ -118,7 +118,6 @@
                     },
                 });
             });
-            var search = "{{ route('search') }}";
             $('#list-view').click(function() {
                 $('.p-card').removeClass('col-3');
                 $('.p-card').addClass('listView2');
