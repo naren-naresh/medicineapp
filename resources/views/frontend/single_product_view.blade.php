@@ -91,7 +91,7 @@
                                     @if ($product->variation_name)
                                         @foreach ($variantNames as $variantName)
                                             <div class="product-variant pt-2" variantId ="{{ $variantName->id }}">
-                                               <h6> {{ $variantName->variant }}</h6>
+                                                <h6> {{ $variantName->variant }}</h6>
                                             </div>
                                             @php
                                                 $optionValues =
@@ -105,7 +105,7 @@
                                             </div>
                                         @endforeach
                                     @endif
-                                    <div class="row quantity-deliveryAvailability pt-4  align-items-center">
+                                    <div class="row quantity-deliveryAvailability pt-4">
                                         <div class="quantity-option col-3">
                                             <h6 class="mb-2">Quantity</h6>
                                             <div class="input-group">
@@ -118,12 +118,13 @@
                                             </div>
                                         </div>
                                         <div class="delivery-availability col">
-                                            <h6 class="mb-1">Delivery Address</h6>
-                                            <div class="input-group pt-1 postalContent w-50">
+                                            <h6 class="mb-2">Delivery Address</h6>
+                                            <div class="input-group postalContent w-50">
                                                 <input type="text" name="postalCode" id="postalCode"
                                                     class="form-control w-50" placeholder="Postal Code"
                                                     onkeyup="process(this)" minlength="6" maxlength="6">
-                                                <button type="button" class="" id="postalCodeCheck" style="width: 70px">Check</button>
+                                                <button type="button" class="" id="postalCodeCheck"
+                                                    style="width: 70px">Check</button>
                                                 <span id="checkDisplay"></span>
                                             </div>
                                         </div>
@@ -154,38 +155,38 @@
                             </div>
                         </div>
                     </div>
-                    <div class="related-products row pt-5">
-                        <div class="container">
-                            @if (count($relatedProducts) >1)
-                            <h3 id="rpHead"><span>Related Products</span></h3>
-                            <div class="rpContent row justify-content-center py-4">
-                                @foreach ($relatedProducts as $relatedProduct)
-                                    <div class="p-card pt-5 col-3">
-                                        <div class="pc-con">
-                                            <div class="pc-img">
-                                                <a href="{{ route('single.product.view', $relatedProduct->id) }}"><img
-                                                        src="{{ asset('assets/images/products/' . $relatedProduct->id . '/' . $relatedProduct->cover_image . '') }}"></a>
-                                                <span class="heartSpan"><a href="#"><i
-                                                            class="far fa-heart"></i></a></span>
-                                            </div>
-                                            <div class="pc-text py-3">
-                                                <p class="pc-title"><a
-                                                        href="{{ route('single.product.view', $relatedProduct->id) }}">{{ $relatedProduct->name }}</a>
-                                                </p>
-                                                <div class="price py-1">$ {{ $relatedProduct->selling_price }}</div>
-                                                <span class="d-status text-success">Delivery available</span>
-                                                <div class="pc-view pt-2">
-                                                    <a href="{{ route('single.product.view', $relatedProduct->id) }}"
-                                                        class="pc-btn">View</a>
+                    @if (count($relatedProducts) > 1)
+                        <div class="related-products row pt-5">
+                            <div class="container">
+                                <h3 id="rpHead"><span>Related Products</span></h3>
+                                <div class="rpContent row justify-content-center py-4">
+                                    @foreach ($relatedProducts as $relatedProduct)
+                                        <div class="p-card pt-5 col-3">
+                                            <div class="pc-con">
+                                                <div class="pc-img">
+                                                    <a href="{{ route('single.product.view', $relatedProduct->id) }}"><img
+                                                            src="{{ asset('assets/images/products/' . $relatedProduct->id . '/' . $relatedProduct->cover_image . '') }}"></a>
+                                                    <span class="heartSpan"><a href="#"><i
+                                                                class="far fa-heart"></i></a></span>
+                                                </div>
+                                                <div class="pc-text py-3">
+                                                    <p class="pc-title"><a
+                                                            href="{{ route('single.product.view', $relatedProduct->id) }}">{{ $relatedProduct->name }}</a>
+                                                    </p>
+                                                    <div class="price py-1">$ {{ $relatedProduct->selling_price }}</div>
+                                                    <span class="d-status text-success">Delivery available</span>
+                                                    <div class="pc-view pt-2">
+                                                        <a href="{{ route('single.product.view', $relatedProduct->id) }}"
+                                                            class="pc-btn">View</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                @endforeach
+                                    @endforeach
+                                </div>
                             </div>
-                            @endif
                         </div>
-                    </div>
+                    @endif
             </div>
             @endforeach
         </section>
