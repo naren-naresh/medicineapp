@@ -105,7 +105,7 @@
                                             </div>
                                         @endforeach
                                     @endif
-                                    <div class="row quantity-deliveryAvailability pt-4  align-items-center">
+                                    <div class="row quantity-deliveryAvailability pt-4">
                                         <div class="quantity-option col-3">
                                             <h6 class="mb-2">Quantity</h6>
                                             <div class="input-group">
@@ -118,8 +118,8 @@
                                             </div>
                                         </div>
                                         <div class="delivery-availability col">
-                                            <h6 class="mb-1">Delivery Address</h6>
-                                            <div class="input-group pt-1 postalContent w-50">
+                                            <h6 class="mb-2">Delivery Address</h6>
+                                            <div class="input-group postalContent w-50">
                                                 <input type="text" name="postalCode" id="postalCode"
                                                     class="form-control w-50" placeholder="Postal Code"
                                                     onkeyup="process(this)" minlength="6" maxlength="6">
