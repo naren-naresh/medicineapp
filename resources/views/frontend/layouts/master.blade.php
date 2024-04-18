@@ -134,6 +134,8 @@
     <script>
         var search = "{{ route('search') }}";
         var singleProductUrl = "{{ route('single.product.view',':id') }}";
+        var brandLogo = "{{ asset('assets/images/logo.png') }}"
+        var image = "{{ asset('assets/images/products')}}"
     </script>
     @stack('frontend-scripts')
 </body>
