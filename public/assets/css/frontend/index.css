@@ -77,13 +77,13 @@ a{
     transition: all .3s;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
-.search-result li:hover{
-    background-color: #385399;
-    color: #fff;
-    border-left: 2.5px solid rgb(109, 226, 175);
+.search-result li:not(img):hover{
+    /* background-color: #385399; */
+    color:  #385399;
+    border-left: 2.5px solid #385399;
 }
 .search-result a:hover{
-    color: white;
+    color:  #385399;
 }
 /* navbar styling end */
 /* footer styles */
@@ -247,6 +247,12 @@ a{
     white-space: nowrap;
     text-overflow: ellipsis;
     max-width: 100%;
+}
+.search-result li {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 450px;
 }
 .pc-title a{
      color: #646464;

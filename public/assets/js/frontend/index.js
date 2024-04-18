@@ -73,7 +73,7 @@ $("#search-input").keyup(function () {
     // Clear previous results
     $(".search-result").empty();
 
-    if (searchData.length >= 1) {
+    if (searchData.length >= 2) {
         typingTimer = setTimeout(function () {
             $.ajax({
                 type: "post",
@@ -86,8 +86,9 @@ $("#search-input").keyup(function () {
                         data.forEach((element) => {
                             console.log(element.category_id);
                             var categoryUrl = singleProductUrl.replace(':id', element.id);
+                            var imageUrl = image+'/'+element.id+''+'/'+element.cover_image+'';
                             let content =
-                                `<li class ="py-1 px-2"><a href='`+categoryUrl+`'>` +
+                                `<li class ="py-1 px-2"><img src="`+imageUrl+`" style='width:25px; padding-right:2px;'><a href='`+categoryUrl+`'>` +
                                 element.name +
                                 `</a><li>`;
                             $(".search-result").append(content);

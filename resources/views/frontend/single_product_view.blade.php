@@ -97,7 +97,7 @@
                                                 $optionValues =
                                                     $variantOptions->where('variant_option_id', $variantName->id) ?? [];
                                             @endphp
-                                            <div class="product-variant-options row">
+                                            <div class="product-variant-options row" variantId="{{ $variantName->id }}">
                                                 @foreach ($optionValues as $option)
                                                     <span class="p-1 mt-1"
                                                         optionId="{{ $option->id }}">{{ $option->variant_option_values }}</span>
@@ -122,7 +122,7 @@
                                             <div class="input-group postalContent w-50">
                                                 <input type="text" name="postalCode" id="postalCode"
                                                     class="form-control w-50" placeholder="Postal Code"
-                                                    onkeyup="process(this)" minlength="6" maxlength="6">
+                                                    onkeyup="process(this)" minlength="6" maxlength="6" value="{{session()->get('postal_code')}}">
                                                 <button type="button" class="" id="postalCodeCheck"
                                                     style="width: 70px">Check</button>
                                                 <span id="checkDisplay"></span>
@@ -131,16 +131,16 @@
                                     </div>
                                     <div class="options-buy row justify-content-center pt-4">
                                         <div class="buy-now col-6">
-                                            <form action="" method="post">
-                                                <input type="hidden" name="Product_id">
-                                                <button type="submit" class="buy-btn form-control">Buy Now</button>
-                                            </form>
+                                            {{-- <form action="" method="post"> --}}
+                                                {{-- <input type="hidden" name="Product_id"> --}}
+                                                <button type="submit" class="buy-btn form-control" productId ="{{ $product->id }}">Buy Now</button>
+                                            {{-- </form> --}}
                                         </div>
                                         <div class="add-cart col-6">
-                                            <form action="" method="post">
-                                                <input type="hidden" name="Product_id">
-                                                <button type="submit" class="buy-btn form-control">Add to Cart</button>
-                                            </form>
+                                            {{-- <form action="" method="post"> --}}
+                                                {{-- <input type="hidden" name="Product_id"> --}}
+                                                <button type="button" class="buy-btn form-control" id="addToCart" productId ="{{ $product->id }}">Add to Cart</button>
+                                            {{-- </form> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -194,6 +194,7 @@
     @pushOnce('frontend-scripts')
         <script>
             var DeliveryCode = "{{ route('postalCheck') }}";
+            var Cart = "{{ route('cart.index' )}}";
         </script>
         <script src="{{ asset('assets/js/frontend/zoom-in_image.js') }}"></script>
         <script src="{{ asset('assets/js/frontend/single_product_view.js') }}"></script>
