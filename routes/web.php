@@ -85,5 +85,6 @@ Route::get('single/{id?}','SingleProductController@index')->name('single.product
 Route::post('postalCheck', 'SingleProductController@postalCodeCheck')->name('postalCheck');
 /** cart route  */
 Route::get('cart','CartController@index')->name('cart.index');
+Route::post('cart-details','CartController@cartDetails')->name('cart.details');
 
 

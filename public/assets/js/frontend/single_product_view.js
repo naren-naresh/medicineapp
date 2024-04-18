@@ -232,14 +232,14 @@ $('.product-variant-options span').on('click', function() {
 });
 
 // add to cart ajax call
-$("#addToCart").click(function () {
+$("#addToCart").click(function (e) {
     let productId = $(this).attr("productId");
     let quantity = $('#quantity').val();
     let zoneId = $('#postalCode').val();
-    if (variantCount == variantOptionData.length) {
+    if (variantCount === variantOptionData.length) {
         // console.log(variantOptionData);
         $.ajax({
-            type: "get",
+            type: "post",
             url: Cart,
             data: {
                 product_id : productId,
@@ -248,10 +248,11 @@ $("#addToCart").click(function () {
                 zone_id : zoneId,
             },
             success: function (response) {
-              console.log(response.data);
+              console.log(response);
             }
         });
     }else{
         alert('please select the options properly');
+        e.preventDefault()
     }
 });

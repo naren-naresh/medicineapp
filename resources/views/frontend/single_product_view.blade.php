@@ -99,7 +99,7 @@
                                             @endphp
                                             <div class="product-variant-options row" variantId="{{ $variantName->id }}">
                                                 @foreach ($optionValues as $option)
-                                                    <span class="p-1 mt-1"
+                                                    <span class="p-1 mt-1 d-flex align-items-center justify-content-center"
                                                         optionId="{{ $option->id }}">{{ $option->variant_option_values }}</span>
                                                 @endforeach
                                             </div>
@@ -131,16 +131,10 @@
                                     </div>
                                     <div class="options-buy row justify-content-center pt-4">
                                         <div class="buy-now col-6">
-                                            {{-- <form action="" method="post"> --}}
-                                                {{-- <input type="hidden" name="Product_id"> --}}
-                                                <button type="submit" class="buy-btn form-control" productId ="{{ $product->id }}">Buy Now</button>
-                                            {{-- </form> --}}
+                                                <button type="button" class="buy-btn form-control" productId ="{{ $product->id }}">Buy Now</button>
                                         </div>
                                         <div class="add-cart col-6">
-                                            {{-- <form action="" method="post"> --}}
-                                                {{-- <input type="hidden" name="Product_id"> --}}
-                                                <button type="button" class="buy-btn form-control" id="addToCart" productId ="{{ $product->id }}">Add to Cart</button>
-                                            {{-- </form> --}}
+                                                <button type="button" class="buy-btn btn form-control" id="addToCart" productId ="{{ $product->id }}">Add to Cart</button>
                                         </div>
                                     </div>
                                 </div>
@@ -194,7 +188,7 @@
     @pushOnce('frontend-scripts')
         <script>
             var DeliveryCode = "{{ route('postalCheck') }}";
-            var Cart = "{{ route('cart.index' )}}";
+            var Cart = "{{ route('cart.details')}}";
         </script>
         <script src="{{ asset('assets/js/frontend/zoom-in_image.js') }}"></script>
         <script src="{{ asset('assets/js/frontend/single_product_view.js') }}"></script>
