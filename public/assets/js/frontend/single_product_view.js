@@ -134,26 +134,26 @@ $("#prev-img").click(function () {
     }
 });
 /** quantity field logic */
-var x=1;
-$('#quantity').attr('value',x);
-$('.quantity-option #minus').click(function () {
-    if($('#quantity').val()>1){
-        $('#quantity').attr('value',--x);
+var x = 1;
+$("#quantity").attr("value", x);
+$(".quantity-option #minus").click(function () {
+    if ($("#quantity").val() > 1) {
+        $("#quantity").attr("value", --x);
     }
 });
-$('.quantity-option #plus').click(function () {
-    $('#quantity').attr('value',++x);
+$(".quantity-option #plus").click(function () {
+    $("#quantity").attr("value", ++x);
 });
-$('#quantity').keypress(function () {
+$("#quantity").keypress(function () {
     const currentValue = $(this).val();
     let newValue = currentValue.replace(/[^0-9]/g, "");
     newValue = Math.max(1, newValue);
     $(this).val(newValue);
 });
 /** select variant options */
-$('.product-variant-options span').click(function () {
-    $(this).siblings().removeClass('activeSelect');
-    $(this).addClass('activeSelect');
+$(".product-variant-options span").click(function () {
+    $(this).siblings().removeClass("activeSelect");
+    $(this).addClass("activeSelect");
 });
 /** postal check functionality */
 /* csrf token*/
@@ -164,32 +164,32 @@ $(function () {
         },
     });
 });
-$('#postalCodeCheck').click(function () {
-    var postalCode = $('#postalCode').val();
+$("#postalCodeCheck").click(function () {
+    var postalCode = $("#postalCode").val();
     if (postalCode.length >= 4) {
         $.ajax({
-            type: 'post',
+            type: "post",
             url: DeliveryCode,
             data: {
                 postalCode: postalCode,
             },
-            success: function(response) {
-              if (response.success) {
-                $('#checkDisplay').html(response.success);
-                $('#checkDisplay').removeClass('text-danger');
-                $('#checkDisplay').addClass('text-success');
-              }
-              if (response.error) {
-                $('#checkDisplay').html(response.error);
-                $('#checkDisplay').removeClass('text-success');
-                $('#checkDisplay').addClass('text-danger');
-              }
+            success: function (response) {
+                if (response.success) {
+                    $("#checkDisplay").html(response.success);
+                    $("#checkDisplay").removeClass("text-danger");
+                    $("#checkDisplay").addClass("text-success");
+                }
+                if (response.error) {
+                    $("#checkDisplay").html(response.error);
+                    $("#checkDisplay").removeClass("text-success");
+                    $("#checkDisplay").addClass("text-danger");
+                }
             },
         });
-    }else{
-        $('#checkDisplay').html('Postal code must contain four digits.');
-        $('#checkDisplay').removeClass('text-success');
-        $('#checkDisplay').addClass('text-danger');
+    } else {
+        $("#checkDisplay").html("Postal code must contain four digits.");
+        $("#checkDisplay").removeClass("text-success");
+        $("#checkDisplay").addClass("text-danger");
     }
 });
 // restrict price input fields
@@ -201,3 +201,57 @@ function process(input) {
     let cleanedValue = validNumber.replace(/(\..*)\./g, "$1");
     input.value = cleanedValue; // Update the input value
 }
+
+
+let variantCount = $(".product-variant").length;
+let variantOptionData = [];
+$('.product-variant-options span').on('click', function() {
+    let variantOptionDataObject = {};
+    var variantId = $(this).parent().attr('variantId');
+    var optionId = $(this).attr("optionId");
+    let existingIndex = variantOptionData.findIndex(item => item.variant_id === variantId); // find the index of current variant_id using arrow function
+
+    if ($(this).hasClass('activeSelect')) {
+        if (existingIndex !== -1) {
+            // Update existing object
+            variantOptionData[existingIndex].optionId = optionId;
+        } else {
+            // Create new object values
+             variantOptionDataObject = {
+                variant_id: variantId,
+                optionId: optionId
+            };
+            variantOptionData.push(variantOptionDataObject);
+        }
+    } else {
+        // Remove the object from the array if option is deselected
+        if (existingIndex !== -1) {
+            variantOptionData.splice(existingIndex, 1);
+        }
+    }
+});
+
+// add to cart ajax call
+$("#addToCart").click(function () {
+    let productId = $(this).attr("productId");
+    let quantity = $('#quantity').val();
+    let zoneId = $('#postalCode').val();
+    if (variantCount == variantOptionData.length) {
+        // console.log(variantOptionData);
+        $.ajax({
+            type: "get",
+            url: Cart,
+            data: {
+                product_id : productId,
+                variants_data : variantOptionData,
+                quantity : quantity,
+                zone_id : zoneId,
+            },
+            success: function (response) {
+              console.log(response.data);
+            }
+        });
+    }else{
+        alert('please select the options properly');
+    }
+});

@@ -73,10 +73,17 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
 });
 /** Frontend routes  */
 Route::get('home', 'HomePageController@index')->name('home');
+/** search field route */
 Route::post('search','HomePageController@search')->name('search');
+/** postal code popup route */
 Route::post('postal_code','HomePageController@postalCheck')->name('postal');
+/** product category listing page route */
 Route::get('product-category/{id?}','ProductListingController@index')->name('product_list');
+/** single product listing page route */
 Route::get('single/{id?}','SingleProductController@index')->name('single.product.view');
+/** postal check route  */
 Route::post('postalCheck', 'SingleProductController@postalCodeCheck')->name('postalCheck');
+/** cart route  */
+Route::get('cart','CartController@index')->name('cart.index');
 
 
