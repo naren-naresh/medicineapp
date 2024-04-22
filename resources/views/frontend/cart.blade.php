@@ -10,30 +10,43 @@
                 <div class="col-8 product-details-section">
                     <div class="cart-items">
                         <h3>item added</h3>
-                        @foreach ($productDetails as $detail)
+                        {{-- @foreach ($cartItems as $detail) --}}
+                            @foreach ($productDetails as $productDetail)
                             <div class="row justify-content-between align-items-center py-2">
                                 <div class="col-2 product-image">
-                                    <img src="{{ asset('assets/images/products/' . $detail->id . '/' . $detail->cover_image . '') }}">
+                                    <img src="{{ asset('assets/images/products/' . $productDetail->id . '/' . $productDetail->cover_image . '') }}" class="w-100">
                                 </div>
+                                @php
+                                    $productQuantity = $cartItems->where('product_id',$productDetail->id);
+                                @endphp
                                 <div class="col-6 product-content">
-                                    <div class="product-name">{{$detail->name}}</div>
-                                    <div class="quantity-div">
+                                    <div class="product-name">{{ $productDetail->name }}</div>
+                                    <div class="quantity-div pt-2">
+                                        @foreach ($productQuantity as $quantity)
                                         <div class="input-group">
                                             <button type="button" value="-" class="p-1 px-2 border"
                                                 id="minus">-</button>
                                             <input type="text" name="quantity" id="quantity" class="p-1 text-center"
-                                                maxlength="5">
+                                                maxlength="5" value="{{ $quantity->quantity }}">
                                             <button type="button" value="+" class="p-1 px-2 border"
                                                 id="plus">+</button>
                                         </div>
+                                        @endforeach
                                     </div>
                                 </div>
                                 <div class="col-2 product-price">
-                                    <div class=""><i class="fa fa-close cancel-btn"></i></div>
-                                    <div class="price">MRP ₹<span></span></div>
+                                        <div class=""><i class="fa fa-close cancel-btn"></i></div>
+                                        <div class="price">MRP ₹<span>{{ $productDetail->selling_price}}</span></div>
+                                    @if (!empty($variant_details))
+                                    @foreach ($variant_details as $variantDetail)
+                                        <div class=""><i class="fa fa-close cancel-btn"></i></div>
+                                        <div class="price">MRP ₹<span>{{ $variantDetail->selling_price}}</span></div>
+                                    @endforeach
+                                    @endif
                                 </div>
                             </div>
-                        @endforeach
+                            @endforeach
+                        {{-- @endforeach --}}
                     </div>
                 </div>
                 <div class="col-4 billing-details-section">

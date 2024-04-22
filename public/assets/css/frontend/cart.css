@@ -13,7 +13,7 @@
 }
 .cart-items .row{
     border: solid #969696;
-    border-width: 1px 0px;
+    border-width: 0px 0px 1px 0px;
     margin:0;
 }
 .page-heading{
