@@ -19,21 +19,22 @@ class CartController extends Controller
       $VariantGroup = ProductVariantGroup::select('product_variant_id');
       $count = count($variantData);
       foreach ($variantData as $variantValue) {
-        $variantCheck = $VariantGroup->orWhere(function($query)use ($variantValue){
-              $query->where('product_variant_id',$variantValue['variant_id'])->where('product_variant_option_id',$variantValue['optionId']);
+        $VariantGroup->orWhere(function($query) use ($variantValue){
+              $query->where('product_variant_option_id',$variantValue['variant_id'])->where('product_variant_option_value_id',$variantValue['optionId']);
         });
       }
       $VariantGroup->groupBy('product_variant_id')->havingRaw('count(product_variant_id) = ?',[$count]);
-      $variant_id = $VariantGroup->value('Product_variant_id');
-      if (!empty($variant_id)) {
-         $variant_details = ProductVariant::where('id',$variant_id)->where('status',1)->first();
+      $variantId = $VariantGroup->value('product_variant_id');
+      if (!empty($variantId)) {
+         $variant_details = ProductVariant::where('id',$variantId)->where('status',1)->first();
          $data['retail_price'] = $variant_details->retail_price ?? 0;
          $data['selling_price'] = $variant_details->selling_price ?? 0;
          $data['stock'] = $variant_details->stock ?? 0;
          $data['threshold_qty'] = $variant_details->threshold_qty ?? 0;
          $data['sku'] = $variant_details->sku ?? 0;
+      }else{
+        $data['product_details'] = Product::where('id',$request->product_id)->get();
       }
-      dd($variantData);
-      return response('success');
+      return response(['success'=> true, 'data' => $data]);
     }
 }

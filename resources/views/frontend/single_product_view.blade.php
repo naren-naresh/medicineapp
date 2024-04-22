@@ -25,10 +25,10 @@
         </div>
         <!-- single product view block-->
         <section class="product-view-section">
-            <div class="container py-5">
+            <div class="container pt-1 pb-5">
                 @foreach ($products as $product)
                     <div class="row">
-                        <div class="col-md-6" id="images-div">
+                        <div class="col-md-4" id="images-div">
                             <div class="row">
                                 <!-- product thumbnail images -->
                                 @if (count($thumbnailImages) > 0)
@@ -56,7 +56,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6" id="detail-div">
+                        <div class="col-md-4" id="detail-div">
                             <div class="product-detail">
                                 <div class="product-info">
                                     <div class="product-name">{{ $product->name }}</div>
@@ -84,59 +84,63 @@
                                             <div>{{ Carbon\Carbon::parse($product->expiry_date)->format('F j') }}</div>
                                         </div>
                                     </div>
-                                    <div class="product-price-discount p-0"><span id="price">Price :</span>&nbsp;<span
-                                            class="line-through">
-                                            ₹{{ $product->retail_price }}</span><span id="sellingPrice">
-                                            ₹{{ $product->selling_price }}</span></div>
-                                    @if ($product->variation_name)
-                                        @foreach ($variantNames as $variantName)
-                                            <div class="product-variant pt-2" variantId ="{{ $variantName->id }}">
-                                                <h6> {{ $variantName->variant }}</h6>
-                                            </div>
-                                            @php
-                                                $optionValues =
-                                                    $variantOptions->where('variant_option_id', $variantName->id) ?? [];
-                                            @endphp
-                                            <div class="product-variant-options row" variantId="{{ $variantName->id }}">
-                                                @foreach ($optionValues as $option)
-                                                    <span class="p-1 mt-1 d-flex align-items-center justify-content-center"
-                                                        optionId="{{ $option->id }}">{{ $option->variant_option_values }}</span>
-                                                @endforeach
-                                            </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 product-info">
+                            <div class="product-price-discount p-0"><span id="price">Price :</span>&nbsp;<span
+                                    class="line-through">
+                                    ₹{{ $product->retail_price }}</span><span id="sellingPrice">
+                                    ₹{{ $product->selling_price }}</span></div>
+                            @if ($product->variation_name)
+                                @foreach ($variantNames as $variantName)
+                                    <div class="product-variant pt-3" variantId ="{{ $variantName->id }}">
+                                        <h6> {{ $variantName->variant }}</h6>
+                                    </div>
+                                    @php
+                                        $optionValues =
+                                            $variantOptions->where('variant_option_id', $variantName->id) ?? [];
+                                    @endphp
+                                    <div class="product-variant-options row" variantId="{{ $variantName->id }}">
+                                        @foreach ($optionValues as $option)
+                                            <span class="p-1 mt-1 d-flex align-items-center justify-content-center"
+                                                optionId="{{ $option->id }}">{{ $option->variant_option_values }}</span>
                                         @endforeach
-                                    @endif
-                                    <div class="row quantity-deliveryAvailability pt-4">
-                                        <div class="quantity-option col-3">
-                                            <h6 class="mb-2">Quantity</h6>
-                                            <div class="input-group">
-                                                <button type="button" value="-" class="p-1 px-2 border"
-                                                    id="minus">-</button>
-                                                <input type="text" name="quantity" id="quantity" class="p-1 text-center"
-                                                    maxlength="5">
-                                                <button type="button" value="+" class="p-1 px-2 border"
-                                                    id="plus">+</button>
-                                            </div>
-                                        </div>
-                                        <div class="delivery-availability col">
-                                            <h6 class="mb-2">Delivery Address</h6>
-                                            <div class="input-group postalContent w-50">
-                                                <input type="text" name="postalCode" id="postalCode"
-                                                    class="form-control w-50" placeholder="Postal Code"
-                                                    onkeyup="process(this)" minlength="6" maxlength="6" value="{{session()->get('postal_code')}}">
-                                                <button type="button" class="" id="postalCodeCheck"
-                                                    style="width: 70px">Check</button>
-                                                <span id="checkDisplay"></span>
-                                            </div>
-                                        </div>
                                     </div>
-                                    <div class="options-buy row justify-content-center pt-4">
-                                        <div class="buy-now col-6">
-                                                <button type="button" class="buy-btn form-control" productId ="{{ $product->id }}">Buy Now</button>
-                                        </div>
-                                        <div class="add-cart col-6">
-                                                <button type="button" class="buy-btn btn form-control" id="addToCart" productId ="{{ $product->id }}">Add to Cart</button>
-                                        </div>
+                                @endforeach
+                            @endif
+                            <div class="row quantity-deliveryAvailability pt-3">
+                                <div class="quantity-option">
+                                    <h6 class="mb-2">Quantity</h6>
+                                    <div class="input-group">
+                                        <button type="button" value="-" class="p-1 px-2 border"
+                                            id="minus">-</button>
+                                        <input type="text" name="quantity" id="quantity" class="p-1 text-center"
+                                            maxlength="5">
+                                        <button type="button" value="+" class="p-1 px-2 border"
+                                            id="plus">+</button>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="delivery-availability pt-3">
+                                <h6 class="mb-2">Delivery Address</h6>
+                                <div class="input-group postalContent w-50">
+                                    <input type="text" name="postalCode" id="postalCode" class="form-control w-50"
+                                        placeholder="Postal Code" onkeyup="process(this)" minlength="6" maxlength="6"
+                                        value="{{ session()->get('postal_code') }}">
+                                    <button type="button" class="" id="postalCodeCheck"
+                                        style="width: 70px">Check</button>
+                                    <span id="checkDisplay"></span>
+                                </div>
+                            </div>
+                            <div class="options-buy row justify-content-center pt-4">
+                                <div class="buy-now col-6">
+                                    <button type="button" class="buy-btn form-control"
+                                        productId ="{{ $product->id }}">Buy Now</button>
+                                </div>
+                                <div class="add-cart col-6">
+                                    <button type="button" class="buy-btn btn form-control" id="addToCart"
+                                        productId ="{{ $product->id }}">Add to Cart</button>
                                 </div>
                             </div>
                         </div>
@@ -188,7 +192,7 @@
     @pushOnce('frontend-scripts')
         <script>
             var DeliveryCode = "{{ route('postalCheck') }}";
-            var Cart = "{{ route('cart.details')}}";
+            var Cart = "{{ route('cart.details') }}";
         </script>
         <script src="{{ asset('assets/js/frontend/zoom-in_image.js') }}"></script>
         <script src="{{ asset('assets/js/frontend/single_product_view.js') }}"></script>
