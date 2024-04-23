@@ -15,9 +15,10 @@ class CartController extends Controller
       $data['categories'] = Category::where('parent_category_id',null)->limit(6)->get();
       $data['cartItems'] = Cart::where('customer_id', auth()->id())->get();
       foreach ($data['cartItems'] as $value) {
-        $data['variant_details'] = ProductVariant::where('id',$value->variant_id)->where('status',1)->where('product_id',$value->product_id)->get();
+        $variantIds[] = $value->variant_id;
         $productIds[] = $value->product_id;
       }
+      $data['variant_details'] = ProductVariant::whereIn('id',$variantIds)->where('status',1)->get();
       $data['productDetails'] = Product::whereIn('id',$productIds)->get();
       return view('frontend.cart',$data);
     }
