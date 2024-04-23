@@ -18,8 +18,12 @@ class CartController extends Controller
         $variantIds[] = $value->variant_id;
         $productIds[] = $value->product_id;
       }
-      $data['variant_details'] = ProductVariant::whereIn('id',$variantIds)->where('status',1)->get();
-      $data['productDetails'] = Product::whereIn('id',$productIds)->get();
+      if (!empty( $variantIds) && !empty($productIds)) {
+        $data['variant_details'] = ProductVariant::whereIn('id',$variantIds)->where('status',1)->get();
+        $data['productDetails'] = Product::whereIn('id',$productIds)->get();
+      }else{
+        $data['productDetails'] = [];
+      }
       return view('frontend.cart',$data);
     }
     public function cartDetails(Request $request){
@@ -56,4 +60,12 @@ class CartController extends Controller
     //   }
       return response(['success'=> true, 'data' => $data]);
     }
+     /** delete product from cart */
+     public function destroy(Request $request)
+     {
+         if ($request->ajax()) {
+             Cart::where('product_id',$request->productId)->delete();
+             return response()->json(['success' => 'Product deleted successfully.']);
+         }
+     }
 }

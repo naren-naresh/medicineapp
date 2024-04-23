@@ -1,46 +1,87 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-size: 14px;
 }
-.main-cart-section{
-    height: 100vh;
+
+.main-cart-section {
+    height: 100%;
 }
-.product-details-section{
+
+.product-details-section {
     border: solid #969696;
     border-width: 0px 1px 0px 0px;
 }
-.cart-items .row{
+
+.cart-items .mainRow {
     border: solid #969696;
     border-width: 0px 0px 1px 0px;
 }
-.page-heading{
+
+.page-heading {
     color: #385399;
 }
-.cart-items h3{
+
+.cart-items h4 {
     color: #385399;
 }
-.product-image{
+
+.product-image {
     border-right: 1px solid #969696;
 }
-.quantity-div input{
-    border:1px solid #385399;
+
+.quantity-div input {
+    border: 1px solid #385399;
     width: 70px;
- }
- .quantity-div input:focus-visible{
-     outline: unset !important;
- }
- .quantity-div button{
-     border:1px solid #385399  !important;
-     background-color: #385399;
-     color: #fff;
- }
-.total-pay{
+}
+
+.quantity-div input:focus-visible {
+    outline: unset !important;
+}
+
+.quantity-div button {
+    border: 1px solid #385399 !important;
+    background-color: #385399;
+    color: #fff;
+}
+
+.total-pay {
     border-top: 1px solid #969696;
     margin: 0;
     padding-top: 5px;
 }
-.product-price .fa-close{
- cursor: pointer;
+.product-name {
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.product-price .fa-close {
+    font-size: 21px;
+    cursor: pointer;
+    color: #385399;
+}
+
+.price {
+    font-size: 12px;
+    color: #385399;
+}
+
+.price span {
+    font-size: 16px;
+}
+
+.bill-summary span {
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.discount .col-2 {
+    color: #00D2A6;
+}
+
+.total-pay span {
+    font-weight: 600;
+    font-size: 16px;
 }
