@@ -136,6 +136,7 @@
         var singleProductUrl = "{{ route('single.product.view',':id') }}";
         var brandLogo = "{{ asset('assets/images/logo.png') }}"
         var image = "{{ asset('assets/images/products')}}"
+        var postalCheck = "{{ route('postal') }}"
     </script>
     @stack('frontend-scripts')
 </body>

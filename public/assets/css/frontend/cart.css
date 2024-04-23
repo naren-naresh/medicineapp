@@ -9,12 +9,11 @@
 }
 .product-details-section{
     border: solid #969696;
-    border-width: 0px 1px;
+    border-width: 0px 1px 0px 0px;
 }
 .cart-items .row{
     border: solid #969696;
     border-width: 0px 0px 1px 0px;
-    margin:0;
 }
 .page-heading{
     color: #385399;
@@ -41,4 +40,7 @@
     border-top: 1px solid #969696;
     margin: 0;
     padding-top: 5px;
+}
+.product-price .fa-close{
+ cursor: pointer;
 }
