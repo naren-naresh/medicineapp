@@ -15,5 +15,16 @@ $("#quantity").keypress(function () {
     $(this).val(newValue);
 });
 $('.cancel-btn').click(function () {
-   $(this).parent().closest('.row').remove();
+    var productId = $(this).parent().attr('productId');
+  $.ajax({
+    type: "post",
+    url: destroy,
+    data:{
+        productId : productId,
+    },
+    success: function (response) {
+        console.log(response.success);
+    }
+  });
+  $(this).parent().closest('.row.mainRow').remove();
 });

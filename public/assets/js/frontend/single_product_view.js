@@ -249,6 +249,7 @@ $("#addToCart").click(function (e) {
             },
             success: function (response) {
               console.log(response);
+              location.reload();
             }
         });
     }else{
