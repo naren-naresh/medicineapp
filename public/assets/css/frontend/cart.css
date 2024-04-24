@@ -8,7 +8,22 @@
 .main-cart-section {
     height: 100%;
 }
-
+.address .row{
+    border: 1px solid #c3c3c3;
+    border-radius: 5px;
+}
+.address i{
+    color: #385399;
+    font-size: 15px;
+}
+.address .col-8{
+    color: #969696;
+}
+.address .col-4{
+    color: #385399;
+    font-weight: 600;
+    font-size: 15px;
+}
 .product-details-section {
     border: solid #969696;
     border-width: 0px 1px 0px 0px;
@@ -23,7 +38,7 @@
     color: #385399;
 }
 
-.cart-items h4 {
+.cart-heading{
     color: #385399;
 }
 
@@ -51,7 +66,7 @@
     margin: 0;
     padding-top: 5px;
 }
-.product-name {
+.product-name a {
     font-size: 16px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -71,17 +86,132 @@
 .price span {
     font-size: 16px;
 }
-
+.price .retailPrice{
+    text-decoration: line-through;
+    color: #969696;
+    font-size: 12px;
+}
 .bill-summary span {
     font-size: 15px;
     font-weight: 400;
 }
 
-.discount .col-2 {
+.discount .col-3 {
     color: #00D2A6;
 }
 
 .total-pay span {
     font-weight: 600;
     font-size: 16px;
+}
+.offerContent{
+    border: 1px solid #c3c3c3;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.offerContent .fa-percentage{
+   background-color: #385399;
+   color: #fff;
+   width: 25px;
+   height: 28px;
+   border-radius: 25px;
+   text-align: center;
+}
+.offerContent .con1{
+ font-weight: 500;
+ font-size: 16px;
+}
+.paymentBtn{
+    background-color: #00D2A6;
+    color: #fff;
+    padding: 5px 10px;
+}
+.paymentBtn:hover{
+    background-color: #fff;
+    color: #00D2A6;
+    border-color: #00D2A6;
+}
+.billing-details-section{
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.payment{
+    bottom: 0;
+    position: sticky;
+    margin-top: auto;
+    background-color:#fff;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 5px;
+}
+.totalPayment{
+    font-size: 20px;
+    color:#00D2A6;
+}
+/* related products styles */
+.pc-title a{
+    color: #646464;
+    font-weight:400;
+}
+.pc-title a:hover{
+   color: rgb(109, 226, 175);
+}
+.price{
+   font-size: 12px;
+   font-weight:bold;
+}
+.pc-img span {
+   position:absolute;
+   top: 3px;
+   background-color: #fff;
+   border: 1px solid #eee;
+   cursor: pointer;
+   padding: 2px 5px;
+   border-radius: 50%;
+}
+.pc-img span i{
+   color: #385399;
+}
+.pc-img a img{
+    width: 30px;
+}
+.pc-img{
+    height: 30px;
+}
+.pc-con{
+   position: relative;
+   text-align: center;
+   border-radius: 5px;
+   overflow: hidden;
+   z-index: 1;
+   transition: all .3s ease 0s;
+   border: 1px solid #eee;
+   margin-bottom: 15px;
+   padding: 15px 25px;
+   height: 150px;
+}
+.pc-btn{
+   border: 1px solid #385399;
+   display: inline-block;
+   padding: 2px 5px;
+   color: #fff;
+   font-weight: 500;
+   font-size: 12px;
+   border-radius: 3px;
+   transition: all .3s;
+   background: #385399;
+   width: 100%
+}
+.heartSpan .fa-heart{
+  font-size: 10px;
+}
+.related-products h4{
+    color: #385399;
+}
+.pc-con{
+    background-color: #fff;
+}
+.related-products .p-card{
+    background-color: #EBF9FF;
 }

@@ -27,15 +27,16 @@ $(function () {
     });
 });
 $('.cancel-btn').click(function () {
-    var productId = $(this).parent().attr('productId');
+    var cartId = $(this).parent().attr('cartId');
   $.ajax({
     type: "post",
     url: destroy,
     data:{
-        productId : productId,
+        cartId : cartId,
     },
     success: function (response) {
         console.log(response.success);
+        location.reload();
     }
   });
   $(this).parent().closest('.row.mainRow').remove();
