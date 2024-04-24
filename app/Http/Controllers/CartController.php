@@ -60,6 +60,12 @@ class CartController extends Controller
     //   }
       return response(['success'=> true, 'data' => $data]);
     }
+    public function update(Request $request){
+        if ($request->ajax()) {
+            Cart::where('id',$request->cartId)->update(['quantity' => $request->quantity]);
+            return response()->json(['success' => 'Product updated successfully.']);
+        }
+    }
      /** delete product from cart */
      public function destroy(Request $request)
      {

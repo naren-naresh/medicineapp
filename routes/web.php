@@ -87,4 +87,4 @@ Route::post('postalCheck', 'SingleProductController@postalCodeCheck')->name('pos
 Route::get('cart','CartController@index')->name('cart.index');
 Route::post('cart-details','CartController@cartDetails')->name('cart.details');
 Route::post('cart-destroy','CartController@destroy')->name('cart.destroy');
-
+Route::post('cart-update','CartController@update')->name('cart.update');
