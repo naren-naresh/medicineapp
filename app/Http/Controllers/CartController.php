@@ -24,6 +24,7 @@ class CartController extends Controller
       }else{
         $data['productDetails'] = [];
       }
+      $data['relatedProducts'] = Product::latest()->limit(6)->get();
       return view('frontend.cart',$data);
     }
     public function cartDetails(Request $request){
@@ -70,7 +71,7 @@ class CartController extends Controller
      public function destroy(Request $request)
      {
          if ($request->ajax()) {
-             Cart::where('product_id',$request->productId)->delete();
+             Cart::where('id',$request->cartId)->delete();
              return response()->json(['success' => 'Product deleted successfully.']);
          }
      }
