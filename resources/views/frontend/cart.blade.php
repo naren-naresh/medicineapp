@@ -15,7 +15,10 @@
                                 <div class="col-4 text-end">ADD ADDRESS</div>
                             </div>
                         </div>
-                        <h4 class="pt-5 pb-3 cart-heading">ITEMS IN YOUR CART({{ count($cartItems) }})</h4>
+                        <div class="row pt-5 pb-3">
+                            <div class="col-8"><h4 class="cart-heading">ITEMS IN YOUR CART({{ count($cartItems) }})</h4></div>
+                            <div class="col-4 text-end addItems"><a href="{{ route('home') }}"><h6>ADD ITEMS</h6></a></div>
+                        </div>
                         <div class="cart-items px-3">
                             @foreach ($cartItems as $cartDetail)
                                 <div class="row mainRow align-items-center py-3">
@@ -29,13 +32,14 @@
                                         @endforeach
                                     </div>
                                     @php
-                                        $productQuantity = $cartItems->where('product_id', $cartDetail->product_id)->where('id',$cartDetail->id);
+                                         $productQuantity = $cartItems->where('product_id', $cartDetail->product_id)->where('id',$cartDetail->id);
                                     @endphp
                                     <div class="col-10 product-content">
                                         <div class="row justify-content-between">
-                                            <div class="col-8">
+                                            <div class="col-9">
                                                 @foreach ($productInfo as $productName)
                                                  <div class="product-name"><a href="{{ route('single.product.view',$cartDetail->product_id) }}">{{ $productName->name }}</a></div>
+                                                 <div class="selectedVariant pt-2">{{ $optionNames->where('product_id',$cartDetail->product_id)->value('variant_option_values') }}</div>
                                                 @endforeach
                                                 <div class="quantity-div pt-4">
                                                     @foreach ($productQuantity as $quantity)
@@ -62,7 +66,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-4 product-price text-end">
+                                            <div class="col-3 product-price text-end">
                                                 @php
                                                     $productPrices = $productDetails->where('id', $cartDetail->product_id);
                                                 @endphp
@@ -102,33 +106,6 @@
                                     </div>
                                 </div>
                             @endforeach
-                            <div class="related-products py-4">
-                                <div class="row">
-                                    <h4>Related Products</h4>
-                                    @foreach ($relatedProducts as $relatedProduct)
-                                        <div class="p-card pt-3 col-2">
-                                            <div class="pc-con">
-                                                <div class="pc-img">
-                                                    <a href="{{ route('single.product.view', $relatedProduct->id) }}"><img
-                                                            src="{{ asset('assets/images/products/' . $relatedProduct->id . '/' . $relatedProduct->cover_image . '') }}"></a>
-                                                    <span class="heartSpan"><a href="#"><i
-                                                                class="far fa-heart"></i></a></span>
-                                                </div>
-                                                <div class="pc-text pt-2">
-                                                    <p class="pc-title"><a
-                                                            href="{{ route('single.product.view', $relatedProduct->id) }}">{{ $relatedProduct->name }}</a>
-                                                    </p>
-                                                    <div class="price">₹{{ $relatedProduct->selling_price }}</div>
-                                                    <div class="pc-view pt-2">
-                                                        <a href="{{ route('single.product.view', $relatedProduct->id) }}"
-                                                            class="pc-btn">View</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="col-4 billing-details-section pt-2">
@@ -177,6 +154,33 @@
                     </div>
                 </div>
             @endif
+        </div>
+        <div class="related-products py-4 container">
+            <div class="row">
+                <h4 class="pb-3">Related Products</h4>
+                @foreach ($relatedProducts as $relatedProduct)
+                    <div class="p-card pt-3 col">
+                        <div class="pc-con">
+                            <div class="pc-img">
+                                <a href="{{ route('single.product.view', $relatedProduct->id) }}"><img
+                                        src="{{ asset('assets/images/products/' . $relatedProduct->id . '/' . $relatedProduct->cover_image . '') }}"></a>
+                                <span class="heartSpan"><a href="#"><i
+                                            class="far fa-heart"></i></a></span>
+                            </div>
+                            <div class="pc-text pt-4">
+                                <p class="pc-title mb-2"><a
+                                        href="{{ route('single.product.view', $relatedProduct->id) }}">{{ $relatedProduct->name }}</a>
+                                </p>
+                                <div class="price">₹{{ $relatedProduct->selling_price }}</div>
+                                <div class="pc-view pt-2">
+                                    <a href="{{ route('single.product.view', $relatedProduct->id) }}"
+                                        class="pc-btn">View</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         </div>
     </section>
     @pushOnce('frontend-scripts')

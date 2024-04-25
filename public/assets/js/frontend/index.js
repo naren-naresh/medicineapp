@@ -94,7 +94,7 @@ $("#search-input").keyup(function () {
                             $(".search-result").append(content);
                         });
                     } else {
-                        $(".search-result").append("<li>No results found</li>");
+                        $(".search-result").append(`<li class="py-1 px-2">No results found</li>`);
                     }
                 },
                 error: function (error) {
