@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\ProductVariantGroup;
+use App\Models\ProductVariantOptionValue;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -15,7 +16,10 @@ class CartController extends Controller
       $data['categories'] = Category::where('parent_category_id',null)->limit(6)->get();
       $data['cartItems'] = Cart::where('customer_id', auth()->id())->get();
       foreach ($data['cartItems'] as $value) {
-        $variantIds[] = $value->variant_id;
+        if ($value->variant_id != null) {
+            $variantIds[] = $value->variant_id;
+            $product_variant_option_value_id[] = ProductVariantGroup::getProductVariantOptionValue($value->product_id, $value->variant_id);
+        }
         $productIds[] = $value->product_id;
       }
       if (!empty( $variantIds) && !empty($productIds)) {
@@ -24,7 +28,9 @@ class CartController extends Controller
       }else{
         $data['productDetails'] = [];
       }
-      $data['relatedProducts'] = Product::latest()->limit(6)->get();
+      $data['optionNames'] = ProductVariantOptionValue::whereIn('id',$product_variant_option_value_id)->get();
+      $data['relatedProducts'] = Product::latest()->limit(8)->get();
+    //   dd($data['optionNames']);
       return view('frontend.cart',$data);
     }
     public function cartDetails(Request $request){

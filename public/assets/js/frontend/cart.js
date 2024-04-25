@@ -41,7 +41,7 @@ $('.cancel-btn').click(function () {
   });
   $(this).parent().closest('.row.mainRow').remove();
 });
-function update(Id,quant) {
+function update(Id,quant) { 
     $.ajax({
         type: "post",
         url: updateRoute,
