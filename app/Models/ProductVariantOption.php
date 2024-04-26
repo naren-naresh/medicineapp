@@ -12,4 +12,11 @@ class ProductVariantOption extends Model
     protected $dates = ['deleted_at'];
 
     protected  $guarded = [];
+    public static function getProductVariantValue($product_id,$id)
+    {
+        $result = self::where('product_id',$product_id)
+                      ->where('id',$id)
+                      ->value('variant');
+        return $result;
+    }
 }
