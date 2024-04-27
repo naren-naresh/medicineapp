@@ -58,7 +58,7 @@
                                     <span><a href="#"><i class="far fa-heart"></i></a></span>
                                 </div>
                                 <div class="pc-text py-3">
-                                    <p class="pc-title"><a
+                                    <p class="pc-title mb-1"><a
                                             href="{{ route('single.product.view',$product->id) }}">{{ $product->name }}</a></p>
                                     <div class="price py-1">$ {{ $product->selling_price }}</div>
                                     <span class="d-status text-success">Delivery available</span>
