@@ -48,12 +48,15 @@
                         <h5 class="modal-title" id="modelHeading">Sign In</h5>
                         <p>If you have an account with us, Please Sign In.</p>
                       </div>
-                    <form action="" id="signInForm" name="signInForm" method="post" enctype="multipart/form-data">
+                    <form action="{{route('authenticate')}}" id="signInForm" name="signInForm" method="post" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="id" id="id">
                         <div class="form-group position-relative">
                             <input type="email" class="form-control mt-2 py-3" name="email" id="email" placeholder="Email">
                             <i class="fas fa-envelope position-absolute top-50 end-0 translate-middle-y pe-2"></i>
+                            @if ($errors->has('email'))
+                            <span class="text-danger">{{ $errors->first('email') }}</span>
+                           @endif
                         </div>
                         <div class="form-group position-relative">
                             <input type="password"  class="form-control mt-2 py-3 password" name="password" id="password" placeholder="Password">
@@ -83,7 +86,7 @@
                         <h5 class="modal-title" id="modelHeading">Sign Up</h5>
                         <p>New Login</p>
                       </div>
-                    <form action="" id="signUpForm" name="signUpForm" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('singUp') }}" id="signUpForm" name="signUpForm" method="post" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="id" id="id">
                         <div class="row mt-2">
@@ -93,6 +96,9 @@
                         <div class="form-group position-relative">
                             <input type="email" class="form-control mt-2 py-3" name="email" id="email" placeholder="Email*">
                             <i class="fas fa-envelope position-absolute top-50 end-0 translate-middle-y pe-2"></i>
+                            @if ($errors->has('email'))
+                             <span class="text-danger">{{ $errors->first('email') }}</span>
+                            @endif
                         </div>
                         <div class="form-group mt-2">
                             <input type="text" name="contact" class="form-control py-3" id="contact" placeholder="Contact Number">

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
@@ -28,17 +29,18 @@ use Illuminate\Support\Facades\Route;
 /** Authenticate routes */
 Route::get('login', 'AuthController@login')->name('login');
 Route::post('authenticate', 'AuthController@authenticate')->name('authenticate');
+Route::post('sing-up','AuthController@store')->name('singUp');
 /** Forget routes */
 //--- Forget password routes
 Route::get('forget-password', 'ForgotPasswordController@showForgetPasswordForm')->name('forget.password.get');
 Route::post('forget-password', 'ForgotPasswordController@submitForgetPasswordForm')->name('forget.password.post');
 Route::get('reset-password/{token}', 'ForgotPasswordController@showResetPasswordForm')->name('reset.password.get');
 Route::post('reset-password', 'ForgotPasswordController@submitResetPasswordForm')->name('reset.password.post');
+Route::get('logout', 'AuthController@logout')->name('logout');
 Route::group(['middleware' => 'prevent-back-history'], function () {
     /** Admin access authentication routes */
     Route::group(['middleware' => ['admin']], function () {
         Route::get('dashboard', 'AuthController@index')->name('dashboard');
-        Route::get('logout', 'AuthController@logout')->name('logout');
         Route::get('profile', 'AuthController@profile')->name('profile');
         Route::get('edit/{id}', 'AuthController@edit')->name('edit');
         Route::put('update/{id}', 'AuthController@update')->name('profile.update');
