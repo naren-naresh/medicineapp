@@ -21,14 +21,36 @@
                 <ul class="search-result"></ul>
             </div>
             <div class="col d-flex align-items-center justify-content-around">
-                   <div class="sign">
-                        <a href="#" class="btn" data-bs-toggle="modal" data-bs-target="#signModal"'>Sign In</a>
+                @if ( auth()->id() )
+                    <div class="nav-elements" id="navbarNav">
+                        <ul class="dropdown p-0 m-0" style="font-size: 15px">
+                            <a class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false" id="navbarDropdown">Welcome |
+                            {{ Auth::user()->name }}</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown" >
+                                <li><a class="dropdown-item" href="#"><i class="fa fa-user"></i> &nbsp;Profile</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fa fa-map-location"></i> &nbsp;My Addresses</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fa fa-heart"></i> &nbsp;My Wishlist</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fa fa-cart-shopping"></i> &nbsp;My Orders</a></li>
+                                @if (Auth::user()->role_id == 1)
+                                <li><a class="dropdown-item" href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> &nbsp;Dashboard</a></li>
+                                @endif
+                                <li><a class="dropdown-item" href="" id="btn" data-bs-toggle="modal"
+                                        data-bs-target="#"><i class="fa fa-keyboard"></i> &nbsp;Change Password</a></li>
+                                <li><a class="dropdown-item" href="{{ route('logout') }}"><i class="fa fa-sign-out"></i> &nbsp;Logout</a></li>
+                            </ul>
+                        </ul>
+                    </div>
+                @else
+                    <div class="sign">
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#signModal"'>Sign In</a>
                         <span>|</span>
-                        <a href="#" class="btn" data-bs-toggle="modal" data-bs-target="#signUpModal"'>Sign Up</a>
-                   </div>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#signUpModal"'>Sign Up</a>
+                    </div>
+                @endif
                    <div class="cart">
                     @php
-                        $rowCount = \App\Models\Cart::count();
+                        $rowCount = \App\Models\Cart::where('customer_id', auth()->id() ?? request()->session()->get('guest-id'))->count();
                     @endphp
                       <a href="{{ route('cart.index') }}" class="d-flex align-items-center cart"><i class="fa fa-shopping-cart" style="color:#385399; font-size:1.7rem"></i><span>{{ $rowCount }}</span> &nbsp;Cart</a>
                    </div>

@@ -30,11 +30,15 @@
                     <div class="row">
                         <div class="col-md-4" id="images-div">
                             <div class="row">
+                               @php
+                                    $getThumbImgCount = count($thumbnailImages);
+                               @endphp
                                 <!-- product thumbnail images -->
                                 @if (count($thumbnailImages) > 0)
-                                    <div class="small-img col-2">
-                                        <img src="{{ asset('assets/frontend/images/next-icon.png') }}" class="icon-left"
-                                            alt="" id="prev-img">
+                                    <div class="small-img col-auto p-0">
+                                        @if($getThumbImgCount > 3)
+                                            <img src="{{ asset('assets/frontend/images/next-icon.png') }}" class="icon-left" alt="" id="prev-img">
+                                        @endif
                                         <div class="small-container py-1">
                                             <div id="small-img-roll">
                                                 <img src="{{ asset('assets/images/products/' . $product->id . '/' . $product->cover_image . '') }}"
@@ -45,102 +49,125 @@
                                                 @endforeach
                                             </div>
                                         </div>
-                                        <img src="{{ asset('assets/frontend/images/next-icon.png') }}" class="icon-right"
-                                            alt="" id="next-img">
+
+                                        @if($getThumbImgCount > 3)
+                                            <img src="{{ asset('assets/frontend/images/next-icon.png') }}" class="icon-right" alt="" id="next-img">
+                                        @endif
                                     </div>
                                 @endif
                                 <!-- Primary cover image -->
-                                <div class="showImage col-10" href="1.jpg">
+                                <div class="showImage col" href="1.jpg">
                                     <img src="{{ asset('assets/images/products/' . $product->id . '/' . $product->cover_image . '') }}"
                                         id="show-img">
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4" id="detail-div">
+                        <div class="col-md-8" id="detail-div">
                             <div class="product-detail">
                                 <div class="product-info">
                                     <div class="product-name">{{ $product->name }}</div>
-                                    <div class="sku pt-2">SKU - {{ $product->sku }}</div>
-                                    <div class="manufacturer pt-2">
-                                        <h6 class="mb-1">Manufacturer/Marketer</h6>
-                                        @foreach ($manufacturers as $manufacturer)
-                                            <div>{{ $manufacturer->company_name }}</div>
-                                        @endforeach
-                                    </div>
-                                    <div class="return-policy  pt-2">
-                                        <h6 class="mb-1">Return Policy</h6>
-                                        @if ($product->return_policy_applicable == 1)
-                                            @foreach ($returnPolicies as $returnType)
-                                                <div>{{ $returnType->policy_name }}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col product-info ps-4">
+                                        <div class="sku pt-2">#{{ $product->sku }}</div>
+                                        @if ($product->variation_name)
+                                            @foreach ($variantNames as $variantName)
+                                                <div class="product-variant pt-3" variantId ="{{ $variantName->id }}">
+                                                    <h6> {{ $variantName->variant }}({{ count($variantOptions->where('variant_option_id', $variantName->id)) }})</h6>
+                                                </div>
+                                                @php
+                                                    $optionValues =
+                                                        $variantOptions->where('variant_option_id', $variantName->id) ??
+                                                        [];
+                                                @endphp
+                                                <div class="product-variant-options pb-2 row"
+                                                    variantId="{{ $variantName->id }}">
+                                                    @foreach ($optionValues as $option)
+                                                        <span
+                                                            class="p-1 mt-2 d-flex align-items-center justify-content-center"
+                                                            optionId="{{ $option->id }}">{{ $option->variant_option_values }}</span>
+                                                    @endforeach
+                                                </div>
                                             @endforeach
                                         @endif
-                                        @if ($product->return_policy_applicable == 0)
-                                            <div>Not Returnable</div>
-                                        @endif
-                                    </div>
-                                    <div class="expiry-date pt-2">
-                                        <div>
-                                            <h6 class="mb-1"> Expires on or after</h6>
-                                            <div>{{ Carbon\Carbon::parse($product->expiry_date)->format('F j') }}</div>
+
+                                        <div class="manufacturer pt-3 pb-2">
+                                            <h6 class="mb-1">Manufacturer/Marketer</h6>
+                                            @foreach ($manufacturers as $manufacturer)
+                                                <div>{{ $manufacturer->company_name }}</div>
+                                            @endforeach
+                                        </div>
+                                        <div class="return-policy  py-2">
+                                            <h6 class="mb-1">Return Policy</h6>
+                                            @if ($product->return_policy_applicable == 1)
+                                                @foreach ($returnPolicies as $returnType)
+                                                    <div>{{ $returnType->policy_name }}</div>
+                                                @endforeach
+                                            @endif
+                                            @if ($product->return_policy_applicable == 0)
+                                                <div>Not Returnable</div>
+                                            @endif
+                                        </div>
+                                        <div class="expiry-date py-2">
+                                            <div>
+                                                <h6 class="mb-1"> Expires on or after</h6>
+                                                <div>{{ Carbon\Carbon::parse($product->expiry_date)->format('F j') }}</div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 product-info">
-                            <div class="product-price-discount p-0"><span id="price">Price :</span>&nbsp;<span
-                                    class="line-through">
-                                    ₹{{ $product->retail_price }}</span><span id="sellingPrice">
-                                    ₹{{ $product->selling_price }}</span></div>
-                            @if ($product->variation_name)
-                                @foreach ($variantNames as $variantName)
-                                    <div class="product-variant pt-3" variantId ="{{ $variantName->id }}">
-                                        <h6> {{ $variantName->variant }}</h6>
+                                    <div class="col-4 p-0">
+                                        <div class="product-price-addCart-block m-2">
+                                            <div class="product-price-discount pb-3">
+                                                <span id="price">
+                                                    <span id="sellingPrice">
+                                                        ₹{{ $product->selling_price }}</span>
+                                                </span>&nbsp;<span class="line-through">
+                                                    ₹{{ $product->retail_price }}</span>
+                                                    @php
+                                                        $difference = $product->retail_price - $product->selling_price;
+                                                        $discount = round($difference / $product->retail_price * 100);
+                                                    @endphp
+                                                    <span class="discount"> {{$discount}} % off</span>
+                                            </div>
+
+                                            <div class="row quantity-deliveryAvailability py-2 align-items-center">
+                                                <div class="col-7 quantity-option">
+                                                    <div class="input-group">
+                                                        <button type="button" value="-" class="p-1 px-2 border"
+                                                            id="minus">-</button>
+                                                        <input type="text" name="quantity" id="quantity"
+                                                            class="p-1 text-center" maxlength="5">
+                                                        <button type="button" value="+" class="p-1 px-2 border"
+                                                            id="plus">+</button>
+                                                    </div>
+                                                </div>
+                                                <span class="col-3 ps-0 quant-text">Product Quantity</span>
+                                            </div>
+
+                                            <div class="options-buy row justify-content-center pt-4">
+                                                <div class="buy-now col-12">
+                                                    <button type="button" class="buy-btn form-control"
+                                                        productId ="{{ $product->id }}">Buy Now</button>
+                                                </div>
+                                                <div class="add-cart col-12 mt-3">
+                                                    <button type="button" class="buy-btn btn form-control" id="addToCart"
+                                                        productId ="{{ $product->id }}">Add to Cart</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="delivery-availability pt-3">
+                                            <h6 class="mb-2">Delivery Address</h6>
+                                            <div class="input-group postalContent w-100">
+                                                <input type="text" name="postalCode" id="postalCode"
+                                                    class="form-control w-50" placeholder="Postal Code"
+                                                    onkeyup="process(this)" minlength="6" maxlength="6"
+                                                    value="{{ session()->get('postal_code') }}">
+                                                <button type="button" class="" id="postalCodeCheck"
+                                                    style="width: 70px">Check</button>
+                                                <span id="checkDisplay"></span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    @php
-                                        $optionValues =
-                                            $variantOptions->where('variant_option_id', $variantName->id) ?? [];
-                                    @endphp
-                                    <div class="product-variant-options row" variantId="{{ $variantName->id }}">
-                                        @foreach ($optionValues as $option)
-                                            <span class="p-1 mt-1 d-flex align-items-center justify-content-center"
-                                                optionId="{{ $option->id }}">{{ $option->variant_option_values }}</span>
-                                        @endforeach
-                                    </div>
-                                @endforeach
-                            @endif
-                            <div class="row quantity-deliveryAvailability pt-3">
-                                <div class="quantity-option">
-                                    <h6 class="mb-2">Quantity</h6>
-                                    <div class="input-group">
-                                        <button type="button" value="-" class="p-1 px-2 border"
-                                            id="minus">-</button>
-                                        <input type="text" name="quantity" id="quantity" class="p-1 text-center"
-                                            maxlength="5">
-                                        <button type="button" value="+" class="p-1 px-2 border"
-                                            id="plus">+</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="delivery-availability pt-3">
-                                <h6 class="mb-2">Delivery Address</h6>
-                                <div class="input-group postalContent w-50">
-                                    <input type="text" name="postalCode" id="postalCode" class="form-control w-50"
-                                        placeholder="Postal Code" onkeyup="process(this)" minlength="6" maxlength="6"
-                                        value="{{ session()->get('postal_code') }}">
-                                    <button type="button" class="" id="postalCodeCheck"
-                                        style="width: 70px">Check</button>
-                                    <span id="checkDisplay"></span>
-                                </div>
-                            </div>
-                            <div class="options-buy row justify-content-center pt-4">
-                                <div class="buy-now col-6">
-                                    <button type="button" class="buy-btn form-control"
-                                        productId ="{{ $product->id }}">Buy Now</button>
-                                </div>
-                                <div class="add-cart col-6">
-                                    <button type="button" class="buy-btn btn form-control" id="addToCart"
-                                        productId ="{{ $product->id }}">Add to Cart</button>
                                 </div>
                             </div>
                         </div>

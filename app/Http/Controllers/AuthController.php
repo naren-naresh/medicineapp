@@ -32,12 +32,33 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('dashboard');
+            return redirect()->intended('home');
         }
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
+    }
+    public function store(Request $request){
+            // $request->validate([
+            //     'firstName' => 'required|string|max:250',
+            //     'email' => 'required|email|max:250|unique:users',
+            //     'password' => 'required|min:6|confirmed',
+            //     'contact' => 'required',
+            // ]);
+            User::create([
+                'name' => $request->firstName,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'contact' => $request->contact,
+                'role_id' => 2,
+            ]);
+        //  dd($check);
+        // $credentials = $request->only('email', 'password');
+        // Auth::attempt($credentials);
+        // $request->session()->regenerate();
+        return redirect()->route('home')
+            ->withSuccess('You have successfully registered & logged in!');
     }
     /** Dashboard view */
     public function index()
@@ -86,7 +107,7 @@ class AuthController extends Controller
 
             $request->session()->regenerateToken();
 
-            return redirect('login')->with('message', 'email is updated');
+            return redirect('home')->with('message', 'email is updated');
         }
     }
     /** password update */
@@ -111,6 +132,6 @@ class AuthController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('login')->with('message', 'You are logged out successfully');
+        return redirect('home')->with('message', 'You are logged out successfully');
     }
 }

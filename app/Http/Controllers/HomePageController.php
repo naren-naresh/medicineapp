@@ -7,7 +7,6 @@ use App\Models\Delivery_zone;
 use App\Models\Product;
 use App\Models\SliderImage;
 use Illuminate\Http\Request;
-
 class HomePageController extends Controller
 {
      public function index(){

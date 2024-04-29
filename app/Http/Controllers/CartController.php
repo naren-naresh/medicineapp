@@ -9,7 +9,9 @@ use App\Models\ProductVariant;
 use App\Models\ProductVariantGroup;
 use App\Models\ProductVariantOption;
 use App\Models\ProductVariantOptionValue;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use stdClass;
 
 class CartController extends Controller
@@ -17,7 +19,7 @@ class CartController extends Controller
     public function index(Request $request)
     {
         $data['categories'] = Category::where('parent_category_id', null)->limit(6)->get();
-        $data['cartItems'] = Cart::where('customer_id', auth()->id())->get();
+        $data['cartItems'] = Cart::where('customer_id', auth()->id() ?? $request->session()->get('guest-id') )->get();
 
         $cartDataItems = []; // empty array for cart items
 
@@ -56,8 +58,16 @@ class CartController extends Controller
         $data['relatedProducts'] = Product::latest()->limit(8)->get();
         return view('frontend.cart', $data);
     }
+
     public function cartDetails(Request $request)
     {
+        $guestId = $request->session()->get('guest-id') ?? null;
+        $customer_id = Auth::check() ? Auth::id() : $guestId;
+
+        if($customer_id == null) { // if customer-id null and the session variable null means create a new guest-id.
+            $customer_id = User::create(['role_id' => 3])->id;
+            $request->session()->put('guest-id', $customer_id);// put a guest-id into the session variable
+        }
 
         $productId = $request->input('product_id');
         $variantData = $request->input('variants_data', []);
@@ -72,13 +82,13 @@ class CartController extends Controller
         }
         $VariantGroup->groupBy('product_variant_id')->havingRaw('count(product_variant_id) = ?', [$count]);
         $variantId = $VariantGroup->value('product_variant_id');
-        $cartData = Cart::where('product_id', $productId)->where('variant_id', $variantId)->value('quantity'); // same product with same variant means we want to update the quantity of the product.
+        $cartData = Cart::where('product_id', $productId)->where('customer_id', $customer_id)->where('variant_id', $variantId)->value('quantity'); // same product with same variant means we want to update the quantity of the product.
         if ($cartData) {
-              $addQuantity = $cartData + 1; // increasing the quantity if product and variant is same.
-              Cart::where('product_id', $productId)->where('variant_id',$variantId)->update(['quantity' => $addQuantity]);
-        }else{
+            $addQuantity = $cartData + 1; // increasing the quantity if product and variant is same.
+            Cart::where('product_id', $productId)->where('customer_id', $customer_id)->where('variant_id', $variantId)->update(['quantity' => $addQuantity]);
+        } else {
             Cart::create([
-                'customer_id' => auth()->id(),
+                'customer_id' => $customer_id,
                 'product_id' => $productId,
                 'variant_id' => $variantId,
                 'quantity' => $quantity,
@@ -88,6 +98,7 @@ class CartController extends Controller
         $data['product_details'] = Product::where('id', $request->product_id)->get();
         return response(['success' => true, 'data' => $data]);
     }
+
     public function update(Request $request)
     {
         if ($request->ajax()) {
@@ -95,6 +106,7 @@ class CartController extends Controller
             return response()->json(['success' => 'Product updated successfully.']);
         }
     }
+
     /** delete product from cart */
     public function destroy(Request $request)
     {

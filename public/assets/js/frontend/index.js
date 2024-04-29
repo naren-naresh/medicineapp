@@ -202,7 +202,7 @@ $("#postalChange").click(function (e) {
           },
           password:{
             required:true,
-            minlength:8,
+            minlength:6,
             maxlength:16,
           }
     },
@@ -218,7 +218,7 @@ $("#postalChange").click(function (e) {
           },
           password:{
             required:true,
-            minlength:8,
+            minlength:6,
             maxlength:16,
           },
           confirmPassword: {

@@ -55,3 +55,7 @@ function update(Id,quant) {
         }
       });
 }
+// proceed to checkout
+$('.paymentBtn').click(function () {
+    $('#signUpModal').modal('show');
+});

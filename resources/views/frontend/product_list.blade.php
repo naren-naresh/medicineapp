@@ -85,7 +85,7 @@
                                                             class="far fa-heart"></i></a></span>
                                             </div>
                                             <div class="pc-text py-3">
-                                                <p class="pc-title"><a
+                                                <p class="pc-title mb-1"><a
                                                         href="{{ route('single.product.view',$product->id)}}">{{ $product->name}}</a>
                                                 </p>
                                                 <div class="price py-1">$ {{ $product->selling_price }}</div>
@@ -122,6 +122,7 @@
                 $('.p-card').removeClass('col-3');
                 $('.p-card').addClass('listView2');
                 $('.pc-con').addClass('listView');
+                $('.pc-con').addClass('text-start');
                 $('.heartSpan').addClass('spanView');
                 $("#grid-view").css("color", "unset");
                 $(this).css("color", "#385399");
@@ -129,6 +130,7 @@
             $('#grid-view').click(function() {
                 $('.p-card').addClass('col-3');
                 $('.pc-con').removeClass('listView');
+                $('.pc-con').removeClass('text-start');
                 $("#list-view").css("color", "unset");
                 $(this).css("color", "#385399");
             });

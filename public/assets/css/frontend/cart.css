@@ -72,6 +72,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    width: 75%;
+    text-wrap: wrap;
 }
 .product-name a{
     font-size: 16px;
@@ -219,4 +221,23 @@
 }
 .related-products .p-card{
     background-color: #EBF9FF;
+}
+.findMed a{
+     color: #fff ;
+     background-color: #385399;
+     font-size: 16px;
+     border: 1px solid #385399;
+     padding: 10px 20px;
+}
+.findMed a:hover{
+    color: #385399;
+    background-color: #fff;
+    border: 1px solid #385399;
+}
+.empty-cart-con p{
+   font-weight: 500;
+   font-size: 16px;
+}
+.empty-cart-con span{
+    color: #717070;
 }
