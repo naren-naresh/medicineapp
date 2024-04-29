@@ -17,7 +17,7 @@
                                 <div class="col-4 text-end">ADD ADDRESS</div>
                             </div>
                         </div>
-                        <div class="row pt-5 pb-3">
+                        <div class="row pt-5 pb-3 align-items-center">
                             <div class="col-8">
                                 <h4 class="cart-heading">ITEMS IN YOUR CART({{ count($cartItems) }})</h4>
                             </div>
@@ -120,7 +120,7 @@
                                     <div class="totalPayment">₹{{ $totalPaid }}</div>
                                 </div>
                                 <div class="col text-end">
-                                    <button type="button" class="paymentBtn btn">PROCEED</button>
+                                    <a href="#" class="paymentBtn btn">PROCEED</a>
                                 </div>
                             </div>
                         </div>
@@ -168,7 +168,6 @@
     @endif
     @pushOnce('frontend-scripts')
         <script>
-            var DeliveryCode = "{{ route('postalCheck') }}";
             var destroy = "{{ route('cart.destroy') }}";
             var updateRoute = "{{ route('cart.update') }}";
         </script>

@@ -143,6 +143,8 @@
         var brandLogo = "{{ asset('assets/images/logo.png') }}"
         var image = "{{ asset('assets/images/products')}}"
         var postalCheck = "{{ route('postal') }}"
+        var success = "{{ asset('assets/frontend/images/successfully.png') }}"
+        var DeliveryCode = "{{ route('postalCheck') }}";
     </script>
     @stack('frontend-scripts')
 </body>

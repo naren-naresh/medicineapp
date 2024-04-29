@@ -32,6 +32,9 @@
                                 <li><a class="dropdown-item" href="#"><i class="fa fa-map-location"></i> &nbsp;My Addresses</a></li>
                                 <li><a class="dropdown-item" href="#"><i class="fa fa-heart"></i> &nbsp;My Wishlist</a></li>
                                 <li><a class="dropdown-item" href="#"><i class="fa fa-cart-shopping"></i> &nbsp;My Orders</a></li>
+                                @if (Auth::user()->role_id == 1)
+                                <li><a class="dropdown-item" href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> &nbsp;Dashboard</a></li>
+                                @endif
                                 <li><a class="dropdown-item" href="" id="btn" data-bs-toggle="modal"
                                         data-bs-target="#"><i class="fa fa-keyboard"></i> &nbsp;Change Password</a></li>
                                 <li><a class="dropdown-item" href="{{ route('logout') }}"><i class="fa fa-sign-out"></i> &nbsp;Logout</a></li>
@@ -40,14 +43,14 @@
                     </div>
                 @else
                     <div class="sign">
-                        <a href="#" class="btn" data-bs-toggle="modal" data-bs-target="#signModal"'>Sign In</a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#signModal"'>Sign In</a>
                         <span>|</span>
-                        <a href="#" class="btn" data-bs-toggle="modal" data-bs-target="#signUpModal"'>Sign Up</a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#signUpModal"'>Sign Up</a>
                     </div>
                 @endif
                    <div class="cart">
                     @php
-                        $rowCount = \App\Models\Cart::where('customer_id', auth()->id())->count();
+                        $rowCount = \App\Models\Cart::where('customer_id', auth()->id() ?? request()->session()->get('guest-id'))->count();
                     @endphp
                       <a href="{{ route('cart.index') }}" class="d-flex align-items-center cart"><i class="fa fa-shopping-cart" style="color:#385399; font-size:1.7rem"></i><span>{{ $rowCount }}</span> &nbsp;Cart</a>
                    </div>
