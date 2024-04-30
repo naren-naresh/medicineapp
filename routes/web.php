@@ -90,3 +90,8 @@ Route::get('cart','CartController@index')->name('cart.index');
 Route::post('cart-details','CartController@cartDetails')->name('cart.details');
 Route::post('cart-destroy','CartController@destroy')->name('cart.destroy');
 Route::post('cart-update','CartController@update')->name('cart.update');
+/** add address route */
+Route::get('address-list','AddAddressController@index')->name('address.index');
+Route::get('add-address','AddAddressController@create')->name('add.address');
+Route::post('address-store','AddAddressController@store')->name('address.store');
+Route::get('edit-address/{id?}','AddAddressController@show')->name('address.edit');

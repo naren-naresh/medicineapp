@@ -69,7 +69,7 @@
                              </div>
                         </div>
                         <div class="form-group text-start">
-                            <div class="create-account"><span>Not a member yet? </span>&nbsp;<a href="#" style="color:#385399">Create an account</a></div>
+                            <div class="create-account"><span>Not a member yet? </span>&nbsp;<a href="#" style="color:#385399" class="sing_up">Create an account</a></div>
                         </div>
                     </form>
                 </div>
@@ -89,6 +89,9 @@
                     <form action="{{ route('singUp') }}" id="signUpForm" name="signUpForm" method="post" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="id" id="id">
+                        @if (request()->session()->get('guest-id'))
+                          <input type="hidden" name="guest_id" value="{{ request()->session()->get('guest-id') }}"  id="guest_id">
+                        @endif
                         <div class="row mt-2">
                               <div class="col pe-0"><input type="text" class="form-control py-3" name="firstName" id="firstName" placeholder="First Name*"></div>
                               <div class="col"><input type="text" class="form-control  py-3" name="lastName" id="lastName" placeholder="last Name"></div>
@@ -117,7 +120,7 @@
                             <button type="submit" name="save" id="save" class="form-control btn border py-2 my-1">SignUp</button>
                         </div>
                         <div class="form-group text-start ms-1">
-                            <div class="create-account"><span>Already have an account? </span>&nbsp;<a href="#" style="color:#385399">Sign in</a></div>
+                            <div class="create-account"><span>Already have an account? </span>&nbsp;<a href="#" class="sign_in" style="color:#385399">Sign in</a></div>
                         </div>
                     </form>
                 </div>

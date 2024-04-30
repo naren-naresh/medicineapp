@@ -57,5 +57,7 @@ function update(Id,quant) {
 }
 // proceed to checkout
 $('.paymentBtn').click(function () {
-    $('#signUpModal').modal('show');
+    if ($('#guest_id').val()) {
+        $('#signUpModal').modal('show');
+    }
 });

@@ -266,3 +266,11 @@ $('#cIcon').on('mouseup mouseleave', function() {
     $(this).addClass('fa-eye-slash');
     $(this).removeClass('fa-eye');
 });
+$('.sign_in').click(function () {
+    $('#signModal').modal('show');
+    $('#signUpModal').modal('hide');
+});
+$('.sing_up').click(function () {
+    $('#signModal').modal('hide');
+    $('#signUpModal').modal('show');
+});
