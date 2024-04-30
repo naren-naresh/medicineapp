@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -40,12 +41,23 @@ class AuthController extends Controller
         ])->onlyInput('email');
     }
     public function store(Request $request){
-            // $request->validate([
-            //     'firstName' => 'required|string|max:250',
-            //     'email' => 'required|email|max:250|unique:users',
-            //     'password' => 'required|min:6|confirmed',
-            //     'contact' => 'required',
-            // ]);
+        if ($request->guest_id) {
+            User::where('id',$request->guest_id)->update([
+                'name' => $request->firstName,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'contact' => $request->contact,
+                'role_id' => 2,
+            ]); $credentials = $request->validate([
+                'email' => ['required', 'email'],
+                'password' => ['required'],
+            ]);
+            if (Auth::attempt($credentials)) {
+                $request->session()->regenerate();
+
+                return redirect()->route('add.address',$request->guest_id);
+            }
+        }else{
             User::create([
                 'name' => $request->firstName,
                 'email' => $request->email,
@@ -53,13 +65,20 @@ class AuthController extends Controller
                 'contact' => $request->contact,
                 'role_id' => 2,
             ]);
-        //  dd($check);
-        // $credentials = $request->only('email', 'password');
-        // Auth::attempt($credentials);
-        // $request->session()->regenerate();
-        return redirect()->route('home')
-            ->withSuccess('You have successfully registered & logged in!');
+            $credentials = $request->validate([
+                'email' => ['required', 'email'],
+                'password' => ['required'],
+            ]);
+            if (Auth::attempt($credentials)) {
+                $request->session()->regenerate();
+
+                return redirect()->intended('home');
+            }
+        }
+        // return redirect()->route('home')
+        //     ->withSuccess('You have successfully registered & logged in!');
     }
+
     /** Dashboard view */
     public function index()
     {
