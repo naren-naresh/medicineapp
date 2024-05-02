@@ -20,8 +20,8 @@
                         <a href="#">
                             <div class="option"><i class="fa fa-user"></i>&nbsp; Personal Information</div>
                         </a>
-                        <a href="#">
-                            <div class="option active"><i class="fa fa-map-location"></i>&nbsp; Manage addresses</div>
+                        <a href="{{ route('address.index') }}">
+                            <div class="option active"><i class="fa fa-map-location"></i>&nbsp; Manage Addresses</div>
                         </a>
                         <a href="#">
                             <div class="option"><i class="fa fa-heart"></i> &nbsp;My Wishlist</div>
@@ -40,13 +40,13 @@
                 <div class="col-9 address-form">
                     <h4 class="pb-2">Manage Addresses</h4>
                     @foreach ($addresses as $address)
-                    <form action="{{ route('address.store') }}" method="post" name="addressForm" id="addressForm">
+                    <form action="{{ route('address.update',$address->id) }}" method="post" name="addressForm" id="addressForm">
                         @csrf
                         <input type="hidden" name="customer_id" value="{{auth()->id()}}">
                         <div class="row py-3">
                             <div class="col-4 form-group">
                                 <label for="name" class="pb-2 required">Name</label>
-                                <input type="text" name="name" id="name" class="form-control"  value="{{ Auth::user()->name }}">
+                                <input type="text" name="name" id="name" class="form-control"  value="{{ $address->name }}">
                             </div>
                             <div class="col-4 form-group">
                                 <label for="number" class="required pb-2">Number</label>
@@ -64,7 +64,7 @@
                         </div>
                         <div class="form-group pt-2">
                             <label for="notes" class="pb-2">Notes</label>
-                            <textarea name="notes" id="notes" cols="10" rows="5" class="form-control"></textarea>
+                            <textarea name="notes" id="notes" cols="10" rows="5" class="form-control">{{ $address->notes }}</textarea>
                         </div>
                         <div class="form-group pt-3">
                             <button type="submit" class="px-2 py-1" id="save-btn">Save</button>

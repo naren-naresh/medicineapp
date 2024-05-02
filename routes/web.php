@@ -25,7 +25,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+/** default home route */
+Route::get('/', 'HomePageController@index')->name('home');
 /** Authenticate routes */
 Route::get('login', 'AuthController@login')->name('login');
 Route::post('authenticate', 'AuthController@authenticate')->name('authenticate');
@@ -94,4 +95,7 @@ Route::post('cart-update','CartController@update')->name('cart.update');
 Route::get('address-list','AddAddressController@index')->name('address.index');
 Route::get('add-address','AddAddressController@create')->name('add.address');
 Route::post('address-store','AddAddressController@store')->name('address.store');
-Route::get('edit-address/{id?}','AddAddressController@show')->name('address.edit');
+Route::get('edit-address/{id?}','AddAddressController@edit')->name('address.edit');
+Route::post('update-address/{id?}','AddAddressController@update')->name('address.update');
+Route::get('delete/{id?}','AddAddressController@destroy')->name('address.delete');
+Route::get('default/{id?}','AddAddressController@default')->name('address.default');

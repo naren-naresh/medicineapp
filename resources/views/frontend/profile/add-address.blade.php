@@ -20,8 +20,8 @@
                         <a href="#">
                             <div class="option"><i class="fa fa-user"></i>&nbsp; Personal Information</div>
                         </a>
-                        <a href="#">
-                            <div class="option active"><i class="fa fa-map-location"></i>&nbsp; Manage addresses</div>
+                        <a href="{{ route('address.index') }}">
+                            <div class="option active"><i class="fa fa-map-location"></i>&nbsp; Manage Addresses</div>
                         </a>
                         <a href="#">
                             <div class="option"><i class="fa fa-heart"></i> &nbsp;My Wishlist</div>

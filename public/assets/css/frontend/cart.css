@@ -19,7 +19,7 @@
 .address .col-8{
     color: #969696;
 }
-.address .col-4{
+.address .col-4 a{
     color: #385399;
     font-weight: 600;
     font-size: 15px;
