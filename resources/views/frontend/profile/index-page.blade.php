@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <div class="row menu-options">
-                        <a href="#">
+                        <a href="{{ route('useProfile.index') }}">
                             <div class="option"><i class="fa fa-user"></i>&nbsp; Personal Information</div>
                         </a>
                         <a href="{{ route('address.index') }}">
