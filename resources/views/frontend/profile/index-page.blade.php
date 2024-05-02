@@ -20,8 +20,8 @@
                         <a href="#">
                             <div class="option"><i class="fa fa-user"></i>&nbsp; Personal Information</div>
                         </a>
-                        <a href="#">
-                            <div class="option active"><i class="fa fa-map-location"></i>&nbsp; Manage addresses</div>
+                        <a href="{{ route('address.index') }}">
+                            <div class="option active"><i class="fa fa-map-location"></i>&nbsp; Manage Addresses</div>
                         </a>
                         <a href="#">
                             <div class="option"><i class="fa fa-heart"></i> &nbsp;My Wishlist</div>
@@ -39,19 +39,27 @@
                 </div>
                 <div class="col-9 address-form">
                     <h4 class="pb-2">Manage Addresses</h4>
-                    <div class="add-address-btn"><a href="{{ route('add.address')}}" class="d-flex align-items-center"><span class="ps-3">+</span>&nbsp; Add a New Address</a></div>
+                    <div class="add-address-btn"><a href="{{ route('add.address') }}"
+                            class="d-flex align-items-center"><span class="ps-3">+</span>&nbsp; Add a New Address</a>
+                    </div>
                     <div class="existing-addresses">
                         @foreach ($addresses as $address)
                             <div class="row add-row mx-0 mt-3">
                                 <div class="col-6">
-                                    <p>Address : {{$address->address}}</p>
-                                    <p>PostalCode : {{$address->postal_code}}</p>
-                                    <p>Number : {{$address->contact_number}}</p>
+                                    <p>Name : {{ $address->name }}</p>
+                                    <p>Address : {{ $address->address }}</p>
+                                    <p>PostalCode : {{ $address->postal_code }}</p>
+                                    <p>Number : {{ $address->contact_number }}</p>
                                 </div>
                                 <div class="col-6 text-end">
                                     <div class="action-row">
-                                        <a href="{{route('address.edit',$address->id)}}"><i class="fa fa-edit"></i>&nbsp;Edit </a>&nbsp;|&nbsp;
-                                        <a href=""><i class="fa fa-trash"></i>&nbsp;Delete</a>
+                                        <a href="{{ route('address.default', $address->id) }}" class="default-check"
+                                            default="{{ $address->set_default }}"><i class="fa fa-check"
+                                                id="check-icon"></i>&nbsp;<span class="text">Set Default</span></a> &nbsp; | &nbsp;
+                                        <a href="{{ route('address.edit', $address->id) }}"><i
+                                                class="fa fa-edit"></i>&nbsp;Edit </a> &nbsp; | &nbsp;
+                                        <a href="{{ route('address.delete', $address->id) }}"><i
+                                                class="fa fa-trash"></i>&nbsp;Delete</a>
                                     </div>
                                 </div>
                             </div>
@@ -61,4 +69,25 @@
             </div>
         </div>
     </section>
+    @pushOnce('frontend-scripts')
+        <script>
+            $(document).ready(function() {
+                if ($('.action-row').children('.default-check').attr('default') == 1) {
+                    $(this).find('#check-icon').removeClass('fa-check');
+                    $(this).find('#check-icon').addClass('fa-check-circle');
+                    $(this).find('#check-icon').siblings().text('Selected');
+
+                }
+            });
+            $('.action-row').children('.default-check').click(function(e) {
+                if (!confirm("Are you sure you want to change the current address?")) {
+                  e.preventDefault();
+                  location.reload();
+                }else{
+                    submit();
+                }
+                $(this).find('#check-icon').toggleClass('fa-check fa-check-circle');
+            })
+        </script>
+    @endPushOnce
 @endsection

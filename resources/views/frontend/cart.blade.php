@@ -14,7 +14,7 @@
                                 <div class="col-8"><i class="fa fa-paper-plane pe-3"></i>Add address to unlock extra
                                     discounts
                                     and best offers.</div>
-                                <div class="col-4 text-end">ADD ADDRESS</div>
+                                <div class="col-4 text-end"><a href="{{ route('address.index') }}">ADD ADDRESS</a></div>
                             </div>
                         </div>
                         <div class="row pt-5 pb-3 align-items-center">

@@ -29,7 +29,7 @@
                             {{ Auth::user()->name }}</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown" >
                                 <li><a class="dropdown-item" href="#"><i class="fa fa-user"></i> &nbsp;Profile</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fa fa-map-location"></i> &nbsp;My Addresses</a></li>
+                                <li><a class="dropdown-item" href="{{ route('address.index') }}"><i class="fa fa-map-location"></i> &nbsp;My Addresses</a></li>
                                 <li><a class="dropdown-item" href="#"><i class="fa fa-heart"></i> &nbsp;My Wishlist</a></li>
                                 <li><a class="dropdown-item" href="#"><i class="fa fa-cart-shopping"></i> &nbsp;My Orders</a></li>
                                 @if (Auth::user()->role_id == 1)
