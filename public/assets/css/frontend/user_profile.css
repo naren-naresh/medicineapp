@@ -22,7 +22,10 @@
 }
 .user-name-block{
     background-color: #fff;
-    padding: 10px 0px;
+    padding: 15px 0px;
+}
+.user-name-block .user-icon img{
+    border-radius: 50%;
 }
 .menu-options{
  background-color: #fff;
@@ -39,7 +42,7 @@
     background-color: #fff;
     padding: 15px 20px;
 }
-#save-btn{
+#edit-btn{
     background-color: #00D2A6;
     color: #fff;
     border: 1px solid #00D2A6;
@@ -48,4 +51,17 @@
     background-color: #385399;
     color: #fff;
     border: 1px solid #385399;
+}
+.picture {
+    width: 100px;
+    aspect-ratio: 3/2;
+    background: #eee;
+    color: #bbb;
+    border: 1px dashed;
+    cursor: pointer;
+  }
+#userForm .read-only{
+     pointer-events: none;
+     opacity: .5;
+     background-color: #bfbebe;
 }
