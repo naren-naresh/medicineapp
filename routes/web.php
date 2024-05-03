@@ -99,3 +99,6 @@ Route::get('edit-address/{id?}','AddAddressController@edit')->name('address.edit
 Route::post('update-address/{id?}','AddAddressController@update')->name('address.update');
 Route::get('delete/{id?}','AddAddressController@destroy')->name('address.delete');
 Route::get('default/{id?}','AddAddressController@default')->name('address.default');
+/** user profile routes */
+Route::get('user-profile','UserProfileController@index')->name('useProfile.index');
+Route::post('user-profile-update','UserProfileController@update')->name('useProfile.update');

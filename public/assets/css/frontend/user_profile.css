@@ -1,0 +1,72 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+.user-profile-section{
+    background-color: #f1f3f6;
+}
+.required::after{
+    content:" *";
+    color: red;
+}
+.user-icon i{
+    font-size: 28px;
+}
+.form-control {
+    border-radius: unset !important;
+}
+#userForm .form-control:focus{
+    border: 1px solid #385399 !important;
+}
+.user-name-block{
+    background-color: #fff;
+    padding: 15px 0px;
+}
+.user-name-block .user-icon img{
+    border-radius: 50%;
+}
+.menu-options{
+ background-color: #fff;
+}
+.menu-options a{
+    padding: 10px 20px;
+    border-bottom: 1px solid #bebebe;
+    color: #969696;
+}
+.menu-options a:hover{
+    color: #385399;
+}
+.user-profile-information{
+    background-color: #fff;
+    padding: 15px 30px;
+}
+#edit-btn{
+    background-color: #00D2A6;
+    color: #fff;
+    border: 1px solid #00D2A6;
+}
+#cancel-btn{
+    background-color: #385399;
+    color: #fff;
+    border: 1px solid #385399;
+}
+.send-btn{
+    background-color: #385399;
+    color: #fff;
+    border: 1px solid #385399;
+}
+.picture {
+    width: 100px;
+    aspect-ratio: 3/2;
+    background: #eee;
+    color: #bbb;
+    border: 1px dashed;
+    cursor: pointer;
+  }
+#userForm .read-only{
+     pointer-events: none;
+     opacity: .5;
+     background-color: #bfbebe;
+}
