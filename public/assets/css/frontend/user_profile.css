@@ -20,6 +20,9 @@
 #userForm .form-control:focus{
     border: 1px solid #385399 !important;
 }
+#accountDeleteForm .form-control:focus{
+    border: 1px solid #385399 !important;
+}
 .user-name-block{
     background-color: #fff;
     padding: 15px 0px;
@@ -52,7 +55,12 @@
     color: #fff;
     border: 1px solid #385399;
 }
-.send-btn{
+#confirm-btn {
+    background-color: #385399;
+    color: #fff;
+    border: 1px solid #385399;
+}
+.send-btn,.verify-btn{
     background-color: #385399;
     color: #fff;
     border: 1px solid #385399;

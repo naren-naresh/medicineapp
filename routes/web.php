@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 /** default home route */
-Route::get('/', 'HomePageController@index')->name('home');
+Route::get('/', 'HomePageController@index');
 /** Authenticate routes */
 Route::get('login', 'AuthController@login')->name('login');
 Route::post('authenticate', 'AuthController@authenticate')->name('authenticate');
@@ -59,7 +59,6 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::resource('product', ProductController::class)->except(['show']);
         Route::post('product_variant', 'ProductController@productVariant')->name('productVariant');
         Route::get('product_add', 'ProductController@add')->name('product.add');
-        // Route::get('product_destroy','ProductController@destroy')->name('product.destroy');
         Route::post('product_edit_variant', 'ProductController@editProductVariant')->name('editProductVariant');
         Route::post('product_variant_destroy', 'ProductController@destroyVariant')->name('product.destroyVariant');
         /** Brand resource routes */
@@ -102,3 +101,6 @@ Route::get('default/{id?}','AddAddressController@default')->name('address.defaul
 /** user profile routes */
 Route::get('user-profile','UserProfileController@index')->name('useProfile.index');
 Route::post('user-profile-update','UserProfileController@update')->name('useProfile.update');
+Route::post('user-confirmation','UserProfileController@emailConfirmation')->name('userProfile.confirm');
+Route::post('confirm-code','UserProfileController@confirmCode')->name('useProfile.confirmCode');
+Route::post('user-destroy','UserProfileController@destroy')->name('userProfile.destroy');
