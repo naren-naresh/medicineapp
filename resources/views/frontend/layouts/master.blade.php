@@ -39,7 +39,7 @@
         <!--footer end-->
     </div>
     <!-- modal for sign in -->
-    <div class="modal" tabindex="-1" id="signModal">
+    <div class="modal" tabindex="-1" id="signModal" data-bs-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <button type="button" class="btn-close" aria-label="Close" style="position: absolute; top: 10px; right: 10px; z-index: 999;" data-bs-dismiss="modal"></button>
@@ -77,7 +77,7 @@
         </div>
     </div>
     <!-- modal for sign up -->
-    <div class="modal" tabindex="-1" id="signUpModal">
+    <div class="modal" tabindex="-1" id="signUpModal" data-bs-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <button type="button" class="btn-close" aria-label="Close" style="position: absolute; top: 10px; right: 10px; z-index: 999;" data-bs-dismiss="modal"></button>

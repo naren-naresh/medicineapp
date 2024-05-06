@@ -107,7 +107,7 @@
         </div>
     </section>
     <!-- modal for sign in -->
-    <div class="modal" tabindex="-1" id="accountDeleteModal">
+    <div class="modal" tabindex="-1" id="accountDeleteModal" data-bs-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <button type="button" class="btn-close" aria-label="Close"
@@ -116,19 +116,35 @@
                     <div class="modal-heading text-center pb-3">
                         <h5 class="modal-title" id="modelHeading">Conformation</h5>
                     </div>
-                    <form action="" id="accountDeleteForm" name="accountDeleteForm" method="post"
-                        enctype="multipart/form-data">
+                    <form action="" id="accountDeleteForm" name="accountDeleteForm" method="post" enctype="multipart/form-data">
                         @csrf
-                        <div class="form-group row">
+                        <div class="form-group row" id="verifyEmailRow">
                             <div class="col-8 pe-0">
-                                <input type="email" class="form-control mt-2 py-3" name="email" id="email"
-                                    placeholder="Email">
+                                <input type="email" class="form-control mt-2" name="verifyEmail" id="verifyEmail" placeholder="Enter your email">
                                 @if ($errors->has('email'))
                                     <span class="text-danger">{{ $errors->first('email') }}</span>
                                 @endif
+                                <span id="verifyEmailError" class="pt-2"></span>
                             </div>
                             <div class="col-4 ps-0">
-                                <button type="button" class="send-btn form-control mt-2 py-3">Send Code</button>
+                                <button type="button" class="send-btn form-control mt-2">Send Code</button>
+                            </div>
+                        </div>
+                        <div class="form-group row d-none" id="verificationRow">
+                            <div class="col-8 pe-0">
+                              <input type="text" name="verificationCode" id="verificationCode" class="form-control mt-2"  placeholder="Enter Verification Code">
+                              <span id="verificationCodeError" class="pt-2"></span>
+                            </div>
+                            <div class="col-4 ps-0">
+                                <button type="button" class="verify-btn form-control mt-2">Verify Code</button>
+                            </div>
+                        </div>
+                        <div class="form-group row d-none" id="confirmationRow">
+                            <div class="col-8 pe-0">
+                              <input type="text" name="confirmText" id="confirmText" class="form-control mt-2"  placeholder="Write delete...">
+                            </div>
+                            <div class="col-4 ps-0">
+                                <button type="button" class="confirm-btn form-control mt-2">Confirm</button>
                             </div>
                         </div>
                     </form>
@@ -137,54 +153,12 @@
         </div>
     </div>
     @pushOnce('frontend-scripts')
-        <script>
-            $(document).ready(function() {
-                $('input, .picture , select').addClass('read-only');
-                $("input, select").prop("readonly", true);
-            });
-            $('#edit').click(function() {
-                $('#name,#contact,#image, .picture , select').removeClass('read-only');
-                $("input , select").prop("readonly", false);
-                $(this).parent().addClass('d-none');
-                $('#btn-row').removeClass('d-none');
-            });
-            $('#cancel-btn').click(function() {
-                $('input, .picture , select').addClass('read-only');
-                $("input, select").prop("readonly", true);
-                $('#action-row').removeClass('d-none');
-                $('#btn-row').addClass('d-none');
-            });
-            $('#delete').click(function() {
-                Swal.fire({
-                    title: "Are you sure?",
-                    text: "You won't be able to revert this!",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, delete it!"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $('#accountDeleteModal').modal('show');
-                        $('#accountDeleteModal').modal({
-                            backdrop: 'static',
-                            keyboard: false
-                        });
-                    }
-                });
-            });
-            /*image preview*/
-            $('#image').change(function() {
-                let reader = new FileReader();
-
-                reader.onload = (e) => {
-                    $('#demo').attr('src', e.target.result);
-                    $('#imgIcon').remove();
-                }
-
-                reader.readAsDataURL(this.files[0]);
-
-            });
-        </script>
+       <script>
+          var Confirm = "{{ route('userProfile.confirm') }}";
+          var ConfirmCode = "{{ route('useProfile.confirmCode') }}";
+          var FinalConfirm = "{{ route('userProfile.destroy') }}";
+          var home = "{{ route('home') }}";
+       </script>
+       <script src="{{ asset('assets/js/frontend/user-profile.js')}}"></script>
     @endPushOnce
 @endsection
