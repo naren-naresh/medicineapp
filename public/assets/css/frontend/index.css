@@ -379,3 +379,6 @@ a{
 .form-group i{
     cursor: pointer;
 }
+.toast-body {
+    background-color: #f5f5f5;
+  }

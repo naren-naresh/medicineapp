@@ -15,7 +15,7 @@ class WishListController extends Controller
             return response()->json(['removed' => 'Successfully removed from your wishlist','exist' => $exist]);
         } else {
             WishList::create(['customer_id' => $request->customer_id, 'product_id' => $request->product_id]);
-            return response()->json(['added' => 'Successfully added on wishlist', 'exist' => $exist]);
+            return response()->json(['added' => 'Successfully added on your wishlist', 'exist' => $exist]);
         }
     }
 }

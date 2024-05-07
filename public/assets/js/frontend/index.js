@@ -290,6 +290,13 @@ $('.pc-img span').click(function () {
             },
             success: function (response) {
                 exist = response.exist;
+                if (exist) {
+                    $(".toast .toast-body").text(response.removed);
+                    $(".toast").fadeIn();
+                } else {
+                    $(".toast .toast-body").text(response.added);
+                    $(".toast").fadeIn();
+                }
             }
         });
     }else{
@@ -303,3 +310,7 @@ $('.p-card').each(function () {
           $(this).find('i').addClass('fa');
     }
 });
+$('.btn-close').click(function() {
+    $('.toast').fadeOut(); // Hide the toast using fadeOut animation
+  });
+/** wishlist end */
