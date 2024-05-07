@@ -14,7 +14,7 @@
                         <div class="col ps-4">
                             <div class="row">
                                 <span>Hello</span>
-                                <span>{{ Auth::user()->name }}</span>
+                                <span class="username">{{ Auth::user()->name }}</span>
                             </div>
                         </div>
                     </div>
@@ -65,8 +65,8 @@
                                     </div>
                                     <div class="col text-end">
                                         <div class="action-row">
-                                            <a href="{{ route('wishlist.destroy', $wishlist->id) }}"><i
-                                                    class="fa fa-trash"></i>&nbsp;Delete</a>
+                                            <a href="{{ route('wishlist.destroy', $wishlist->id) }}" class="remove"><i
+                                                    class="fa fa-heart"></i></a>
                                         </div>
                                     </div>
                                 </div>

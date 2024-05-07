@@ -24,6 +24,10 @@
     background-color: #fff;
     padding: 10px 0px;
 }
+.username{
+    font-size: 16px;
+    font-weight: 500;
+}
 .menu-options{
  background-color: #fff;
 }
@@ -50,7 +54,20 @@
 .product-name a{
     font-size: 16px;
 }
+.product-name a:hover{
+    color: #5c5b5b;
+}
 .product-price{
     font-size: 16px;
     color: #385399;
+}
+.action-row .remove{
+    padding: 5px;
+    border: 1px solid #b6bccb;
+    border-radius: 50%;
+}
+.action-row  .remove:hover{
+    color: #fff;
+    background-color: #385399;
+    border-color: #385399;
 }
