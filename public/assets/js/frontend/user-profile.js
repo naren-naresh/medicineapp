@@ -109,6 +109,13 @@ $('.confirm-btn').click(function () {
         },
         success: function () {
             location.replace(home);
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Your account has been deleted.",
+                showConfirmButton: false,
+                timer: 1500
+              });
         }
      });
 });

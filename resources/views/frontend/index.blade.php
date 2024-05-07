@@ -55,7 +55,7 @@
                                 <div class="pc-img">
                                    <a href="{{ route('single.product.view',$product->id) }}"> <img
                                     src="{{ asset('assets/images/products/' . $product->id . '/' . $product->cover_image . '') }}"></a>
-                                    <span><a href="#"><i class="far fa-heart"></i></a></span>
+                                    <span><a><i class="far fa-heart" productId = {{$product->id}} customerID = {{ auth()->id() }}></i></a></span>
                                 </div>
                                 <div class="pc-text py-3">
                                     <p class="pc-title mb-1"><a
@@ -109,6 +109,7 @@
                 var success = "{{ asset('assets/frontend/images/successfully.png') }}"
                 var error = "{{ asset('assets/frontend/images/error.png') }}"
                 var postalCheck = "{{ route('postal') }}"
+                var wishlist = "{{ route('wishlist.create_or_destroy') }}";
             </script>
         @endpush
     @endsection
