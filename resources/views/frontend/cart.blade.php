@@ -136,7 +136,7 @@
                                 <div class="pc-img">
                                     <a href="{{ route('single.product.view', $relatedProduct->id) }}"><img
                                             src="{{ asset('assets/images/products/' . $relatedProduct->id . '/' . $relatedProduct->cover_image . '') }}"></a>
-                                    <span class="heartSpan"><a href="#"><i class="far fa-heart"></i></a></span>
+                                            <span><a><i class="far fa-heart" productId = {{$relatedProduct->id}} customerID = {{ auth()->id()}} wish="{{$relatedProduct->checkFavorite()}}"></i></a></span>
                                 </div>
                                 <div class="pc-text pt-4">
                                     <p class="pc-title mb-2"><a

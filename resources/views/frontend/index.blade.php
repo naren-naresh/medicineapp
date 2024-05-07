@@ -25,7 +25,8 @@
                 <div class="row d-flex py-3 px-4" id="category-row">
                     <div class="category-list-block d-flex justify-content-around align-items-center">
                         @foreach ($categories as $cat)
-                            <a href="{{ route('product_list',$cat->id) }}" class="category-list text-center" style="width: 15.25%;">
+                            <a href="{{ route('product_list', $cat->id) }}" class="category-list text-center"
+                                style="width: 15.25%;">
                                 <div class="cat-con">
                                     <div class="cat-img"><img src="{{ asset('assets/images/' . $cat->image . '') }}"></div>
                                     <div class="cat-text">{{ $cat->name }}</div>
@@ -53,22 +54,36 @@
                         <div class="col-3 p-card">
                             <div class="pc-con">
                                 <div class="pc-img">
-                                   <a href="{{ route('single.product.view',$product->id) }}"> <img
-                                    src="{{ asset('assets/images/products/' . $product->id . '/' . $product->cover_image . '') }}"></a>
-                                    <span><a href="#"><i class="far fa-heart"></i></a></span>
+                                    <a href="{{ route('single.product.view', $product->id) }}"> <img
+                                            src="{{ asset('assets/images/products/' . $product->id . '/' . $product->cover_image . '') }}"></a>
+                                    <span><a><i class="far fa-heart" productId={{ $product->id }}
+                                                customerID={{ auth()->id() }}
+                                                wish="{{ $product->checkFavorite() }}"></i></a></span>
                                 </div>
                                 <div class="pc-text py-3">
                                     <p class="pc-title mb-1"><a
-                                            href="{{ route('single.product.view',$product->id) }}">{{ $product->name }}</a></p>
+                                            href="{{ route('single.product.view', $product->id) }}">{{ $product->name }}</a>
+                                    </p>
                                     <div class="price py-1">$ {{ $product->selling_price }}</div>
                                     <span class="d-status text-success">Delivery available</span>
                                     <div class="pc-view pt-2">
-                                        <a href="{{ route('single.product.view',$product->id)}}" class="pc-btn">View</a>
+                                        <a href="{{ route('single.product.view', $product->id) }}" class="pc-btn">View</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     @endforeach
+                </div>
+            </div>
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1">
+                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="display: none;">
+                    <div class="toast-body row align-items-center px-2 py-3">
+                        <div class="toast-content col-10">
+                        </div>
+                        <div class="col-2 text-end">
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                         </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -109,6 +124,7 @@
                 var success = "{{ asset('assets/frontend/images/successfully.png') }}"
                 var error = "{{ asset('assets/frontend/images/error.png') }}"
                 var postalCheck = "{{ route('postal') }}"
+                var wishlist = "{{ route('wishlist.create_or_destroy') }}";
             </script>
         @endpush
     @endsection

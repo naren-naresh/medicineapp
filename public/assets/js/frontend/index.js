@@ -274,3 +274,43 @@ $('.sing_up').click(function () {
     $('#signModal').modal('hide');
     $('#signUpModal').modal('show');
 });
+/** wishList  */
+var exist;
+$('.pc-img span').click(function () {
+    var customerId = $(this).find('i').attr('customerId');
+    var productId = $(this).find('i').attr('productId');
+    $(this).find('i').toggleClass('fa far');
+    if (customerId) {
+        $.ajax({
+            type: "post",
+            url: wishlist,
+            data:{
+                customer_id : customerId,
+                product_id : productId,
+            },
+            success: function (response) {
+                exist = response.exist;
+                if (exist) {
+                    $(".toast .toast-content").text(response.removed);
+                    $(".toast").fadeIn();
+                } else {
+                    $(".toast .toast-content").text(response.added);
+                    $(".toast").fadeIn();
+                }
+            }
+        });
+    }else{
+        $('#signUpModal').modal('show');
+    }
+});
+
+$('.p-card').each(function () {
+    if ($(this).find('i').attr('wish') == 1) {
+          $(this).find('i').removeClass('far');
+          $(this).find('i').addClass('fa');
+    }
+});
+$('.btn-close').click(function() {
+    $('.toast').fadeOut(); // Hide the toast using fadeOut animation
+  });
+/** wishlist end */

@@ -13,6 +13,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductListingController;
 use App\Http\Controllers\ReturnPolicyController;
 use App\Http\Controllers\SingleProductController;
+use App\Models\WishList;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -104,3 +105,7 @@ Route::post('user-profile-update','UserProfileController@update')->name('useProf
 Route::post('user-confirmation','UserProfileController@emailConfirmation')->name('userProfile.confirm');
 Route::post('confirm-code','UserProfileController@confirmCode')->name('useProfile.confirmCode');
 Route::post('user-destroy','UserProfileController@destroy')->name('userProfile.destroy');
+/** wish list routes */
+Route::get('wishlist-view','WishListController@index')->name('wishlist.index');
+Route::post('wishlist','WishListController@create_or_delete')->name('wishlist.create_or_destroy');
+Route::get('wishlist-destroy/{id?}','WishListController@destroy')->name('wishlist.destroy');

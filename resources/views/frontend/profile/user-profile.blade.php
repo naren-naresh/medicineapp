@@ -25,7 +25,7 @@
                         <a href="{{ route('address.index') }}">
                             <div class="option"><i class="fa fa-map-location"></i>&nbsp; Manage Addresses</div>
                         </a>
-                        <a href="#">
+                        <a href="{{ route('wishlist.index') }}">
                             <div class="option"><i class="fa fa-heart"></i> &nbsp;My Wishlist</div>
                         </a>
                         <a href="#">
@@ -68,8 +68,7 @@
                             <div class="row pt-3">
                                 <div class="col-6 form-group">
                                     <label for="contact" class="required pb-2">Contact</label>
-                                    <input type="text" name="contact" id="contact" class="form-control" maxlength="6"
-                                        onkeyup="process(this)" value="{{ $info->contact }}">
+                                    <input type="text" name="contact" id="contact" class="form-control" onkeyup="process(this)" value="{{ $info->contact }}">
                                 </div>
                                 <div class="col-6 form-group">
                                     <label for="gender" class="required pb-2">Gender</label>
@@ -112,7 +111,7 @@
             <div class="modal-content">
                 <button type="button" class="btn-close" aria-label="Close"
                     style="position: absolute; top: 10px; right: 10px; z-index: 999;" data-bs-dismiss="modal"></button>
-                <div class="modal-body p-5">
+                <div class="modal-body py-4 px-5">
                     <div class="modal-heading text-center pb-3">
                         <h5 class="modal-title" id="modelHeading">Conformation</h5>
                     </div>
