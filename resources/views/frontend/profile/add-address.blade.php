@@ -8,7 +8,10 @@
             <div class="row  address-content">
                 <div class="col-3 pe-5">
                     <div class="row mb-4 user-name-block align-items-center">
-                        <div class="col-1 user-icon"> <i class="fa fa-user-circle"></i></div>
+                        <div class="col-3 user-icon">
+                            <img src="{{ asset('assets/images/user/' . auth()->id() . '/' . Auth::user()->image . '') }}"
+                            class="w-100">
+                        </div>
                         <div class="col ps-4">
                             <div class="row">
                                 <span>Hello</span>
@@ -23,7 +26,7 @@
                         <a href="{{ route('address.index') }}">
                             <div class="option active"><i class="fa fa-map-location"></i>&nbsp; Manage Addresses</div>
                         </a>
-                        <a href="#">
+                        <a href="{{ route('wishlist.index') }}">
                             <div class="option"><i class="fa fa-heart"></i> &nbsp;My Wishlist</div>
                         </a>
                         <a href="#">

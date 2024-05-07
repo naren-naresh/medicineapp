@@ -25,7 +25,7 @@
                         <a href="{{ route('address.index') }}">
                             <div class="option"><i class="fa fa-map-location"></i>&nbsp; Manage Addresses</div>
                         </a>
-                        <a href="#">
+                        <a href="{{ route('wishlist.index') }}">
                             <div class="option"><i class="fa fa-heart"></i> &nbsp;My Wishlist</div>
                         </a>
                         <a href="#">

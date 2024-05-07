@@ -106,4 +106,6 @@ Route::post('user-confirmation','UserProfileController@emailConfirmation')->name
 Route::post('confirm-code','UserProfileController@confirmCode')->name('useProfile.confirmCode');
 Route::post('user-destroy','UserProfileController@destroy')->name('userProfile.destroy');
 /** wish list routes */
+Route::get('wishlist-view','WishListController@index')->name('wishlist.index');
 Route::post('wishlist','WishListController@create_or_delete')->name('wishlist.create_or_destroy');
+Route::get('wishlist-destroy/{id?}','WishListController@destroy')->name('wishlist.destroy');

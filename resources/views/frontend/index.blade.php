@@ -75,13 +75,15 @@
                     @endforeach
                 </div>
             </div>
-            <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1">
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1">
                 <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="display: none;">
-                  <div class="toast-header">
-                    <strong class="me-auto">Wish List</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                  </div>
-                  <div class="toast-body"></div>
+                    <div class="toast-body row align-items-center px-2 py-3">
+                        <div class="toast-content col-10">
+                        </div>
+                        <div class="col-2 text-end">
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                         </div>
+                    </div>
                 </div>
             </div>
         </section>

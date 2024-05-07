@@ -291,10 +291,10 @@ $('.pc-img span').click(function () {
             success: function (response) {
                 exist = response.exist;
                 if (exist) {
-                    $(".toast .toast-body").text(response.removed);
+                    $(".toast .toast-content").text(response.removed);
                     $(".toast").fadeIn();
                 } else {
-                    $(".toast .toast-body").text(response.added);
+                    $(".toast .toast-content").text(response.added);
                     $(".toast").fadeIn();
                 }
             }
