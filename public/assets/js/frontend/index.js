@@ -52,7 +52,6 @@ jQuery(document).ready(function ($) {
             }
         );
     }
-    // $('.pc-img span a i').addClass(className);
 });
 
 // search field of the page
@@ -280,6 +279,7 @@ var exist;
 $('.pc-img span').click(function () {
     var customerId = $(this).find('i').attr('customerId');
     var productId = $(this).find('i').attr('productId');
+    $(this).find('i').toggleClass('fa far');
     if (customerId) {
         $.ajax({
             type: "post",
@@ -295,11 +295,11 @@ $('.pc-img span').click(function () {
     }else{
         $('#signUpModal').modal('show');
     }
-    if (exist == true) {
-        $(this).find('i').attr('wish',exist);
-    }else{
-        $(this).find('i').attr('wish',exist);
-    }
-    console.log(exist);
 });
 
+$('.p-card').each(function () {
+    if ($(this).find('i').attr('wish') == 1) {
+          $(this).find('i').removeClass('far');
+          $(this).find('i').addClass('fa');
+    }
+});
