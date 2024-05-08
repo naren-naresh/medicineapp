@@ -1,0 +1,76 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+.products-block{
+    border-right: 1px solid #969696;
+}
+.mainRow{
+    border-bottom: 1px solid #969696;
+}
+.offerContent{
+    border: 1px solid #c3c3c3;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.offerContent .fa-percentage{
+   background-color: #385399;
+   color: #fff;
+   width: 25px;
+   height: 28px;
+   border-radius: 25px;
+   text-align: center;
+}
+.offerContent .con1{
+ font-weight: 500;
+ font-size: 16px;
+}
+.bill-summary{
+    border-top:  5px solid #e0dddd;
+}
+.total-pay {
+    border-top: 1px solid #969696;
+}
+.address-change{
+    border-bottom: 1px solid #969696;
+}
+.address-change .col-5{
+    font-size: 18px;
+    font-weight: 600;
+}
+.change-btn{
+    color: #385399;
+    font-weight: 500;
+    cursor: pointer;
+}
+.address-content i{
+   color: #385399;
+}
+.address-active{
+    background-color: #385399;
+    color: white !important;
+}
+.continue{
+    background-color: #385399;
+    line-height: 2.5;
+    cursor: pointer;
+}
+.continue a{
+    color: #fff;
+    font-size: 16px;
+}
+.form-control{
+ border-radius: unset !important;
+}
+.form-control:focus{
+   border: 1px solid #385399 !important;
+}
+.apply{
+    background-color: #385399;
+    padding: 6.1px 5px;
+}
+.apply a{
+    color:#fff;
+}
