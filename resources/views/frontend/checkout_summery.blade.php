@@ -51,7 +51,7 @@
                                 {{-- <div class="col-2 ps-4"><i class="fa fa-percentage pt-2"></i></div> --}}
                                 <label for="coupon-input" class="pb-2">Apply coupon code</label>
                                 <div class="col-10 pe-0">
-                                     <input type="text" placeholder="Enter coupon code" class="form-control coupon-input">
+                                    <input type="text" placeholder="Enter coupon code" class="form-control coupon-input">
                                 </div>
                                 <div class="col-2 ps-0 apply text-center"><a href="#">Apply</a></div>
                             </div>
@@ -81,13 +81,14 @@
                             @php
                                 $defaultAddress = $addresses->where('set_default', 1);
                             @endphp
-                             <ul class="address-content list-unstyled">
+                            <ul class="address-content list-unstyled">
                                 @foreach ($defaultAddress as $address)
                                     <li class="border p-3 my-2 address" addressId={{ $address->id }}>
                                         <p><i class="fa fa-house-chimney"></i>&nbsp;Home</p>
                                         <p>
                                             <span><i class="fa fa-user"></i>&nbsp; {{ $address->name }}</span>
-                                            <span class="ps-5"><i class="fa fa-phone"></i>&nbsp;{{ $address->contact_number }}</span>
+                                            <span class="ps-5"><i
+                                                    class="fa fa-phone"></i>&nbsp;{{ $address->contact_number }}</span>
                                         </p>
                                         <p><i class="fa fa-map-location"></i>
                                             &nbsp;{{ $address->address }}({{ $address->postal_code }})</p>
@@ -95,30 +96,53 @@
                                 @endforeach
                             </ul>
                         </div>
-                        <div class="continue text-center"><a href="#">Continue</a></div>
+                        <div class="continue text-center"><a href="#" class="continue-btn">Continue</a></div>
                     </div>
                 </div>
             </div>
         </div>
         @include('frontend.modals.address_modal')
+        @include('frontend.modals.payment_modal')
     </section>
     @pushOnce('frontend-scripts')
-    <script>
-        $('.change-btn').click(function () {
-            $('#addressModal').modal('show');
-        });
-        $('.address-item').click(function () {
-          $id = $(this).attr('addressId');
-          $html = $(this).parent().html();
-          $('.address-content').html($html);
-          $('#addressModal').modal('hide');
-        });
-        $('.address-item').each(function (index, element) {
-            if ($(this).attr('addressId') == $('.address-content').children('li').attr('addressId') ) {
-              $(this).addClass('address-active');
-              $(this).find('i').addClass('address-active');
-        }
-        });
-    </script>
+        <script>
+            $('.change-btn').click(function() {
+                $('#addressModal').modal('show');
+            });
+            $('.address-item').click(function() {
+                $id = $(this).attr('addressId');
+                $html = $(this).parent().html();
+                $('.address-content').html($html);
+                $('#addressModal').modal('hide');
+            });
+            $('.address-item').each(function(index, element) {
+                if ($(this).attr('addressId') == $('.address-content').children('li').attr('addressId')) {
+                    $(this).addClass('address-active');
+                    $(this).find('i').addClass('address-active');
+                }
+            });
+            $('.continue').click(function() {
+                $('#paymentModal').modal('show');
+            });
+            /* payment modal functionality */
+            $('#card').click(function() {
+                if ($(this).is(':checked')) {
+                    $(this).siblings('label').addClass('paymentActive');
+                    $('#pay-on-delivery').siblings('label').removeClass('paymentActive');
+                    $('.card-form').removeClass('d-none');
+                    $('.pay-btn-block').removeClass('d-none');
+                    $('.pay-on-content').addClass('d-none');
+                }
+            });
+            $('#pay-on-delivery').click(function() {
+                if ($(this).is(':checked')) {
+                    $(this).siblings('label').addClass('paymentActive');
+                    $('#card').siblings('label').removeClass('paymentActive');
+                    $('.card-form').addClass('d-none');
+                    $('.pay-btn-block').removeClass('d-none');
+                    $('.pay-on-content').removeClass('d-none');
+                }
+            });
+        </script>
     @endPushOnce
 @endsection

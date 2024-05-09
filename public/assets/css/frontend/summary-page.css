@@ -27,6 +27,13 @@
  font-weight: 500;
  font-size: 16px;
 }
+.offerContent label{
+    font-weight: 500;
+    font-size: 16px;
+}
+.offerContent{
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
 .bill-summary{
     border-top:  5px solid #e0dddd;
 }
@@ -73,4 +80,8 @@
 }
 .apply a{
     color:#fff;
+}
+.paymentActive{
+    color: #fff !important;
+    background-color: #385399 !important;
 }

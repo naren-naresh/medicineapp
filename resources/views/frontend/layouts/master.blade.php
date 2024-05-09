@@ -148,6 +148,7 @@
         var postalCheck = "{{ route('postal') }}"
         var success = "{{ asset('assets/frontend/images/successfully.png') }}"
         var DeliveryCode = "{{ route('postalCheck') }}";
+        var wishlist = "{{ route('wishlist.create_or_destroy') }}";
     </script>
     @stack('frontend-scripts')
 </body>

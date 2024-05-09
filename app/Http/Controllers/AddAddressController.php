@@ -21,6 +21,12 @@ class AddAddressController extends Controller
 
     public function store(Request $request){
         Address::create(['name' => $request->name ,'customer_id' => $request->customer_id,'address' => $request->address,'notes' => $request->notes,'postal_code' => $request->postal_code,'contact_number' => $request->number]);
+
+        if ($request->session()->get('guest-id')) {
+            Address::where('customer_id',auth()->id())->update(['set_default' => 1]);
+            $request->session()->forget('guest-id');
+            return redirect()->route('summaryPage.index')->with('message','address add successfully.');
+        }
         return redirect()->route('address.index')->with('message','address add successfully.');
     }
 

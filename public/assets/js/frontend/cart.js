@@ -56,8 +56,12 @@ function update(Id,quant) {
       });
 }
 // proceed to checkout
-$('.paymentBtn').click(function () {
-    if ($('#guest_id').val()) {
+$('.paymentBtn').click(function (e) {
+     let authId = $(this).attr('authId');
+    if ($('#guest_id').val() && authId =='') {
         $('#signUpModal').modal('show');
+        e.preventDefault();
+    }else{
+         e.submit();
     }
 });
