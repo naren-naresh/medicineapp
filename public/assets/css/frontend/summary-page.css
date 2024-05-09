@@ -7,6 +7,10 @@
 .products-block{
     border-right: 1px solid #969696;
 }
+.product-name{
+    font-size: 16px;
+    font-weight: 500;
+}
 .mainRow{
     border-bottom: 1px solid #969696;
 }
@@ -40,12 +44,19 @@
 .total-pay {
     border-top: 1px solid #969696;
 }
+.total-pay span{
+    font-size: 16px;
+    font-weight: 500;
+}
+.discount .col-3{
+    color: #385399;
+}
 .address-change{
     border-bottom: 1px solid #969696;
 }
 .address-change .col-5{
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 500;
 }
 .change-btn{
     color: #385399;
@@ -59,12 +70,15 @@
     background-color: #385399;
     color: white !important;
 }
-.continue{
+.continue-btn{
     background-color: #385399;
-    line-height: 2.5;
-    cursor: pointer;
+    border: 1px solid #385399;
+    color: #fff;
+    font-size: 16px;
 }
-.continue a{
+.edit-btn{
+    background-color: #385399;
+    border: 1px solid #385399;
     color: #fff;
     font-size: 16px;
 }
@@ -84,4 +98,12 @@
 .paymentActive{
     color: #fff !important;
     background-color: #385399 !important;
+}
+.btn-block a:hover{
+  color: #385399;
+  background-color: #fff;
+}
+.btn-block  button:hover{
+    color: #385399;
+  background-color: #fff;
 }

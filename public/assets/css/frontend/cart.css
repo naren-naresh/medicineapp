@@ -103,7 +103,7 @@
 }
 
 .discount .col-3 {
-    color: #00D2A6;
+    color: #385399;
 }
 
 .total-pay span {
@@ -128,14 +128,14 @@
  font-size: 16px;
 }
 .paymentBtn{
-    background-color: #00D2A6;
+    background-color: #385399;
     color: #fff;
     padding: 5px 10px;
 }
 .paymentBtn:hover{
     background-color: #fff;
-    color: #00D2A6;
-    border-color: #00D2A6;
+    color: #385399;
+    border-color: #385399;
 }
 .billing-details-section{
     position: relative;
@@ -153,7 +153,7 @@
 }
 .totalPayment{
     font-size: 20px;
-    color:#00D2A6;
+    color:#385399;
 }
 /* related products styles */
 .pc-title a{
