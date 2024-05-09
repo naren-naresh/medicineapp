@@ -109,3 +109,5 @@ Route::post('user-destroy','UserProfileController@destroy')->name('userProfile.d
 Route::get('wishlist-view','WishListController@index')->name('wishlist.index');
 Route::post('wishlist','WishListController@create_or_delete')->name('wishlist.create_or_destroy');
 Route::get('wishlist-destroy/{id?}','WishListController@destroy')->name('wishlist.destroy');
+/** summary page */
+Route::get('summary-page','SummaryPageController@index')->name('summaryPage.index');

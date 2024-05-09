@@ -27,7 +27,7 @@ class WishListController extends Controller
         }
     }
     public function destroy($id){
-        WishList::where('product_id',$id)->delete();
+        WishList::where('customer_id',auth()->id())->where('product_id',$id)->delete();
         return redirect()->route('wishlist.index')->with('message','address deleted successfully.');
      }
 }

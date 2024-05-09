@@ -124,7 +124,6 @@
                 var success = "{{ asset('assets/frontend/images/successfully.png') }}"
                 var error = "{{ asset('assets/frontend/images/error.png') }}"
                 var postalCheck = "{{ route('postal') }}"
-                var wishlist = "{{ route('wishlist.create_or_destroy') }}";
             </script>
         @endpush
     @endsection

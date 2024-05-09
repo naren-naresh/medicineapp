@@ -120,7 +120,7 @@
                                     <div class="totalPayment">₹{{ $totalPaid }}</div>
                                 </div>
                                 <div class="col text-end">
-                                    <a href="#" class="paymentBtn btn">PROCEED</a>
+                                    <a href="{{ route('summaryPage.index') }}" class="paymentBtn btn" authId = {{auth()->id()}}>PROCEED</a>
                                 </div>
                             </div>
                         </div>
