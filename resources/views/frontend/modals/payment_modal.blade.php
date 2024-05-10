@@ -22,36 +22,38 @@
                     </div>
                     <div class="card-form px-5 py-3 justify-content-center d-none">
                         <form action="" method="post" name="cardDetailsForm" id="cardDetailsForm">
-
-                                <div class="form-group">
-                                    <label for="name" class="pb-2">CARDHOLDER NAME</label>
-                                    <input type="text" name="name" id="name" class="form-control">
-                                </div>
+                            <div class="form-group">
+                                <label for="cardNumber" class="pb-2">CARD NUMBER</label>
+                                <input type="text" name="cardNumber" id="cardNumber" class="form-control" maxlength="19" onkeyup="process(this)">
+                            </div>
                             <div class="row py-2">
                                 <div class="form-group col-3">
                                     <label for="expires" class="pb-2">EXPIRES</label>
-                                    <input type="text" name="expires" id="expires" class="form-control" placeholder="MM/YY">
+                                    <input type="text" name="expires" id="expires" class="form-control"
+                                        placeholder="MM/YY" maxlength="4" onkeyup="process(this)">
                                 </div>
                                 <div class="form-group col-3">
                                     <label for="cvc" class="pb-2">CVC</label>
-                                    <input type="text" name="cvc" id="cvc" class="form-control" placeholder="CVC">
+                                    <input type="text" name="cvc" id="cvc" class="form-control"
+                                        placeholder="CVC" maxlength="4" onkeyup="process(this)">
                                 </div>
-                                <div class="form-group col">
-                                    <label for="cardNumber" class="pb-2">CARD NUMBER</label>
-                                    <input type="text" name="cardNumber" id="cardNumber" class="form-control">
+                                <div class="form-group  col">
+                                    <label for="name" class="pb-2">CARDHOLDER NAME</label>
+                                    <input type="text" name="name" id="name" class="form-control" maxlength="20">
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="pay-on-content d-none px-5 pt-3">
-                       <p> You selected Pay on Delivery! Pay at your door with Cash/digital options when your order arrives on within three days(approx).
-                         Be ready to receive it!</p>
+                        <p> You selected Pay on Delivery! Pay at your door with Cash/digital options when your order
+                            arrives on within three days(approx).
+                            Be ready to receive it!</p>
                     </div>
                     <div class="row justify-content-end py-3 px-5 pay-btn-block d-none">
                         <div class="payable">
-                            <p>Payable Amount:&nbsp;₹ {{ $totalPaid }}</p>
+                            <p>Payable Amount:&nbsp;<span>₹ {{ $totalPaid }}</span></p>
                         </div>
-                        <button type="submit" class="placeOrder-btn py-1 me-3 col-3">Place Order</button>
+                        <button type="submit" class="placeOrder-btn py-1 me-3 col-3" id="placeOrder">Place Order</button>
                     </div>
                 </div>
             </div>
@@ -87,11 +89,19 @@
         background-color: #385399;
         border: 1px solid #385399
     }
-    .payable p{
+
+    .payable p {
         font-size: 16px;
         font-weight: 500;
     }
-    .pay-on-content p{
+
+    .payable span {
+        font-size: 18px;
+        font-weight: 500;
+        color: #385399
+    }
+
+    .pay-on-content p {
         line-height: 1.7;
         color: #7a7979;
     }

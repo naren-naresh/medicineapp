@@ -11,14 +11,10 @@
                         @foreach ($cartDataItems as $cartDetail)
                             <div class="row mainRow align-items-center py-3">
                                 <div class="col-2 product-image">
-                                    <a href="{{ route('single.product.view', $cartDetail['product_id']) }}"> <img
-                                            src="{{ asset('assets/images/products/' . $cartDetail['product_id'] . '/' . $cartDetail['product_image'] . '') }}"
-                                            class="w-75"></a>
+                                   <img src="{{ asset('assets/images/products/' . $cartDetail['product_id'] . '/' . $cartDetail['product_image'] . '') }}" class="w-75">
                                 </div>
                                 <div class="col-10 product-content">
-                                    <div class="product-name"><a
-                                            href="{{ route('single.product.view', $cartDetail['product_id']) }}">{{ $cartDetail['product_name'] }}</a>
-                                    </div>
+                                    <div class="product-name">{{ $cartDetail['product_name'] }}</div>
                                     <div class="row justify-content-between">
                                         <div class="col-9">
                                             <div class="selectedVariant">
@@ -48,7 +44,6 @@
                     <div class="container">
                         <div class="offers  my-5 ps-3">
                             <div class="offerContent row  align-items-center p-3">
-                                {{-- <div class="col-2 ps-4"><i class="fa fa-percentage pt-2"></i></div> --}}
                                 <label for="coupon-input" class="pb-2">Apply coupon code</label>
                                 <div class="col-10 pe-0">
                                     <input type="text" placeholder="Enter coupon code" class="form-control coupon-input">
@@ -67,7 +62,7 @@
                             <div class="row mrp-price justify-content-between py-1"><span class="col-6">Cart
                                     Total(MRP)</span><span class="col-2 text-end pe-1">₹{{ $totalMRP }}</span></div>
                             <div class="row discount justify-content-between py-1"><span class="col-6">Discount
-                                    on MRP</span><span class="col-3 text-end pe-1">-₹{{ $totalDiscount }}</span></div>
+                                    on Total</span><span class="col-3 text-end pe-1">-₹{{ $totalDiscount }}</span></div>
                             <div class="row shipping-fee justify-content-between pt-1 pb-3"><span class="col-5">Delivery
                                     Charges</span><span class="col-7 text-end pe-1">As per delivery address</span></div>
                             <div class="row total-pay justify-content-between py-2"><span class="col-6">TO PAY</span><span
@@ -81,7 +76,7 @@
                             @php
                                 $defaultAddress = $addresses->where('set_default', 1);
                             @endphp
-                            <ul class="address-content list-unstyled">
+                            <ul class="address-content list-unstyled pt-3">
                                 @foreach ($defaultAddress as $address)
                                     <li class="border p-3 my-2 address" addressId={{ $address->id }}>
                                         <p><i class="fa fa-house-chimney"></i>&nbsp;Home</p>
@@ -96,7 +91,10 @@
                                 @endforeach
                             </ul>
                         </div>
-                        <div class="continue text-center"><a href="#" class="continue-btn">Continue</a></div>
+                        <div class="row justify-content-between px-3 btn-block">
+                            <a href="{{ route('cart.index') }}" class="edit-btn text-center col-4 py-1">Edit Cart</a>
+                            <button type="button" class="continue-btn text-center col-4 py-1">Continue</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -105,44 +103,6 @@
         @include('frontend.modals.payment_modal')
     </section>
     @pushOnce('frontend-scripts')
-        <script>
-            $('.change-btn').click(function() {
-                $('#addressModal').modal('show');
-            });
-            $('.address-item').click(function() {
-                $id = $(this).attr('addressId');
-                $html = $(this).parent().html();
-                $('.address-content').html($html);
-                $('#addressModal').modal('hide');
-            });
-            $('.address-item').each(function(index, element) {
-                if ($(this).attr('addressId') == $('.address-content').children('li').attr('addressId')) {
-                    $(this).addClass('address-active');
-                    $(this).find('i').addClass('address-active');
-                }
-            });
-            $('.continue').click(function() {
-                $('#paymentModal').modal('show');
-            });
-            /* payment modal functionality */
-            $('#card').click(function() {
-                if ($(this).is(':checked')) {
-                    $(this).siblings('label').addClass('paymentActive');
-                    $('#pay-on-delivery').siblings('label').removeClass('paymentActive');
-                    $('.card-form').removeClass('d-none');
-                    $('.pay-btn-block').removeClass('d-none');
-                    $('.pay-on-content').addClass('d-none');
-                }
-            });
-            $('#pay-on-delivery').click(function() {
-                if ($(this).is(':checked')) {
-                    $(this).siblings('label').addClass('paymentActive');
-                    $('#card').siblings('label').removeClass('paymentActive');
-                    $('.card-form').addClass('d-none');
-                    $('.pay-btn-block').removeClass('d-none');
-                    $('.pay-on-content').removeClass('d-none');
-                }
-            });
-        </script>
+        <script src="{{ asset('assets/js/frontend/summary-page.js') }}"></script>
     @endPushOnce
 @endsection
