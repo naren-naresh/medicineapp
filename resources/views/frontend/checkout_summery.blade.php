@@ -8,6 +8,7 @@
             <div class="row">
                 <div class="col-7 products-block">
                     <div class="cart-items px-3">
+                        <input type="hidden" name="cartData" id="cartData" value="{{ json_encode($cartDataItems) }}">
                         @foreach ($cartDataItems as $cartDetail)
                             <div class="row mainRow align-items-center py-3">
                                 <div class="col-2 product-image">
@@ -104,5 +105,8 @@
     </section>
     @pushOnce('frontend-scripts')
         <script src="{{ asset('assets/js/frontend/summary-page.js') }}"></script>
+        <script>
+            var orderStore = "{{ route('orders.store') }}";
+        </script>
     @endPushOnce
 @endsection
