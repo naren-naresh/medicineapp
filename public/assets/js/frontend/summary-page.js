@@ -38,26 +38,50 @@ $("#pay-on-delivery").click(function () {
         $(".pay-on-content").removeClass("d-none");
     }
 });
-$('#cardDetailsForm').validate({
-     rules:{
-        cardNumber:'required',
-        expires:'required',
-        cvc:'required',
-        name:'required',
-     },
-     message:{
-        cardNumber:{
-            required:'Card number is required.',
+$("#cardDetailsForm").validate({
+    rules: {
+        cardNumber: {
+          required: true,
+          minlength: 13,
         },
-        expires:{
-            required:'Expiry date is required.'
+        expires: {
+          required: true,
+          minlength: 4,
         },
-        cvc:{
-            required:'Cvc number is required.',
+        cvc: {
+          required: true,
+          minlength: 3,
         },
-        name:{
-             required:'Name is required.'
-        }
-     }
+        name: 'required'
+      },
+      messages: {
+        cardNumber: {
+          required: 'Card number is required.',
+          minlength: 'Card number must be between 13 and 19 digits.',
+        },
+        expires: {
+          required: 'Expiry date is required.',
+          minlength: 'Expiry date must be in MM/YY format.',
+        },
+        cvc: {
+          required: 'Cvc number is required.',
+          minlength: 'CVC/CVV must be between 3 and 4 digits.',
+        },
+        name: 'Name is required.'
+      }
 });
-
+$("#placeOrder").click(function (e) {
+    e.preventDefault();
+    if ($("#cardDetailsForm").valid()) {
+        console.log("valid");
+    } else {
+        console.log("not valid");
+    }
+});
+// restrict price input fields
+function process(input) {
+    let value = input.value;
+    let validNumber = value.replace(/[^\d.]/g, "");
+    let cleanedValue = validNumber.replace(/(\.*)\./g, "$1");
+    input.value = cleanedValue;
+}
