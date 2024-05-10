@@ -70,12 +70,38 @@ $("#cardDetailsForm").validate({
         name: 'Name is required.'
       }
 });
-$("#placeOrder").click(function (e) {
-    e.preventDefault();
-    if ($("#cardDetailsForm").valid()) {
-        console.log("valid");
-    } else {
-        console.log("not valid");
+$("#placeOrder").click(function () {
+
+    let selectedValue = $("input[name='pay-method']:checked").val();
+    let cartData = JSON.parse($('#cartData').val());
+    if (selectedValue == 'card') {
+        var formValid = $("#cardDetailsForm").valid();
+        if (formValid) {
+            $.ajax({
+                type: "post",
+                url: orderStore,
+                data: {
+                  cart_data : cartData,
+                  payment_method: selectedValue,
+                },
+                success: function (response) {
+                   console.log(response);
+                }
+            });
+        }
+    }
+    if (selectedValue == 'pay-on-delivery') {
+        $.ajax({
+            type: "post",
+            url: orderStore,
+            data: {
+              cart_data : cartData,
+              payment_method: selectedValue,
+            },
+            success: function (response) {
+               console.log(response);
+            }
+        });
     }
 });
 // restrict price input fields

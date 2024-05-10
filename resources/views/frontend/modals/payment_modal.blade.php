@@ -13,11 +13,11 @@
                     <div class="row payment-method justify-content-center px-5">
                         <div class="form-group col-6">
                             <label for="card" class="px-3 py-2 w-100 text-center">Credit / Debit Card</label>
-                            <input type="radio" name="pay-method" id="card" class="d-none">
+                            <input type="radio" name="pay-method" id="card" class="d-none" value="card">
                         </div>
                         <div class="form-group col-6">
                             <label for="pay-on-delivery" class="p-3 py-2 w-100 text-center">Pay On Delivery</label>
-                            <input type="radio" name="pay-method" id="pay-on-delivery" class="d-none">
+                            <input type="radio" name="pay-method" id="pay-on-delivery" class="d-none" value="pay-on-delivery">
                         </div>
                     </div>
                     <div class="card-form px-5 py-3 justify-content-center d-none">

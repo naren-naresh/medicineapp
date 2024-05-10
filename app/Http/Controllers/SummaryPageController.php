@@ -44,8 +44,10 @@ class SummaryPageController extends Controller
             $cartDataItems[] = [
                 'cart_id' => $cart->id,
                 'product_id' => $product->id,
+                'variant_id' => $cart->variant_id,
                 'product_name' => $product->name,
                 'product_image' => $product->cover_image,
+                'Product_sku' => $product->sku,
                 'product_retail_Price' =>  $product_retail_price ?? $product->retail_price,
                 'product_selling_price' =>  $product_selling_price ??  $product->selling_price,
                 'variant_data' => $variationInfoList,

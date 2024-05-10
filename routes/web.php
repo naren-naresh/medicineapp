@@ -111,3 +111,6 @@ Route::post('wishlist','WishListController@create_or_delete')->name('wishlist.cr
 Route::get('wishlist-destroy/{id?}','WishListController@destroy')->name('wishlist.destroy');
 /** summary page */
 Route::get('summary-page','SummaryPageController@index')->name('summaryPage.index');
+/** orders routes */
+Route::post('orders-store','OrderController@store')->name('orders.store');
+
