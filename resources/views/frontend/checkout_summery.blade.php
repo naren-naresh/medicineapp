@@ -60,6 +60,9 @@
                                 $totalDiscount = $totalMRP - $totalSellingPrice;
                                 $totalPaid = $totalMRP - $totalDiscount;
                             @endphp
+                            <input type="hidden" name="total-mrp" id="total-mrp" value="{{ $totalMRP }}">
+                            <input type="hidden" name="total-discount" id="total-discount" value="{{ $totalDiscount }}">
+                            <input type="hidden" name="total-paid" id="total-paid" value="{{ $totalPaid }}">
                             <div class="row mrp-price justify-content-between py-1"><span class="col-6">Cart
                                     Total(MRP)</span><span class="col-2 text-end pe-1">₹{{ $totalMRP }}</span></div>
                             <div class="row discount justify-content-between py-1"><span class="col-6">Discount

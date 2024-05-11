@@ -74,6 +74,10 @@ $("#placeOrder").click(function () {
 
     let selectedValue = $("input[name='pay-method']:checked").val();
     let cartData = JSON.parse($('#cartData').val());
+    let addressIdValue = $('.address-item').attr('addressid');
+    let totalMrp = $('#total-mrp').val();
+    let totalDiscount = $('#total-discount').val();
+    let totalPaid = $('#total-paid').val();
     if (selectedValue == 'card') {
         var formValid = $("#cardDetailsForm").valid();
         if (formValid) {
@@ -82,7 +86,11 @@ $("#placeOrder").click(function () {
                 url: orderStore,
                 data: {
                   cart_data : cartData,
-                  payment_method: selectedValue,
+                  payment_method : selectedValue,
+                  address_id : addressIdValue,
+                  total_mrp : totalMrp,
+                  total_discount : totalDiscount,
+                  total_paid : totalPaid,
                 },
                 success: function (response) {
                    console.log(response);
@@ -97,6 +105,10 @@ $("#placeOrder").click(function () {
             data: {
               cart_data : cartData,
               payment_method: selectedValue,
+              address_id : addressIdValue,
+              total_mrp : totalMrp,
+              total_discount : totalDiscount,
+              total_paid : totalPaid,
             },
             success: function (response) {
                console.log(response);
