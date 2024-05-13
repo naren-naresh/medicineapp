@@ -114,4 +114,4 @@ Route::get('summary-page','SummaryPageController@index')->name('summaryPage.inde
 /** orders routes */
 Route::get('orders-list','OrderController@index')->name('orders.index');
 Route::post('orders-store','OrderController@store')->name('orders.store');
-
+Route::get('order-details','OrderController@orderDetails')->name('orders.orderDetails');

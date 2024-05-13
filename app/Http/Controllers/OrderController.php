@@ -56,6 +56,16 @@ class OrderController extends Controller
         ]);
     }
 
+    public function orderDetails()
+    {
+        $data['categories'] = Category::where('parent_category_id', null)->limit(6)->get();
+        $data['orderDetails'] = Order::where('customer_id',auth()->id())->get();
+        $data['addresses'] = Address::all();
+        $data['orderItems'] = OrderItem::all();
+        $data['orderStatus'] = orderStatus::all();
+        $data['payments'] = OrderPayment::all();
+        return view('frontend.profile.orders-details',$data);
+    }
     public function generateOrderNumber()
     {
         $year = date('y');

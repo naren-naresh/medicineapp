@@ -58,7 +58,7 @@
                                         </div>
                                      </div>
                                      <div class="action text-center py-2">
-                                          <a href="#">View Details</a> |
+                                          <a href="{{ route('orders.orderDetails') }}">View Details</a> |
                                           <a href="#">Cancel Order</a>
                                      </div>
                                 </div>
