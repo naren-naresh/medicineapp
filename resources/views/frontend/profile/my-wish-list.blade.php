@@ -28,7 +28,7 @@
                         <a href="{{ route('wishlist.index') }}">
                             <div class="option active"><i class="fa fa-heart"></i> &nbsp;My Wishlist</div>
                         </a>
-                        <a href="#">
+                        <a href="{{ route('orders.index') }}">
                             <div class="option"><i class="fa fa-cart-shopping"></i> &nbsp;My Orders</div>
                         </a>
                         <a href="#">

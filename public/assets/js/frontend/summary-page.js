@@ -7,7 +7,7 @@ $(".address-item").click(function () {
     $(".address-content").html($html);
     $("#addressModal").modal("hide");
 });
-$(".address-item").each(function (index, element) {
+$(".address-item").each(function () {
     if (
         $(this).attr("addressId") ==
         $(".address-content").children("li").attr("addressId")
@@ -78,7 +78,7 @@ $("#placeOrder").click(function () {
     let totalMrp = $('#total-mrp').val();
     let totalDiscount = $('#total-discount').val();
     let totalPaid = $('#total-paid').val();
-    if (selectedValue == 'card') {
+    if (selectedValue == '0') {
         var formValid = $("#cardDetailsForm").valid();
         if (formValid) {
             $.ajax({
@@ -98,7 +98,7 @@ $("#placeOrder").click(function () {
             });
         }
     }
-    if (selectedValue == 'pay-on-delivery') {
+    if (selectedValue == '1') {
         $.ajax({
             type: "post",
             url: orderStore,
@@ -112,6 +112,9 @@ $("#placeOrder").click(function () {
             },
             success: function (response) {
                console.log(response);
+               if (response) {
+                $("#paymentModal").modal("hide");
+               }
             }
         });
     }

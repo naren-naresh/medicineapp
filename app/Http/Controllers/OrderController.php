@@ -3,20 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Models\Category;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\OrderPayment;
+use App\Models\orderStatus;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
     public function index()
     {
+        $data['categories'] = Category::where('parent_category_id', null)->limit(6)->get();
+        $data['orderDetails'] = Order::where('customer_id',auth()->id())->get();
+        $data['orderStatus'] = orderStatus::all();
+        return view('frontend.profile.orders',$data);
     }
 
     public function store(Request $request)
     {
         $orderNo = $this->generateOrderNumber();
         if ($request->ajax()) {
+
             $cartDetails = $request->cart_data;
             $customer_address = Address::where('id', $request->address_id)->get();
             foreach ($customer_address as $addressData) {
@@ -33,11 +41,18 @@ class OrderController extends Controller
 
                 $oderItemData = OrderItem::create($orderItems);
             }
+            if ($order) {
+                $oderPayment = ['order_id' => $order->id , 'payment_method' => $request->payment_method , 'date_time' => $order->order_created_date_time , 'payable_amount' => $request->total_paid , 'payment_status' => 'Paid'];
+                $oderPaymentData = OrderPayment::create($oderPayment);
+            }
+
+
         }
         return response()->json([
             'message' => 'Order created successfully!',
             'order' => $order,
             'orderItems' => $oderItemData,
+            'orderPayment' => $oderPaymentData,
         ]);
     }
 
@@ -46,7 +61,7 @@ class OrderController extends Controller
         $year = date('y');
         $month = date('m');
         $data1 = $year . "" . $month . "" . auth()->id();
-        $data2 = Order::where('customer_id',auth()->id())->count() + 1;
+        $data2 = Order::count() + 1;
 
         $combinedLength = strlen($data1) + strlen($data2);
         $paddingLength = 12 - $combinedLength;

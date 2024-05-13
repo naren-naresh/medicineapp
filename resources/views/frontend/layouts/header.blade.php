@@ -31,7 +31,7 @@
                                 <li><a class="dropdown-item" href="{{ route('useProfile.index') }}"><i class="fa fa-user"></i> &nbsp;Profile</a></li>
                                 <li><a class="dropdown-item" href="{{ route('address.index') }}"><i class="fa fa-map-location"></i> &nbsp;My Addresses</a></li>
                                 <li><a class="dropdown-item" href="{{ route('wishlist.index') }}"><i class="fa fa-heart"></i> &nbsp;My Wishlist</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fa fa-cart-shopping"></i> &nbsp;My Orders</a></li>
+                                <li><a class="dropdown-item" href="{{ route('orders.index') }}"><i class="fa fa-cart-shopping"></i> &nbsp;My Orders</a></li>
                                 @if (Auth::user()->role_id == 1)
                                 <li><a class="dropdown-item" href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> &nbsp;Dashboard</a></li>
                                 @endif
