@@ -14,10 +14,10 @@
 .user-icon i{
     font-size: 28px;
 }
-.form-control {
+.order-main-section .form-control {
     border-radius: unset !important;
 }
-.form-control:focus{
+.order-main-section .form-control:focus{
     border: 1px solid #385399 !important;
 }
 .user-name-block{

@@ -1,0 +1,128 @@
+@extends('frontend.layouts.master')
+@section('frontend-content')
+    @pushOnce('frontend-styles')
+        <link rel="stylesheet" href="{{ asset('assets/css/frontend/order_details.css') }}">
+    @endPushOnce
+    <section class="order-main-section py-5">
+        <div class="container">
+            <div class="row order-content">
+                <div class="col-3 pe-5">
+                    <div class="row mb-4 user-name-block align-items-center">
+                        <div class="col-3 user-icon"><img
+                                src="{{ asset('assets/images/user/' . auth()->id() . '/' . Auth::user()->image . '') }}"
+                                class="w-100"></div>
+                        <div class="col ps-4">
+                            <div class="row">
+                                <span>Hello</span>
+                                <span class="username">{{ Auth::user()->name }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row menu-options">
+                        <a href="{{ route('useProfile.index') }}">
+                            <div class="option"><i class="fa fa-user"></i>&nbsp; Personal Information</div>
+                        </a>
+                        <a href="{{ route('address.index') }}">
+                            <div class="option"><i class="fa fa-map-location"></i>&nbsp; Manage Addresses</div>
+                        </a>
+                        <a href="{{ route('wishlist.index') }}">
+                            <div class="option"><i class="fa fa-heart"></i> &nbsp;My Wishlist</div>
+                        </a>
+                        <a href="{{ route('orders.index') }}">
+                            <div class="option active"><i class="fa fa-cart-shopping"></i> &nbsp;My Orders</div>
+                        </a>
+                        <a href="#">
+                            <div class="option"><i class="fa fa-keyboard"></i> &nbsp;Change Password</div>
+                        </a>
+                        <a href="{{ route('logout') }}">
+                            <div class="option"><i class="fa fa-sign-out"></i> &nbsp;Logout</div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-9 order-list">
+                    <div class="order-details px-4 py-2">
+                        <div class="row justify-content-around align-items-center order-detail-header py-3">
+                            <h4 class="col-6 ps-4 mb-0">Order Details</h4>
+                            <a href="{{ route('orders.index') }}" class="col-6 text-end pe-4"><i
+                                    class="fa fa-arrow-alt-circle-left"></i> Back</a>
+                        </div>
+                        @foreach ($orderDetails as $orderDetail)
+                            <div class="row order-address-block py-4">
+                                @php
+                                    $adminAddress = $addresses->where('customer_id', 1);
+                                    $customerAddress = $addresses->where('customer_id', auth()->id());
+                                    $orderStatus = $orderStatus->where('id',$orderDetail->order_status);
+                                @endphp
+                                <div class="col">
+                                    <h5>From</h5>
+                                    <address>
+                                        <strong>MEDICINE PLUS</strong>
+                                        <p class="my-1">{{ $adminAddress->value('address') }}</p>
+                                        <p class="mb-1">Postal Code : {{ $adminAddress->value('postal_code') }}</p>
+                                        <p class="mb-1">Phone : {{ $adminAddress->value('contact_number') }}</p>
+                                    </address>
+                                </div>
+                                <div class="col">
+                                    <h5>Shipped To</h5>
+                                    <address>
+                                        <strong>{{ $customerAddress->value('name') }}</strong>
+                                        <p class="my-1">{{ $customerAddress->value('address') }}</p>
+                                        <p class="mb-1">Postal Code : {{ $customerAddress->value('postal_code') }}</p>
+                                        <p class="mb-1">Phone : {{ $customerAddress->value('contact_number') }}</p>
+                                    </address>
+                                </div>
+                                <div class="col order-details-block">
+                                      <p class="mb-1"><span>Order ID :</span> {{ $orderDetail->id }}</p>
+                                      <p class="mb-1"><span>Order Date :</span> {{ date('d-m-Y',strtotime($orderDetail->created_at)) }}</p>
+                                      <p class="mb-1"><span>Delivery Date : </span>{{ date('d-m-Y',strtotime($orderDetail->created_at->addDays(2))) }}  </p>
+                                      <p class="mb-1"><span>Order Status : </span> <span class="py-1 px-2" style="background-color:{{$orderStatus->value('bg_color_code')}};color:{{ $orderStatus->value('color_code' )}};font-size:11px;border-radius:4px">Order {{$orderStatus->value('status')}}</span></p>
+                                </div>
+                            </div>
+                            <div class="product-row row py-4">
+                                <div class="table-responsive">
+                                    <table class="table table-borderless">
+                                        <thead>
+                                            <th>Product</th>
+                                            <th>SKU</th>
+                                            <th>Quantity</th>
+                                            <th>Price</th>
+                                        </thead>
+                                        <tbody>
+                                            @php
+                                                $orderItems = $orderItems->where('order_id',$orderDetail->id);
+                                            @endphp
+                                            @foreach ($orderItems as $orderItem)
+                                                 <tr class="table-light border-bottom border-top">
+                                                    <td class="w-50">
+                                                        {{ $orderItem->product_name }}
+                                                        <br><small style="color: #343333">{{ $orderItem->product_variant_name }}</small>
+                                                    </td>
+                                                    <td>{{ $orderItem->product_sku }}</td>
+                                                    <td>{{ $orderItem->quantity }}</td>
+                                                    <td>{{ $orderItem->total_amount }}</td>
+                                                 </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="payment-details-row row">
+                                <div class="col">
+                                    <h6>Payment Method :</h6>
+                                    <p style="color: #343333">@if ($payments->where('order_id',$orderDetail->id)->value('payment_method') == 1)
+                                        Pay On Delivery
+                                    @elseif($payments->where('order_id',$orderDetail->id)->value('payment_method') == 0)
+                                        Card
+                                    @endif</p>
+                                </div>
+                                <div class="col">
+                                    <p><strong>Product Total : </strong> {{ $orderDetail->final_payable_amount}}</p>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+@endsection
