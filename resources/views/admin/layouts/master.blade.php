@@ -24,6 +24,8 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/quill/monokai-sublime.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/quill/katex.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/quill/quill.snow.css') }}">
+    <!-- Date Range picker css-->
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/plugins/daterangepicker/daterangepicker.css')}}" />
     <!-- Custom Style & Inbuilt Styles -->
     @stack('styles')
 </head>
@@ -122,6 +124,9 @@
     <script src="{{ asset('assets/plugins/quill/katex.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/quill/highlight.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/quill/quill.min.js') }}"></script>
+    <!-- date range picker and moment plugin-->
+    <script type="text/javascript" src="{{ asset('assets/plugins/moments/moment.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/plugins/daterangepicker/daterangepicker.js') }}"></script>
     <!--sweet alert-->
     <script src="{{asset('assets/plugins/sweetalter/sweetalter.js')}}"></script>
     @stack('scripts')

@@ -7,7 +7,7 @@
             </a>
         </li>
         <li>
-            <a href="#"><i class="fa fa-shopping-cart fa-stack"></i>&nbsp;<span class="text">Orders</span></a>
+            <a href="{{ route('orders.adminIndex') }}"><i class="fa fa-shopping-cart fa-stack"></i>&nbsp;<span class="text">Orders</span></a>
         </li>
         <li>
             <a href="{{ route('customer.index')}}"><i class="fa fa-users fa-stack"></i>&nbsp;<span class="text">Customers</span></a>

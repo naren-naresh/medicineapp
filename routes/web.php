@@ -72,6 +72,8 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::resource('customer', CustomerController::class);
         /** slider images */
         Route::resource('slider_image',ImageSliderController::class);
+        /** orders routes */
+        Route::get('orders-admin-index','OrderController@adminIndex')->name('orders.adminIndex');
     });
 });
 /** Frontend routes  */
