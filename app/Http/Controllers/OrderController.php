@@ -62,6 +62,18 @@ class OrderController extends Controller
        return view('admin.orders.index');
     }
 
+    public function adminOrderDetails($id){
+        $data['orderDetails'] = Order::where('customer_id',$id)->get();
+        $data['addresses'] = Address::all();
+        $data['orderItems'] = OrderItem::all();
+        $data['orderStatus'] = orderStatus::all();
+        $data['payments'] = OrderPayment::all();
+        $data['deliveryZone'] = Delivery_zone::all();
+        $data['deliveryFee'] = DeliveryFee::all();
+
+        return view('admin.orders.order_info',$data);
+    }
+
     public function index()
     {
         $data['categories'] = Category::where('parent_category_id', null)->limit(6)->get();
@@ -107,7 +119,6 @@ class OrderController extends Controller
             'orderPayment' => $oderPaymentData,
         ]);
     }
-
     public function orderDetails()
     {
         $data['categories'] = Category::where('parent_category_id', null)->limit(6)->get();
