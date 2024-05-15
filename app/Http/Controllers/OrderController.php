@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Address;
+use App\Models\Cart;
 use App\Models\Category;
+use App\Models\Delivery_zone;
+use App\Models\DeliveryFee;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderPayment;
 use App\Models\orderStatus;
+use App\Models\ZoneGroup;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -24,7 +28,6 @@ class OrderController extends Controller
     {
         $orderNo = $this->generateOrderNumber();
         if ($request->ajax()) {
-
             $cartDetails = $request->cart_data;
             $customer_address = Address::where('id', $request->address_id)->get();
             foreach ($customer_address as $addressData) {
@@ -35,6 +38,9 @@ class OrderController extends Controller
             $order = $order->create($orderData);
             }
             foreach ($cartDetails as $cartDetail) {
+                if ($order) {
+                    Cart::where('id',$cartDetail['cart_id'])->delete();
+                }
                 $orderItems = ['order_id' => $order->id , 'product_id' => $cartDetail['product_id'] , 'product_name' => $cartDetail['product_name'] , 'product_image' => $cartDetail['product_image'],
                               'product_sku' => $cartDetail['Product_sku'] , 'product_variant_id' => $cartDetail['variant_id'] , 'product_variant_name' => $cartDetail['variant_name'] ,
                                'selling_price' => $cartDetail['product_selling_price'] , 'retail_price' => $cartDetail['product_retail_Price'] , 'quantity' => $cartDetail['product_quantity'] , 'total_amount' =>  $cartDetail['product_quantity'] * $cartDetail['product_selling_price']];
@@ -64,6 +70,8 @@ class OrderController extends Controller
         $data['orderItems'] = OrderItem::all();
         $data['orderStatus'] = orderStatus::all();
         $data['payments'] = OrderPayment::all();
+        $data['deliveryZone'] = Delivery_zone::all();
+        $data['deliveryFee'] = DeliveryFee::all();
         return view('frontend.profile.orders-details',$data);
     }
     public function generateOrderNumber()

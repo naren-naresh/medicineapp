@@ -52,6 +52,8 @@
                                     $adminAddress = $addresses->where('customer_id', 1);
                                     $customerAddress = $addresses->where('customer_id', auth()->id());
                                     $orderStatus = $orderStatus->where('id',$orderDetail->order_status);
+                                    $zoneGroupId = $deliveryZone->where('postal_code',$customerAddress->value('postal_code'));
+                                    $deliveryFee = $deliveryFee->where('zone_group_id',$zoneGroupId->value('id'));
                                 @endphp
                                 <div class="col">
                                     <h5>From</h5>
@@ -83,9 +85,10 @@
                                     <table class="table table-borderless">
                                         <thead>
                                             <th>Product</th>
-                                            <th>SKU</th>
-                                            <th>Quantity</th>
+                                            <th>Image</th>
                                             <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th>Total</th>
                                         </thead>
                                         <tbody>
                                             @php
@@ -93,13 +96,17 @@
                                             @endphp
                                             @foreach ($orderItems as $orderItem)
                                                  <tr class="table-light border-bottom border-top">
-                                                    <td class="w-50">
-                                                        {{ $orderItem->product_name }}
+                                                    <td style="width: 400px">
+                                                       <p class="mb-0">{{ $orderItem->product_name }}</p>
+                                                        <small style="color: #343333">#{{ $orderItem->product_sku }}</small>
                                                         <br><small style="color: #343333">{{ $orderItem->product_variant_name }}</small>
                                                     </td>
-                                                    <td>{{ $orderItem->product_sku }}</td>
+                                                    <td><img src="{{ asset('assets/images/products/' . $orderItem->product_id . '/' . $orderItem->product_image . '') }}"
+                                                        style="width: 50px"></td>
+                                                    <td><small style="text-decoration:line-through;color:#969696"> ₹{{$orderItem->retail_price}}</small>
+                                                        <p> ₹{{$orderItem->selling_price}}</p></td>
                                                     <td>{{ $orderItem->quantity }}</td>
-                                                    <td>{{ $orderItem->total_amount }}</td>
+                                                    <td> ₹{{ $orderItem->total_amount }}</td>
                                                  </tr>
                                             @endforeach
                                         </tbody>
@@ -108,15 +115,20 @@
                             </div>
                             <div class="payment-details-row row">
                                 <div class="col">
-                                    <h6>Payment Method :</h6>
-                                    <p style="color: #343333">@if ($payments->where('order_id',$orderDetail->id)->value('payment_method') == 1)
+                                    <p class="mb-2"><strong>PayMent Status : </strong><span>{{ $payments->where('order_id',$orderDetail->id)->value('payment_status') }}</span></p>
+                                    <p class="mb-2"><strong>Payment Method : </strong><span style="color: #343333">@if ($payments->where('order_id',$orderDetail->id)->value('payment_method') == 1)
                                         Pay On Delivery
                                     @elseif($payments->where('order_id',$orderDetail->id)->value('payment_method') == 0)
                                         Card
-                                    @endif</p>
+                                    @endif</span></p>
+                                    <p><strong>Paid Date : </strong><span>{{ date('d-M-Y h:i A',strtotime($payments->where('order_id',$orderDetail->id)->value('date_time'))) }}</span></p>
+
                                 </div>
                                 <div class="col">
-                                    <p><strong>Product Total : </strong> {{ $orderDetail->final_payable_amount}}</p>
+                                    <p class="mb-1 d-flex justify-content-between mb-2"><strong>Sub Total</strong><span>  ₹ {{ $orderDetail->total_amount }}</span></p>
+                                    <p class="mb-1 d-flex justify-content-between mb-2"><strong>Delivery Fee</strong><span> + ₹ {{ $deliveryFee->value('delivery_fee') }}</span></p>
+                                    <p class="mb-1 d-flex justify-content-between mb-3"><strong>Discount Amount</strong> <span style="color: #385399">-₹ {{ $orderDetail->discount_amount }}</span></p>
+                                    <p class="d-flex justify-content-between border-top py-2"><strong>Total</strong> <span> ₹ {{ $orderDetail->final_payable_amount + $deliveryFee->value('delivery_fee') }} </span></p>
                                 </div>
                             </div>
                         @endforeach
