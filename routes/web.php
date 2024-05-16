@@ -75,6 +75,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         /** orders routes */
         Route::get('orders-admin-index','OrderController@adminIndex')->name('orders.adminIndex');
         Route::get('orders-admin-info/{id?}','OrderController@adminOrderDetails')->name('ordersDetails.admin');
+        Route::get('order-invoice/{id?}','OrderController@invoiceDownload')->name('order.invoice');
     });
 });
 /** Frontend routes  */
