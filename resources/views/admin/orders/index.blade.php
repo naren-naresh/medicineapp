@@ -16,6 +16,12 @@
             </ol>
         </div>
     </div>
+    <div class="status-nav row justify-content-between w-100 my-3">
+        <div class="nav-btn col-2 p-2 text-center" id="placed" type ='placed'>Placed</div>
+        <div class="nav-btn col-2 p-2 text-center" id="processing" type ='processing'>Processing</div>
+        <div class="nav-btn col-2 p-2 text-center" id="completed" type ='completed'>Completed</div>
+        <div class="nav-btn col-2 p-2 text-center" id="canceled" type ='canceled'>Canceled</div>
+    </div>
     <div class="card w-100 mt-2 mb-5">
         <div class="card-header d-flex justify-content-between">
             <h5 class="card-title">All Orders</h5>
@@ -33,7 +39,7 @@
             <table class="table table-bordered data-table">
                 <thead>
                     <tr>
-                        <th>S.No.</th>
+                        <th><input type="checkbox" name="" id=""></th>
                         <th>Order ID</th>
                         <th>Order Date</th>
                         <th>Items</th>
@@ -48,6 +54,18 @@
             </table>
         </div>
     </div>
+    <style>
+        .nav-btn{
+            background-color: #385399;
+            color: #fff;
+            border: 1px solid #385399;
+        }
+        .nav-btn:hover{
+          background-color: #fff;
+          color: #385399;
+          cursor: pointer;
+        }
+    </style>
 @endsection
 @pushOnce('scripts')
     <script>
@@ -59,6 +77,7 @@
                 }
             });
         })
+        var typeValue;
         $(function() {
 
             var start_date = moment().subtract(1, 'M');
@@ -76,6 +95,12 @@
 
                 table.draw();
             });
+            $('.nav-btn').click(function() {
+                typeValue = $(this).attr('type');
+                var ajaxParams = table.ajax.params();
+                ajaxParams.typeValue = typeValue;
+                table.draw();
+            });
 
             /* datatables*/
             var table = $('.data-table').DataTable({
@@ -91,12 +116,18 @@
                             'YYYY-MM-DD');
                         data.to_date = $('#daterange').data('daterangepicker').endDate.format(
                             'YYYY-MM-DD');
+                        data.typeValue = typeValue;
+
+                        return data;
                     }
                 },
                 columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex'
-                    }, {
+                        data: 'checkbox',
+                        name: 'checkbox',
+                        orderable: false,
+                        searchable: false,
+                    },
+                    {
                         data: 'order_id',
                         name: 'order_id',
                     },

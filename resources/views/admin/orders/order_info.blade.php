@@ -16,11 +16,11 @@
             </ol>
         </div>
     </div>
-    <div class="row order-list mt-3 mb-5 w-100 bg-white p-3">
-        <div class="order-details px-4 py-2">
+    <div class="row order-list mt-3 mb-5 w-100 bg-white px-4 py-3">
+        <div class="order-details py-2">
             <div class="row justify-content-around align-items-center order-detail-header py-3 border-bottom">
-                <h4 class="col-6 ps-4 mb-0">Order Details</h4>
-                <a href="{{ route('orders.adminIndex') }}" class="col-6 text-end pe-4 text-decoration-none" style="font-size:16px; color:#385399"><i
+                <h4 class="col-6 mb-0">Order Details</h4>
+                <a href="{{ route('orders.adminIndex') }}" class="col-6 text-end text-decoration-none" style="font-size:16px; color:#385399"><i
                         class="fa fa-arrow-alt-circle-left"style="font-size:16px"></i> Back</a>
             </div>
             @foreach ($orderDetails as $orderDetail)
@@ -33,16 +33,15 @@
                         $deliveryFee = $deliveryFee->where('zone_group_id', $zoneGroupId->value('id'));
                     @endphp
                     <div class="col">
-                        <h5>From</h5>
+                        <h5>MEDICINE PLUS</h5>
                         <address>
-                            <strong>MEDICINE PLUS</strong>
                             <p class="my-1">{{ $adminAddress->value('address') }}</p>
                             <p class="mb-1">Postal Code : {{ $adminAddress->value('postal_code') }}</p>
                             <p class="mb-1">Phone : {{ $adminAddress->value('contact_number') }}</p>
                         </address>
                     </div>
                     <div class="col">
-                        <h5>Shipped To</h5>
+                        <h5>Delivered To</h5>
                         <address>
                             <strong>{{ $customerAddress->value('name') }}</strong>
                             <p class="my-1">{{ $customerAddress->value('address') }}</p>
@@ -51,7 +50,7 @@
                         </address>
                     </div>
                     <div class="col order-details-block">
-                        <p class="mb-1"><span>Order ID :</span> {{ $orderDetail->id }}</p>
+                        <p class="mb-1"><span>Order ID :</span> {{ $orderDetail->order_number }}</p>
                         <p class="mb-1"><span>Order Date :</span>
                             {{ date('d-m-Y', strtotime($orderDetail->created_at)) }}</p>
                         <p class="mb-1"><span>Delivery Date :
@@ -61,8 +60,17 @@
                                 {{ $orderStatus->value('status') }}</span></p>
                     </div>
                 </div>
-                <div class="product-row row py-4">
-                    <div class="table-responsive">
+                <div class="invoice-block row justify-content-between mt-5">
+                     <div class="seller-detail col-3">
+                        <p><strong>Seller Name :</strong> MEDICINE PLUS.</p>
+                     </div>
+                    <div class="invoice-action col-3 text-end">
+                        <a href="#" class=" text-decoration-none"><i class="fa fa-print"></i> Print Invoice</a>&nbsp;
+                        <snap><i class="fa fa-cancel"></i> Cancel</snap>
+                    </div>
+                </div>
+                <div class="product-row row pb-4">
+                    <div class="table-responsive p-0">
                         <table class="table table-borderless">
                             <thead>
                                 <th>Product</th>
@@ -78,10 +86,8 @@
                                 @foreach ($orderItems as $orderItem)
                                     <tr class="table-light border-bottom border-top">
                                         <td style="width: 400px">
-                                            <p class="mb-0">{{ $orderItem->product_name }}</p>
-                                            <small style="color: #343333">#{{ $orderItem->product_sku }}</small>
-                                            <br><small
-                                                style="color: #343333">{{ $orderItem->product_variant_name }}</small>
+                                            <p class="mb-0">{{ $orderItem->product_name }} ( <small style="color: #343333">SKU : {{ $orderItem->product_sku }}</small>)</p>
+                                            <small style="color: #343333">{{ $orderItem->product_variant_name }}</small>
                                         </td>
                                         <td><img src="{{ asset('assets/images/products/' . $orderItem->product_id . '/' . $orderItem->product_image . '') }}"
                                                 style="width: 50px"></td>
@@ -90,7 +96,9 @@
                                             <p> ₹{{ $orderItem->selling_price }}</p>
                                         </td>
                                         <td>{{ $orderItem->quantity }}</td>
-                                        <td> ₹{{ $orderItem->total_amount }}</td>
+                                        <td><small style="text-decoration:line-through;color:#969696" >
+                                            ₹{{ $orderItem->quantity * $orderItem->retail_price }}</small>
+                                            <p>₹{{ $orderItem->total_amount }}</p></td>
                                     </tr>
                                 @endforeach
                             </tbody>

@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderPayment;
 use App\Models\orderStatus;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -18,13 +19,18 @@ class OrderController extends Controller
 {
     public function adminIndex(Request $request){
         if ($request->ajax()) {
-            $orders = Order::latest()->get() ?? [];
+
+            $orders = $this->getOrderQuery($request->typeValue) ?? [];
+
             if($request->filled('from_date') && $request->filled('to_date'))
             {
                 $orders = $orders->whereBetween('created_at', [$request->from_date, $request->to_date]);
             }
             return DataTables::of($orders)
-                ->addIndexColumn()
+                ->addColumn('checkbox', function ($order) {
+                    $check = '<input type="checkbox" name="check" id="check" orderId ='.$order->id.'>';
+                    return $check ;
+                })
                 ->addColumn('order_id', function ($order) {
                     return $order->order_number;
                 })
@@ -49,17 +55,33 @@ class OrderController extends Controller
                     return $address;
                 })
                 ->addColumn('status', function ($order) {
-                    return orderStatus::where('id',$order->order_status)->value('status');
+                    $orderStatus = orderStatus::where('id',$order->order_status);
+                    $statusHtml = '<p class="text-center" style = "color:'.$orderStatus->value('color_code').';background-color:'.$orderStatus->value('bg_color_code').';font-size:12px">'.$orderStatus->value('status').'</p>';
+                    return $statusHtml;
                 })
                 ->addColumn('action', function ($order) {
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $order->id . '" data-original-title="Edit" class="edit btn  btn-sm editProduct">View</a>
-                        <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $order->id . '" data-original-title="Delete" class="btn btn-sm deleteProduct">Cancel</a>';
+                    $btn = '<div class ="row">
+                            <a href="'.route('ordersDetails.admin',$order->customer_id).'" class="view text-decoration-none pb-1" style ="color:#385399"><i class="fa fa-eye"></i> View Order</a>
+                            <a href="#"class="delete text-decoration-none" style ="color:#385399"><i class="fa fa-close"></i> Cancel Order</a></div>';
                     return $btn;
                 })
-                ->rawColumns(['id','order_date','price','address','status', 'action'])
+                ->rawColumns(['checkbox','id','order_date','price','address','status', 'action'])
                 ->make(true);
         }
        return view('admin.orders.index');
+    }
+    public function getOrderQuery($type){
+         $orderData = Order::all();
+         if ( empty($type) && $type == 'placed') {
+            $orderData = $orderData->where('order_status',1);
+         }elseif ($type == 'processing') {
+            $orderData = $orderData->whereIn('order_status',[2,3,4]);
+         }elseif ($type == 'completed') {
+            $orderData = $orderData->whereIn('order_status',[5,6]);
+         }elseif ($type == 'canceled') {
+            $orderData = $orderData->where('order_status',7);
+         }
+         return $orderData;
     }
 
     public function adminOrderDetails($id){
@@ -130,6 +152,20 @@ class OrderController extends Controller
         $data['deliveryZone'] = Delivery_zone::all();
         $data['deliveryFee'] = DeliveryFee::all();
         return view('frontend.profile.orders-details',$data);
+    }
+
+    public function invoiceDownload($id) {
+        $data['orderDetails'] = Order::where('customer_id',$id)->get();
+        $data['addresses'] = Address::all();
+        $data['orderItems'] = OrderItem::all();
+        $data['orderStatus'] = orderStatus::all();
+        $data['payments'] = OrderPayment::all();
+        $data['deliveryZone'] = Delivery_zone::all();
+        $data['deliveryFee'] = DeliveryFee::all();
+
+        $pdf = Pdf::loadView('admin.orders.order_invoice',['data' => $data]);
+
+        return $pdf->download('invoice.pdf');
     }
 
     public function generateOrderNumber()
