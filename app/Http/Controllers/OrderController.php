@@ -12,6 +12,7 @@ use App\Models\OrderItem;
 use App\Models\OrderPayment;
 use App\Models\orderStatus;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -21,11 +22,12 @@ class OrderController extends Controller
         if ($request->ajax()) {
 
             $orders = $this->getOrderQuery($request->typeValue) ?? [];
-
-            if($request->filled('from_date') && $request->filled('to_date'))
-            {
-                $orders = $orders->whereBetween('created_at', [$request->from_date, $request->to_date]);
-            }
+            if (Carbon::now()->isSameDay($request->start) == false || Carbon::now()->isSameDay($request->end) == false) {
+                if($request->has('start') && $request->has('end'))
+                {
+                    $orders = $orders->whereBetween('created_at', [$request->start, $request->end]);
+                }
+             }
             return DataTables::of($orders)
                 ->addColumn('checkbox', function ($order) {
                     $check = '<input type="checkbox" name="check" id="check" orderId ='.$order->id.'>';
@@ -72,7 +74,7 @@ class OrderController extends Controller
     }
     public function getOrderQuery($type){
          $orderData = Order::all();
-         if ( empty($type) && $type == 'placed') {
+         if ( empty($type) || $type == 'placed') {
             $orderData = $orderData->where('order_status',1);
          }elseif ($type == 'processing') {
             $orderData = $orderData->whereIn('order_status',[2,3,4]);

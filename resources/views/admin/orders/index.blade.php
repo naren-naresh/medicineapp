@@ -11,18 +11,20 @@
         </div>
         <div aria-label="breadcrumb" class="col-6">
             <ol class="breadcrumb float-end">
-                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}" class=" text-decoration-none">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}" class="text-decoration-none">Home</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Orders</li>
             </ol>
         </div>
     </div>
-    <div class="status-nav row justify-content-between w-100 my-3">
-        <div class="nav-btn col-2 p-2 text-center" id="placed" type ='placed'>Placed</div>
-        <div class="nav-btn col-2 p-2 text-center" id="processing" type ='processing'>Processing</div>
-        <div class="nav-btn col-2 p-2 text-center" id="completed" type ='completed'>Completed</div>
-        <div class="nav-btn col-2 p-2 text-center" id="canceled" type ='canceled'>Canceled</div>
-    </div>
-    <div class="card w-100 mt-2 mb-5">
+    <nav class="w-100">
+        <div class="status-nav nav nav-tabs d-flex justify-content-between" role="tablist">
+            <button type="button" class="nav-btn nav-link active me-1" id="placed" status ='placed' data-bs-toggle="tab" role="tab" aria-selected="true">Placed</button>
+            <button type="button" class="nav-btn nav-link me-1" id="processing" status ='processing' data-bs-toggle="tab" role="tab" aria-selected="false">Processing</button>
+            <button type="button" class="nav-btn nav-link me-1" id="completed" status ='completed' data-bs-toggle="tab" role="tab" aria-selected="false">Completed</button>
+            <button type="button" class="nav-btn nav-link" id="canceled" status ='canceled' data-bs-toggle="tab" role="tab" aria-selected="false">Canceled</button>
+        </div>
+    </nav>
+    <div class="card w-100  mb-5 tab-content" style="border: unset">
         <div class="card-header d-flex justify-content-between">
             <h5 class="card-title">All Orders</h5>
             <div class="card-tools">
@@ -34,7 +36,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body tab-pane fade show active" role="tabpanel" >
             <!-- Datatables -->
             <table class="table table-bordered data-table">
                 <thead>
@@ -55,15 +57,23 @@
         </div>
     </div>
     <style>
-        .nav-btn{
-            background-color: #385399;
-            color: #fff;
-            border: 1px solid #385399;
+        .nav-btn {
+            background-color: #385399 !important;
+            color: #fff !important;
+            border: 1px solid #385399 !important;
+            border-radius: unset !important;
+            width: 24.7%;
         }
-        .nav-btn:hover{
-          background-color: #fff;
-          color: #385399;
-          cursor: pointer;
+        .nav-btn.active{
+            background-color: #fff !important;
+            color: #385399 !important;
+            cursor: pointer !important;
+            border-bottom-color: #fff !important;
+        }
+        .nav-btn:hover {
+            background-color: #fff !important;
+            color: #385399 !important;
+            cursor: pointer !important;
         }
     </style>
 @endsection
@@ -79,24 +89,17 @@
         })
         var typeValue;
         $(function() {
-
-            var start_date = moment().subtract(1, 'M');
-
-            var end_date = moment();
-
-            $('#daterange span').html(start_date.format('MMMM D, YYYY') + ' - ' + end_date.format('MMMM D, YYYY'));
-
             $('#daterange').daterangepicker({
-                startDate: start_date,
-                endDate: end_date
-            }, function(start_date, end_date) {
-                $('#daterange span').html(start_date.format('MMMM D, YYYY') + ' - ' + end_date.format(
-                    'MMMM D, YYYY'));
-
+            }, function(start, end) {
+                $('#daterange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
                 table.draw();
             });
+            $(document).on('click', '.daterangepicker .cancelBtn', function(e) {
+            e.preventDefault();
+            $('#daterange span').html('');
+            });
             $('.nav-btn').click(function() {
-                typeValue = $(this).attr('type');
+                typeValue = $(this).attr('status');
                 var ajaxParams = table.ajax.params();
                 ajaxParams.typeValue = typeValue;
                 table.draw();
@@ -112,12 +115,13 @@
                 ajax: {
                     url: "{{ route('orders.adminIndex') }}",
                     data: function(data) {
-                        data.from_date = $('#daterange').data('daterangepicker').startDate.format(
-                            'YYYY-MM-DD');
-                        data.to_date = $('#daterange').data('daterangepicker').endDate.format(
-                            'YYYY-MM-DD');
+                        var start = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
+                        var end = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
                         data.typeValue = typeValue;
-
+                        if (start && end) {
+                            data.start = start;
+                            data.end = end;
+                        }
                         return data;
                     }
                 },

@@ -56,7 +56,7 @@
                         <p class="mb-1"><span>Delivery Date :
                             </span>{{ date('d-m-Y', strtotime($orderDetail->created_at->addDays(2))) }} </p>
                         <p class="mb-1"><span>Order Status : </span> <span class="py-1 px-2"
-                                style="background-color:{{ $orderStatus->value('bg_color_code') }};color:{{ $orderStatus->value('color_code') }};font-size:11px;border-radius:4px">Order
+                                style="background-color:{{ $orderStatus->value('bg_color_code') }};color:{{ $orderStatus->value('color_code') }};font-size:11px;border-radius:4px">
                                 {{ $orderStatus->value('status') }}</span></p>
                     </div>
                 </div>
