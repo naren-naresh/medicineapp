@@ -12,6 +12,7 @@ use App\Models\OrderItem;
 use App\Models\OrderPayment;
 use App\Models\orderStatus;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -21,11 +22,12 @@ class OrderController extends Controller
         if ($request->ajax()) {
 
             $orders = $this->getOrderQuery($request->typeValue) ?? [];
-
-            if($request->filled('from_date') && $request->filled('to_date'))
-            {
-                $orders = $orders->whereBetween('created_at', [$request->from_date, $request->to_date]);
-            }
+            if (Carbon::now()->isSameDay($request->start) == false || Carbon::now()->isSameDay($request->end) == false) {
+                if($request->has('start') && $request->has('end'))
+                {
+                    $orders = $orders->whereBetween('created_at', [$request->start, $request->end]);
+                }
+             }
             return DataTables::of($orders)
                 ->addColumn('checkbox', function ($order) {
                     $check = '<input type="checkbox" name="check" id="check" orderId ='.$order->id.'>';
@@ -70,14 +72,15 @@ class OrderController extends Controller
         }
        return view('admin.orders.index');
     }
+
     public function getOrderQuery($type){
          $orderData = Order::all();
-         if ( empty($type) && $type == 'placed') {
-            $orderData = $orderData->where('order_status',1);
-         }elseif ($type == 'processing') {
-            $orderData = $orderData->whereIn('order_status',[2,3,4]);
+         if ( empty($type) || $type == 'placed') {
+            $orderData = $orderData->whereIn('order_status',[1,2,3]); // mark us confirmed
+         }elseif ($type == 'shipped') {
+            $orderData = $orderData->whereIn('order_status',[4,5]);
          }elseif ($type == 'completed') {
-            $orderData = $orderData->whereIn('order_status',[5,6]);
+            $orderData = $orderData->where('order_status', 6);
          }elseif ($type == 'canceled') {
             $orderData = $orderData->where('order_status',7);
          }
@@ -141,6 +144,7 @@ class OrderController extends Controller
             'orderPayment' => $oderPaymentData,
         ]);
     }
+
     public function orderDetails()
     {
         $data['categories'] = Category::where('parent_category_id', null)->limit(6)->get();
@@ -154,6 +158,16 @@ class OrderController extends Controller
         return view('frontend.profile.orders-details',$data);
     }
 
+    public function statusUpdate(Request $request){
+         if ($request->ajax()) {
+            $updateData = ['order_status'=> 2 , 'status_change' => 1];
+            $order = new Order;
+            if ($request->status_change == 0) {
+               $update = $order->update($updateData);
+               return response()->json($update, 200);
+            }
+         }
+    }
     public function invoiceDownload($id) {
         $data['orderDetails'] = Order::where('customer_id',$id)->get();
         $data['addresses'] = Address::all();

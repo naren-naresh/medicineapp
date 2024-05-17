@@ -41,7 +41,7 @@ Route::post('reset-password', 'ForgotPasswordController@submitResetPasswordForm'
 Route::get('logout', 'AuthController@logout')->name('logout');
 Route::group(['middleware' => 'prevent-back-history'], function () {
     /** Admin access authentication routes */
-    Route::group(['middleware' => ['admin']], function () {
+    Route::group(['prefix' => 'admin','middleware' => ['admin']], function () {
         Route::get('dashboard', 'AuthController@index')->name('dashboard');
         Route::get('profile', 'AuthController@profile')->name('profile');
         Route::get('edit/{id}', 'AuthController@edit')->name('edit');
@@ -73,9 +73,10 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         /** slider images */
         Route::resource('slider_image',ImageSliderController::class);
         /** orders routes */
-        Route::get('orders-admin-index','OrderController@adminIndex')->name('orders.adminIndex');
-        Route::get('orders-admin-info/{id?}','OrderController@adminOrderDetails')->name('ordersDetails.admin');
+        Route::get('orders-index','OrderController@adminIndex')->name('orders.adminIndex');
+        Route::get('orders-info/{id?}','OrderController@adminOrderDetails')->name('ordersDetails.admin');
         Route::get('order-invoice/{id?}','OrderController@invoiceDownload')->name('order.invoice');
+        Route::post('change-status','OrderController@statusUpdate')->name('orders.changeStatus');
     });
 });
 /** Frontend routes  */

@@ -56,7 +56,7 @@
                         <p class="mb-1"><span>Delivery Date :
                             </span>{{ date('d-m-Y', strtotime($orderDetail->created_at->addDays(2))) }} </p>
                         <p class="mb-1"><span>Order Status : </span> <span class="py-1 px-2"
-                                style="background-color:{{ $orderStatus->value('bg_color_code') }};color:{{ $orderStatus->value('color_code') }};font-size:11px;border-radius:4px">Order
+                                style="background-color:{{ $orderStatus->value('bg_color_code') }};color:{{ $orderStatus->value('color_code') }};font-size:11px;border-radius:4px">
                                 {{ $orderStatus->value('status') }}</span></p>
                     </div>
                 </div>
@@ -134,7 +134,57 @@
                         </p>
                     </div>
                 </div>
+                <input type="hidden" name="status-change" id="status-change" value = "{{$orderDetail->status_change}}" orderId = {{ $orderDetail->id }}>
             @endforeach
         </div>
     </div>
 @endsection
+@pushOnce('scripts')
+<script>
+    $(document).ready(function() {
+          /* csrf token*/
+     $(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        })
+
+        var change = $('#status-change').val();
+        var orderId = $('#status-change').attr('orderId');
+        if (change == 0) {
+            setTimeout(function() {
+            Swal.fire({
+            title: "Are you sure?",
+            text: "You want to update status!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, change it!"
+            }).then((result) => {
+            if (result.isConfirmed) {
+                 $.ajax({
+                    type: "post",
+                    url:"{{ route('orders.changeStatus') }}",
+                    data:{
+                        status_change:change,
+                        order_id:orderId,
+                    },
+                    success: function (response) {
+                         console.log(response);
+                    }
+                 });
+                Swal.fire({
+                title: "Updated!",
+                text: "Your status has been updated.",
+                icon: "success"
+                });
+            }
+            });
+            }, 150);
+        }
+        });
+</script>
+@endPushOnce
