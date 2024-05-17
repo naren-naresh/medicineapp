@@ -24,4 +24,22 @@ class Order extends Model
         ]);
         return $order;
     }
+
+    public function update(array $attributes = [], array $options = [])
+    {
+        // update on the order table
+        parent::update($attributes, $options);
+
+        // Check if order status or creation date-time changed to avoid unnecessary updates
+        if (isset($attributes['order_status']) || isset($attributes['order_created_date_time'])) {
+
+            $order = $this->find($this->id);
+
+            $order->histories()->create([
+                'order_id' => $order->id,
+                'order_status_id' => (isset($attributes['order_status'])) ? $attributes['order_status'] : $order->order_status_id,
+                'date_time' => (isset($attributes['order_created_date_time'])) ? $attributes['order_created_date_time'] : $order->order_created_date_time,
+            ]);
+        }
+    }
 }

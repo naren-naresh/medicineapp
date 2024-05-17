@@ -72,14 +72,15 @@ class OrderController extends Controller
         }
        return view('admin.orders.index');
     }
+
     public function getOrderQuery($type){
          $orderData = Order::all();
          if ( empty($type) || $type == 'placed') {
-            $orderData = $orderData->where('order_status',1);
-         }elseif ($type == 'processing') {
-            $orderData = $orderData->whereIn('order_status',[2,3,4]);
+            $orderData = $orderData->whereIn('order_status',[1,2,3]); // mark us confirmed
+         }elseif ($type == 'shipped') {
+            $orderData = $orderData->whereIn('order_status',[4,5]);
          }elseif ($type == 'completed') {
-            $orderData = $orderData->whereIn('order_status',[5,6]);
+            $orderData = $orderData->where('order_status', 6);
          }elseif ($type == 'canceled') {
             $orderData = $orderData->where('order_status',7);
          }
@@ -143,6 +144,7 @@ class OrderController extends Controller
             'orderPayment' => $oderPaymentData,
         ]);
     }
+
     public function orderDetails()
     {
         $data['categories'] = Category::where('parent_category_id', null)->limit(6)->get();
@@ -156,6 +158,16 @@ class OrderController extends Controller
         return view('frontend.profile.orders-details',$data);
     }
 
+    public function statusUpdate(Request $request){
+         if ($request->ajax()) {
+            $updateData = ['order_status'=> 2 , 'status_change' => 1];
+            $order = new Order;
+            if ($request->status_change == 0) {
+               $update = $order->update($updateData);
+               return response()->json($update, 200);
+            }
+         }
+    }
     public function invoiceDownload($id) {
         $data['orderDetails'] = Order::where('customer_id',$id)->get();
         $data['addresses'] = Address::all();

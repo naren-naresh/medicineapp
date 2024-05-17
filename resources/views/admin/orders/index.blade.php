@@ -16,19 +16,23 @@
             </ol>
         </div>
     </div>
-    <nav class="w-100">
+    <nav class="w-100 mb-4">
         <div class="status-nav nav nav-tabs d-flex justify-content-between" role="tablist">
-            <button type="button" class="nav-btn nav-link active me-1" id="placed" status ='placed' data-bs-toggle="tab" role="tab" aria-selected="true">Placed</button>
-            <button type="button" class="nav-btn nav-link me-1" id="processing" status ='processing' data-bs-toggle="tab" role="tab" aria-selected="false">Processing</button>
-            <button type="button" class="nav-btn nav-link me-1" id="completed" status ='completed' data-bs-toggle="tab" role="tab" aria-selected="false">Completed</button>
-            <button type="button" class="nav-btn nav-link" id="canceled" status ='canceled' data-bs-toggle="tab" role="tab" aria-selected="false">Canceled</button>
+            <button type="button" class="nav-btn nav-link active" id="placed" status ='placed' data-bs-toggle="tab"
+                role="tab" aria-selected="true">Placed Orders</button>
+            <button type="button" class="nav-btn nav-link" id="processing" status ='shipped' data-bs-toggle="tab"
+                role="tab" aria-selected="false">Shipped Orders</button>
+            <button type="button" class="nav-btn nav-link" id="completed" status ='completed' data-bs-toggle="tab"
+                role="tab" aria-selected="false">Completed Orders</button>
+            <button type="button" class="nav-btn nav-link" id="canceled" status ='canceled' data-bs-toggle="tab"
+                role="tab" aria-selected="false">Cancelled Orders</button>
         </div>
     </nav>
-    <div class="card w-100  mb-5 tab-content" style="border: unset">
+    <div class="card w-100  mb-5 tab-content">
         <div class="card-header d-flex justify-content-between">
             <h5 class="card-title">All Orders</h5>
             <div class="card-tools">
-                <div id="daterange" class="float-end"
+                <div id="daterange" class="float-end text-secondary"
                     style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%; text-align:center">
                     <i class="fa fa-calendar"></i>&nbsp;
                     <span></span>
@@ -36,7 +40,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-body tab-pane fade show active" role="tabpanel" >
+        <div class="card-body tab-pane fade show active" role="tabpanel">
             <!-- Datatables -->
             <table class="table table-bordered data-table">
                 <thead>
@@ -58,21 +62,35 @@
     </div>
     <style>
         .nav-btn {
-            background-color: #385399 !important;
-            color: #fff !important;
+            background-color: #fff !important;
+            color: #385399 !important;
             border: 1px solid #385399 !important;
             border-radius: unset !important;
-            width: 24.7%;
+            width: 25%;
+            position: relative;
+            z-index: 10;
         }
-        .nav-btn.active{
-            background-color: #fff !important;
-            color: #385399 !important;
+
+        .nav-btn.active {
+            background-color: #385399 !important;
+            color: #fff !important;
             cursor: pointer !important;
-            border-bottom-color: #fff !important;
+        }
+
+        .nav-btn.active:after {
+            content: '\f0dd';
+            font-family: 'FontAwesome';
+            font-size: 32px;
+            position: absolute;
+            bottom: 0;
+            right: 50%;
+            color: #385399;
+            transform: translate(50%, 42%);
+            z-index: 1;
         }
         .nav-btn:hover {
-            background-color: #fff !important;
-            color: #385399 !important;
+            background-color: #385399 !important;
+            color: #fff !important;
             cursor: pointer !important;
         }
     </style>
@@ -89,14 +107,14 @@
         })
         var typeValue;
         $(function() {
-            $('#daterange').daterangepicker({
-            }, function(start, end) {
-                $('#daterange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            $('#daterange span').html('D-MM-YYYY' + ' to ' + 'D-MM-YYYY');
+            $('#daterange').daterangepicker({}, function(start, end) {
+                $('#daterange span').html(start.format('D-MM-YYYY') + ' to ' + end.format('D-MM-YYYY'));
                 table.draw();
             });
             $(document).on('click', '.daterangepicker .cancelBtn', function(e) {
-            e.preventDefault();
-            $('#daterange span').html('');
+                e.preventDefault();
+                $('#daterange span').html('');
             });
             $('.nav-btn').click(function() {
                 typeValue = $(this).attr('status');
@@ -115,7 +133,8 @@
                 ajax: {
                     url: "{{ route('orders.adminIndex') }}",
                     data: function(data) {
-                        var start = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
+                        var start = $('#daterange').data('daterangepicker').startDate.format(
+                            'YYYY-MM-DD');
                         var end = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
                         data.typeValue = typeValue;
                         if (start && end) {
