@@ -45,7 +45,7 @@
             <table class="table table-bordered data-table">
                 <thead>
                     <tr>
-                        <th><input type="checkbox" name="" id=""></th>
+                        <th><input type="checkbox" name="select-all" id="select-all"></th>
                         <th>Order ID</th>
                         <th>Order Date</th>
                         <th>Items</th>
@@ -59,6 +59,7 @@
                 </tbody>
             </table>
         </div>
+        @include('admin.orders.shippment-modal')
     </div>
     <style>
         .nav-btn {
@@ -88,6 +89,7 @@
             transform: translate(50%, 42%);
             z-index: 1;
         }
+
         .nav-btn:hover {
             background-color: #385399 !important;
             color: #fff !important;
@@ -133,8 +135,7 @@
                 ajax: {
                     url: "{{ route('orders.adminIndex') }}",
                     data: function(data) {
-                        var start = $('#daterange').data('daterangepicker').startDate.format(
-                            'YYYY-MM-DD');
+                        var start = $('#daterange').data('daterangepicker').startDate.format('YYYY-MM-DD');
                         var end = $('#daterange').data('daterangepicker').endDate.format('YYYY-MM-DD');
                         data.typeValue = typeValue;
                         if (start && end) {
@@ -149,7 +150,7 @@
                         name: 'checkbox',
                         orderable: false,
                         searchable: false,
-                    },
+                     },
                     {
                         data: 'order_id',
                         name: 'order_id',
@@ -181,6 +182,35 @@
                         searchable: false
                     },
                 ]
+            });
+        });
+        $(document).on('click', '.confirm', function() {
+            var status = $(this).attr('order_status');
+            var orderId = $(this).attr('order_id');
+            if (status == 2) {
+                $.ajax({
+                    type: "post",
+                    url: "{{ route('order.confirmOrder') }}",
+                    data: {
+                        order_id: orderId,
+                        order_status: status,
+                    },
+                    success: function(response) {
+                        console.log(response);
+                    }
+                });
+            } else if (status < 2) {
+                Swal.fire("View the orders detail first.");
+            }
+        });
+        $('#select-all').change(function(params) {
+            if ($(this).is(':checked')) {
+                $('.check').attr('checked', 'checked');
+            }
+        });
+        $(document).ready(function() {
+            $('.confirm').each(function() {
+                $(this).children('i').removeClass('far');
             });
         });
     </script>
