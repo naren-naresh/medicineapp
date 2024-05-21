@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body text-center">
                 <p style="font-size: 16px; font-weight:500">Are you sure move to shipment ??</p>
-                <button type="button" class="btn">Confirm</button>
+                <button type="button" class="btn" id="confirm-shipment-btn">Confirm</button>
             </div>
         </div>
     </div>

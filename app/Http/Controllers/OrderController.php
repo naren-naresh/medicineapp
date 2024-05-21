@@ -30,7 +30,7 @@ class OrderController extends Controller
              }
             return DataTables::of($orders)
                 ->addColumn('checkbox', function ($order) {
-                    $check = '<input type="checkbox" name="check" class="check" orderId ='.$order->id.'>';
+                    $check = '<input type="checkbox" name="check" class="check" orderId ='.$order->id.' statusId ='.$order->order_status.'>';
                     return $check ;
                 })
                 ->addColumn('order_id', function ($order) {
@@ -71,7 +71,7 @@ class OrderController extends Controller
                         }
 
                         if ($order->order_status == 3) {
-                            $btn .= '<a href="#" class="shipped text-decoration-none pb-1" style ="color:#385399" order_id = '.$order->id.' order_status = '.$order->order_status.' data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="fa fa-bus me-1"></i>Move to Sipped</a>';
+                            $btn .= '<a href="#" class="shipped text-decoration-none pb-1" style ="color:#385399" order_id = '.$order->id.' order_status = '.$order->order_status.'><i class="fa fa-bus me-1"></i>Move to Shipped</a>';
                         }
 
                         $btn .= '<a href="#" class="delete text-decoration-none" style ="color:#385399"><i class="fa fa-close  me-1"></i> Cancel Order</a>';
@@ -82,7 +82,8 @@ class OrderController extends Controller
                 ->rawColumns(['checkbox','id','order_date','price','address','status', 'action'])
                 ->make(true);
         }
-       return view('admin.orders.index');
+       $data['orderStatus'] = orderStatus::all();
+       return view('admin.orders.index',$data);
     }
 
     public function getOrderQuery($type){
@@ -192,6 +193,31 @@ class OrderController extends Controller
         }
 
         return response()->json(['message' => 'Invalid request'], 400);
+    }
+
+    public function shipment(Request $request){
+          if ($request->ajax()) {
+            $updateData = ['order_status' => 4];
+
+            $orders = Order::whereIn('id',$request->order_id)->get();
+
+            if ($orders) {
+                foreach ($orders as $orderValue) {
+                    if ($orderValue->order_status <= 3) {
+                        $updateResult = $orderValue->updateStatus($updateData);
+                    }
+                }
+
+                if ($updateResult) {
+                    return response()->json(['message' => 'Order status updated successfully', 'data' => $updateResult], 200);
+                } else {
+                    return response()->json(['message' => 'Error updating order status'], 500);
+                }
+            } else {
+                return response()->json(['message' => 'Order not found'], 404);
+            }
+          }
+          return response()->json(['message' => 'Invalid request'], 400);
     }
 
     public function confirmOrder(Request $request){

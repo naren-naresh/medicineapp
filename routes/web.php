@@ -80,6 +80,7 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('order-invoice/{id?}','OrderController@invoiceDownload')->name('order.invoice');
         Route::post('change-status','OrderController@statusUpdate')->name('orders.changeStatus');
         Route::post('order-confirm','OrderController@confirmOrder')->name('order.confirmOrder');
+        Route::post('order-shipment','OrderController@shipment')->name('orders.shipment');
     });
 });
 /** Frontend routes  */
