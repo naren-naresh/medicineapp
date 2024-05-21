@@ -58,7 +58,7 @@ class OrderController extends Controller
                 })
                 ->addColumn('status', function ($order) {
                     $orderStatus = orderStatus::where('id',$order->order_status);
-                    $statusHtml = '<p class="text-center" style = "color:'.$orderStatus->value('color_code').';background-color:'.$orderStatus->value('bg_color_code').';font-size:12px">'.$orderStatus->value('status').'</p>';
+                    $statusHtml = '<p class="text-center badge px-2 py-2" style = "color:'.$orderStatus->value('color_code').';background-color:'.$orderStatus->value('bg_color_code').';font-size:12px";>'.$orderStatus->value('status').'</p>';
                     return $statusHtml;
                 })
                 ->addColumn('action', function ($order) {

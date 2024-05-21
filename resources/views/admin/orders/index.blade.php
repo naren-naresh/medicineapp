@@ -129,6 +129,12 @@
             var table = $('.data-table').DataTable({
                 processing: true,
                 serverSide: true,
+                rowReorder: true,
+                // columnDefs: [
+                //     { orderable: true, className: 'reorder', targets: [1,2,3,4] },
+                //     { orderable: false, targets: '_all' }
+                // ],
+                'aaSorting': [[1, 'asc']],
                 language: {
                     lengthMenu: 'Show _MENU_ entries',
                 },
@@ -170,10 +176,14 @@
                     {
                         data: 'address',
                         name: 'address',
+                        orderable: false,
+                        searchable: false,
                     },
                     {
                         data: 'status',
                         name: 'status',
+                        orderable: false,
+                        searchable: false,
                     },
                     {
                         data: 'action',
@@ -205,7 +215,9 @@
         });
         $('#select-all').change(function(params) {
             if ($(this).is(':checked')) {
-                $('.check').attr('checked', 'checked');
+                $('.check').prop('checked', true);
+            }else{
+                $('.check').prop('checked', false);
             }
         });
         $(document).ready(function() {
