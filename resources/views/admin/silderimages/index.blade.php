@@ -176,9 +176,9 @@
                 $('#sliderImageModel').modal('show');
                 console.log(data.image);
                 if (data.image == '' || data.image == null) {
-                        $('#sliderPreview').attr('src', 'assets/images/woocommerce-placeholder.webp');
+                        $('#sliderPreview').attr('src', '/assets/images/woocommerce-placeholder.webp');
                     }else{
-                    $('#sliderPreview').attr('src', 'assets/images/sliderimages/' + data.image);
+                    $('#sliderPreview').attr('src', '/assets/images/sliderimages/' + data.image);
                     }
             })
         });

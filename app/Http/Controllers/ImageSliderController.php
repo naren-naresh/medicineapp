@@ -15,7 +15,7 @@ class ImageSliderController extends Controller
             return DataTables::of($sliderImages)
                 ->addIndexColumn()
                 ->addColumn('image', function ($slideImage) {
-                    return($slideImage->image !='') ? '<img src="assets/images/sliderimages/'.$slideImage->image.'" style="width:50px">':'<img src="assets/images/woocommerce-placeholder.webp" style="width:50px">';
+                    return($slideImage->image !='') ? '<img src="/assets/images/sliderimages/'.$slideImage->image.'" style="width:50px">':'<img src="/assets/images/woocommerce-placeholder.webp" style="width:50px">';
                 })
                 ->addColumn('heading', function ($slideImage) {
                     return $slideImage->heading;

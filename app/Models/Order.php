@@ -9,6 +9,7 @@ class Order extends Model
 {
     use HasFactory;
     protected  $guarded = [];
+
     public function histories()
     {
         return $this->hasMany(OrderHistory::class);
@@ -20,26 +21,29 @@ class Order extends Model
         $order->histories()->create([
             'order_id' => $order->id,
             'order_status_id' => $attributes['order_status'],
-            'date_time' => $attributes['order_created_date_time'],
+            'date_time' => now(),
         ]);
         return $order;
     }
 
-    public function update(array $attributes = [], array $options = [])
+    public function updateStatus(array $attributes = [])
     {
-        // update on the order table
-        parent::update($attributes, $options);
+        $originalOrder = $this->where('id', $this->id)->first();
+        $updated = $this->update($attributes);
 
-        // Check if order status or creation date-time changed to avoid unnecessary updates
-        if (isset($attributes['order_status']) || isset($attributes['order_created_date_time'])) {
+        // Check if relevant attributes changed and create history
+        if (($updated && isset($attributes['order_status']) && $originalOrder->order_status !== $attributes['order_status']) ||
+            ($updated && isset($attributes['order_created_date_time']) && $originalOrder->order_created_date_time !== $attributes['order_created_date_time'])
+        ) {
+            $orderHistoryData = [
+                'order_id' => $originalOrder->id,
+                'order_status_id' => (isset($attributes['order_status'])) ? $attributes['order_status'] : $originalOrder->order_status,
+                'date_time' => now(),
+            ];
 
-            $order = $this->find($this->id);
-
-            $order->histories()->create([
-                'order_id' => $order->id,
-                'order_status_id' => (isset($attributes['order_status'])) ? $attributes['order_status'] : $order->order_status_id,
-                'date_time' => (isset($attributes['order_created_date_time'])) ? $attributes['order_created_date_time'] : $order->order_created_date_time,
-            ]);
+            $originalOrder->histories()->create($orderHistoryData);
         }
+
+        return $updated;
     }
 }

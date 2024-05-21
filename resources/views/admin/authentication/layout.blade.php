@@ -39,7 +39,7 @@
     <div class="container d-flex flex-column justify-content-center align-items-center mh-100 bg-white" id="container">
         {{-- app logo --}}
     <div class="logo pt-5 pb-3">
-        <img src="assets/images/logo.png" alt="logo image" id="logo">
+        <img src="/assets/images/logo.png" alt="logo image" id="logo">
     </div>
         @yield('content')
     </div>

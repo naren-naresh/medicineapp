@@ -7,7 +7,7 @@
     @endif
     <div class="row justify-content-between w-100 mt-3">
         <div class="page-title col-6">
-            <h5>Orders</h5>
+            <h5>All Orders</h5>
         </div>
         <div aria-label="breadcrumb" class="col-6">
             <ol class="breadcrumb float-end">
@@ -29,8 +29,16 @@
         </div>
     </nav>
     <div class="card w-100  mb-5 tab-content">
-        <div class="card-header d-flex justify-content-between">
-            <h5 class="card-title">All Orders</h5>
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center">
+                {{-- <h5 class="card-title">All Orders</h5> --}}
+                <select name="status_menu" id="status_menu" class="form-control">
+                    @foreach ($orderStatus as $item)
+                    <option value="{{$item->id}}">{{$item->status}}</option>
+                    @endforeach
+                </select>
+                <button type="button" class="btn py-1" id="whole-shipment-btn">Apply</button>
+            </div>
             <div class="card-tools">
                 <div id="daterange" class="float-end text-secondary"
                     style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%; text-align:center">
@@ -45,7 +53,7 @@
             <table class="table table-bordered data-table">
                 <thead>
                     <tr>
-                        <th><input type="checkbox" name="" id=""></th>
+                        <th><input type="checkbox" name="select-all" id="select-all"></th>
                         <th>Order ID</th>
                         <th>Order Date</th>
                         <th>Items</th>
@@ -59,6 +67,7 @@
                 </tbody>
             </table>
         </div>
+        @include('admin.orders.shippment-modal')
     </div>
     <style>
         .nav-btn {
@@ -88,6 +97,7 @@
             transform: translate(50%, 42%);
             z-index: 1;
         }
+
         .nav-btn:hover {
             background-color: #385399 !important;
             color: #fff !important;
@@ -114,7 +124,8 @@
             });
             $(document).on('click', '.daterangepicker .cancelBtn', function(e) {
                 e.preventDefault();
-                $('#daterange span').html('');
+                $('#daterange span').html('D-MM-YYYY' + ' to ' + 'D-MM-YYYY');
+                table.ajax.reload();
             });
             $('.nav-btn').click(function() {
                 typeValue = $(this).attr('status');
@@ -127,6 +138,14 @@
             var table = $('.data-table').DataTable({
                 processing: true,
                 serverSide: true,
+                rowReorder: true,
+                // columnDefs: [
+                //     { orderable: true, className: 'reorder', targets: [1,2,3,4] },
+                //     { orderable: false, targets: '_all' }
+                // ],
+                'aaSorting': [
+                    [1, 'asc']
+                ],
                 language: {
                     lengthMenu: 'Show _MENU_ entries',
                 },
@@ -169,10 +188,14 @@
                     {
                         data: 'address',
                         name: 'address',
+                        orderable: false,
+                        searchable: false,
                     },
                     {
                         data: 'status',
                         name: 'status',
+                        orderable: false,
+                        searchable: false,
                     },
                     {
                         data: 'action',
@@ -181,6 +204,89 @@
                         searchable: false
                     },
                 ]
+            });
+        });
+
+        // mark as confirmed functionality
+        $(document).on('click', '.confirm', function() {
+            var status = $(this).attr('order_status');
+            var orderId = $(this).attr('order_id');
+            if (status == 2) {
+                $.ajax({
+                    type: "post",
+                    url: "{{ route('order.confirmOrder') }}",
+                    data: {
+                        order_id: orderId,
+                        order_status: status,
+                    },
+                    success: function(response) {
+                        console.log(response);
+                    }
+                });
+            } else if (status < 2) {
+                Swal.fire("View the orders detail first.");
+            }
+        });
+
+        // select all functionality
+        $('#select-all').change(function(params) {
+            if ($(this).is(':checked')) {
+                $('.check').prop('checked', true);
+            } else {
+                $('.check').prop('checked', false);
+            }
+        });
+
+        // get all checkout row order_id
+        function getCheckedAttributes() {
+            var checkedValues = [];
+            $('.check').each(function() {
+                if ($(this).is(":checked")) {
+                    order_id = $(this).attr("orderid");
+
+                    checkedValues.push(order_id);
+                }
+            });
+            return checkedValues;
+        }
+
+        // bulk shipment
+        $('#whole-shipment-btn').click(function () {
+            var checkedOrders = getCheckedAttributes();
+               if (checkedOrders.length > 0) {
+                $.ajax({
+                    type: "post",
+                    url: "{{ route('orders.shipment') }}",
+                    data:{
+                        order_id: checkedOrders,
+                    },
+                    success: function (response) {
+                        console.log(response);
+                    }
+                });
+               }else{
+                Swal.fire("Kindly select atleast one row.");
+               }
+        });
+
+        //single shipment
+        $(document).on('click','.shipped', function () {
+            let order_id = [];
+                order_id.push($(this).attr('order_id'));
+            $('#staticBackdrop').modal('show');
+            $('#confirm-shipment-btn').click(function () {
+                 $.ajax({
+                    type: "post",
+                    url: "{{ route('orders.shipment') }}",
+                    data:{
+                        order_id : order_id,
+                    },
+                    success: function (response) {
+                       if (response.data == true) {
+                            location.reload();
+                       }
+                    }
+                 });
             });
         });
     </script>

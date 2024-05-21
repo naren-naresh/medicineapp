@@ -21,7 +21,7 @@ class BrandController extends Controller
                     return ($brand->status != 0) ? '<span class=" badge bg-success">Active</span>' : '<span class=" badge bg-danger">InActive</span>';
                 })
                 ->addColumn('image', function ($brand) {
-                    return ($brand->image != '') ? '<img src="assets/images/brands/' . $brand->image . '" style="width:50px">' : '<img src="assets/images/woocommerce-placeholder.webp" style="width:50px">';
+                    return ($brand->image != '') ? '<img src="/assets/images/brands/' . $brand->image . '" style="width:50px">' : '<img src="assets/images/woocommerce-placeholder.webp" style="width:50px">';
                 })
                 ->addColumn('action', function ($brand) {
                     $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $brand->id . '" data-original-title="Edit" class="edit btn  btn-sm editProduct">Edit</a>

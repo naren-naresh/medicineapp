@@ -29,9 +29,11 @@ use Illuminate\Support\Facades\Route;
 /** default home route */
 Route::get('/', 'HomePageController@index');
 /** Authenticate routes */
-Route::get('login', 'AuthController@login')->name('login');
-Route::post('authenticate', 'AuthController@authenticate')->name('authenticate');
-Route::post('sing-up','AuthController@store')->name('singUp');
+Route::prefix('admin')->group(function() {
+    Route::get('login', 'AuthController@login')->name('login');
+    Route::post('authenticate', 'AuthController@authenticate')->name('authenticate');
+    Route::post('sing-up','AuthController@store')->name('singUp');
+});
 /** Forget routes */
 //--- Forget password routes
 Route::get('forget-password', 'ForgotPasswordController@showForgetPasswordForm')->name('forget.password.get');
@@ -77,6 +79,8 @@ Route::group(['middleware' => 'prevent-back-history'], function () {
         Route::get('orders-info/{id?}','OrderController@adminOrderDetails')->name('ordersDetails.admin');
         Route::get('order-invoice/{id?}','OrderController@invoiceDownload')->name('order.invoice');
         Route::post('change-status','OrderController@statusUpdate')->name('orders.changeStatus');
+        Route::post('order-confirm','OrderController@confirmOrder')->name('order.confirmOrder');
+        Route::post('order-shipment','OrderController@shipment')->name('orders.shipment');
     });
 });
 /** Frontend routes  */

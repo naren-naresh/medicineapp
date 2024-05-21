@@ -11,7 +11,7 @@
             <div class="row ms-5 mt-2">
                 <div class="col-4">
                     <div class="from-group d-flex flex-column">
-                        <img src="assets/images/{{ $user->image }}" alt="profile" class="w-50 h-25 mb-4 ms-2"
+                        <img src="/assets/images/{{ $user->image }}" alt="profile" class="w-50 h-25 mb-4 ms-2"
                             style="border-radius: 30%;">
                         <div class="button mb-5">
                             <a href="{{ route('dashboard') }}" class="btn py-1 px-2">Back</a>
