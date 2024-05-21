@@ -29,9 +29,11 @@ use Illuminate\Support\Facades\Route;
 /** default home route */
 Route::get('/', 'HomePageController@index');
 /** Authenticate routes */
-Route::get('login', 'AuthController@login')->name('login');
-Route::post('authenticate', 'AuthController@authenticate')->name('authenticate');
-Route::post('sing-up','AuthController@store')->name('singUp');
+Route::prefix('admin')->group(function() {
+    Route::get('login', 'AuthController@login')->name('login');
+    Route::post('authenticate', 'AuthController@authenticate')->name('authenticate');
+    Route::post('sing-up','AuthController@store')->name('singUp');
+});
 /** Forget routes */
 //--- Forget password routes
 Route::get('forget-password', 'ForgotPasswordController@showForgetPasswordForm')->name('forget.password.get');

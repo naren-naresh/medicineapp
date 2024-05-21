@@ -15,7 +15,7 @@ class CustomerController extends Controller
             return DataTables::of($customers)
             ->addIndexColumn()
             ->addColumn('image', function ($customer) {
-                return($customer->image !='') ? '<img src="assets/images/products/'.$customer->id.'/'.$customer->image.'" style="width:50px">':'<img src="assets/images/woocommerce-placeholder.webp" style="width:50px">';
+                return($customer->image !='') ? '<img src="/assets/images/products/'.$customer->id.'/'.$customer->image.'" style="width:50px">':'<img src="/assets/images/woocommerce-placeholder.webp" style="width:50px">';
             })
             ->addColumn('first_name', function ($customer) {
                 return $customer->first_name;

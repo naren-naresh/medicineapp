@@ -21,7 +21,7 @@ class ManufacturerController extends Controller
                     return $menu->company_name;
                 })
                 ->addColumn('company_logo', function ($menu) {
-                    return ($menu->company_logo != '') ? '<img src="assets/images/manufacturers/' . $menu->company_logo . '" style="width:50px">' : '<img src="assets/images/woocommerce-placeholder.webp" style="width:50px">';
+                    return ($menu->company_logo != '') ? '<img src="/assets/images/manufacturers/' . $menu->company_logo . '" style="width:50px">' : '<img src="assets/images/woocommerce-placeholder.webp" style="width:50px">';
                 })
                 ->addColumn('address', function ($menu) {
                     return $menu->address;

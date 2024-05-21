@@ -28,7 +28,7 @@ class ProductController extends Controller
             return DataTables::of($products)
                 ->addIndexColumn()
                 ->addColumn('cover_image', function ($product) {
-                    return ($product->cover_image != '') ? '<img src="assets/images/products/' . $product->id . '/' . $product->cover_image . '" style="width:50px">' : '<img src="assets/images/woocommerce-placeholder.webp" style="width:50px">';
+                    return ($product->cover_image != '') ? '<img src="/assets/images/products/' . $product->id . '/' . $product->cover_image . '" style="width:50px">' : '<img src="/assets/images/woocommerce-placeholder.webp" style="width:50px">';
                 })
                 ->addColumn('name', function ($product) {
                     return $product->name;
