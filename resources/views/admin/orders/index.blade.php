@@ -31,7 +31,6 @@
     <div class="card w-100  mb-5 tab-content">
         <div class="card-header d-flex justify-content-between align-items-center">
             <div class="d-flex justify-content-between align-items-center">
-                {{-- <h5 class="card-title">All Orders</h5> --}}
                 <select name="status_menu" id="status_menu" class="form-control">
                     @foreach ($orderStatus as $item)
                     <option value="{{$item->id}}">{{$item->status}}</option>
@@ -238,13 +237,17 @@
         });
 
         // get all checkout row order_id
-        function getCheckedAttributes() {
+        function getCheckedAttributes(id) {
             var checkedValues = [];
             $('.check').each(function() {
                 if ($(this).is(":checked")) {
                     order_id = $(this).attr("orderid");
-
-                    checkedValues.push(order_id);
+                    let order_statusId = $(this).attr('statusid');
+                    if (order_statusId == id) {
+                        checkedValues.push(order_id);
+                    }else{
+                        $(this).prop('checked', false);
+                    }
                 }
             });
             return checkedValues;
@@ -252,7 +255,8 @@
 
         // bulk shipment
         $('#whole-shipment-btn').click(function () {
-            var checkedOrders = getCheckedAttributes();
+            var selectedValue = $("#status_menu").val() - 1 ;
+            var checkedOrders = getCheckedAttributes(selectedValue);
                if (checkedOrders.length > 0) {
                 $.ajax({
                     type: "post",
