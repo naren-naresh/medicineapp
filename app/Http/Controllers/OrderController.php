@@ -258,10 +258,10 @@ class OrderController extends Controller
         $data['deliveryZone'] = Delivery_zone::all();
         $data['deliveryFee'] = DeliveryFee::all();
 
-        $pdf = Pdf::loadView('admin.orders.order_invoice',['data' => $data]);
+        // $pdf = Pdf::loadView('admin.orders.order_invoice',['data' => $data]);
 
-        return $pdf->download('invoice.pdf');
-        // return view('admin.orders.order_invoice',['data' => $data]);
+        // return $pdf->download('invoice.pdf');
+        return view('admin.orders.order_invoice',['data' => $data]);
     }
 
     public function generateOrderNumber()
