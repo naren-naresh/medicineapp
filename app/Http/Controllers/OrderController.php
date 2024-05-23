@@ -19,6 +19,7 @@ use Yajra\DataTables\DataTables;
 class OrderController extends Controller
 {
     public function adminIndex(Request $request){
+
         if ($request->ajax()) {
 
             $orders = $this->getOrderQuery($request->typeValue) ?? [];
@@ -64,17 +65,21 @@ class OrderController extends Controller
                 ->addColumn('action', function ($order) {
                         $btn = '<div class ="row action">';
 
-                        $btn .= '<a href="'.route('ordersDetails.admin',$order->customer_id).'" class="view text-decoration-none pb-1" style ="color:#385399"><i class="fa fa-eye me-1"></i> View Order</a>';
+                        $btn .= '<a href="'.route('ordersDetails.admin',$order->customer_id).'" class="view text-decoration-none pb-1" style ="color:#385399"><i class="fa fa-eye mx-1"></i> View Order</a>';
 
                         if ($order->order_status == 2) {
-                            $btn .= '<a href="#" class="confirm text-decoration-none pb-1" style ="color:#385399" order_id = '.$order->id.' order_status = '.$order->order_status.'><i class="far fa-check-square me-1"></i> Mark us Confirm</a>';
+                            $btn .= '<a href="#" class="confirm text-decoration-none pb-1" style ="color:#385399" order_id = '.$order->id.' order_status = '.$order->order_status.'><i class="far fa-check-square mx-1"></i> Mark us Confirm</a>';
                         }
 
                         if ($order->order_status == 3) {
-                            $btn .= '<a href="#" class="shipped text-decoration-none pb-1" style ="color:#385399" order_id = '.$order->id.' order_status = '.$order->order_status.'><i class="fa fa-bus me-1"></i>Move to Shipped</a>';
+                            $btn .= '<a href="#" class="shipped text-decoration-none pb-1" style ="color:#385399" order_id = '.$order->id.' order_status = '.$order->order_status.'><i class="fa fa-truck mx-1"></i>Move to Shipped</a>';
                         }
 
-                        $btn .= '<a href="#" class="delete text-decoration-none" style ="color:#385399"><i class="fa fa-close  me-1"></i> Cancel Order</a>';
+                        if ($order->order_status == 4) {
+                            $btn .= '<a href="#" class="delivered text-decoration-none pb-1" style ="color:#385399;" order_id = '.$order->id.' order_status = '.$order->order_status.'><i class="fa fa-shipping-fast mx-1"></i>Out for Delivered</a>';
+                        }
+
+                        $btn .= '<a href="#" class="delete text-decoration-none" style ="color:#385399"><i class="fa fa-close  mx-1"></i> Cancel Order</a>';
 
                         $btn .= '</div>';
                         return $btn;
@@ -82,14 +87,14 @@ class OrderController extends Controller
                 ->rawColumns(['checkbox','id','order_date','price','address','status', 'action'])
                 ->make(true);
         }
-       $data['orderStatus'] = orderStatus::all();
+        $data['orderStatus'] =  orderStatus::all();
        return view('admin.orders.index',$data);
     }
 
     public function getOrderQuery($type){
          $orderData = Order::all();
          if ( empty($type) || $type == 'placed') {
-            $orderData = $orderData->whereIn('order_status',[1,2,3]); // mark us confirmed
+            $orderData = $orderData->whereIn('order_status',[1,2,3]);
          }elseif ($type == 'shipped') {
             $orderData = $orderData->whereIn('order_status',[4,5]);
          }elseif ($type == 'completed') {
@@ -197,15 +202,13 @@ class OrderController extends Controller
 
     public function shipment(Request $request){
           if ($request->ajax()) {
-            $updateData = ['order_status' => 4];
+            $updateData = ['order_status' => $request->update_value];
 
             $orders = Order::whereIn('id',$request->order_id)->get();
 
             if ($orders) {
                 foreach ($orders as $orderValue) {
-                    if ($orderValue->order_status <= 3) {
                         $updateResult = $orderValue->updateStatus($updateData);
-                    }
                 }
 
                 if ($updateResult) {
@@ -248,6 +251,7 @@ class OrderController extends Controller
         $pdf = Pdf::loadView('admin.orders.order_invoice',['data' => $data]);
 
         return $pdf->download('invoice.pdf');
+        // return view('admin.orders.order_invoice',['data' => $data]);
     }
 
     public function generateOrderNumber()

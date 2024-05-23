@@ -18,11 +18,11 @@
     </div>
     <nav class="w-100 mb-4">
         <div class="status-nav nav nav-tabs d-flex justify-content-between" role="tablist">
-            <button type="button" class="nav-btn nav-link active" id="placed" status ='placed' data-bs-toggle="tab"
+            <button type="button" class="nav-btn nav-link active" id="placed" status ='placed' selectValue = '4' data-bs-toggle="tab"
                 role="tab" aria-selected="true">Placed Orders</button>
-            <button type="button" class="nav-btn nav-link" id="processing" status ='shipped' data-bs-toggle="tab"
+            <button type="button" class="nav-btn nav-link" id="processing" status ='shipped' selectValue = '6' data-bs-toggle="tab"
                 role="tab" aria-selected="false">Shipped Orders</button>
-            <button type="button" class="nav-btn nav-link" id="completed" status ='completed' data-bs-toggle="tab"
+            <button type="button" class="nav-btn nav-link" id="completed" status ='completed' selectValue = '7' data-bs-toggle="tab"
                 role="tab" aria-selected="false">Completed Orders</button>
             <button type="button" class="nav-btn nav-link" id="canceled" status ='canceled' data-bs-toggle="tab"
                 role="tab" aria-selected="false">Cancelled Orders</button>
@@ -31,13 +31,13 @@
     <div class="card w-100  mb-5 tab-content">
         <div class="card-header d-flex justify-content-between align-items-center">
             <div class="d-flex justify-content-between align-items-center">
-                {{-- <h5 class="card-title">All Orders</h5> --}}
-                <select name="status_menu" id="status_menu" class="form-control">
+                <select name="status_menu" id="status_menu" class="form-control" style="border-radius:unset !important">
+                    <option value='action' selected disabled> Action </option>
                     @foreach ($orderStatus as $item)
                     <option value="{{$item->id}}">{{$item->status}}</option>
                     @endforeach
                 </select>
-                <button type="button" class="btn py-1" id="whole-shipment-btn">Apply</button>
+                <button type="button" class="btn py-1" id="whole-shipment-btn" style="border-radius:unset !important; padding:4.3px 7px !important;font-size:13px;">Apply</button>
             </div>
             <div class="card-tools">
                 <div id="daterange" class="float-end text-secondary"
@@ -60,7 +60,7 @@
                         <th>Price</th>
                         <th>Send To</th>
                         <th>Status</th>
-                        <th style="width: 150px;">Action</th>
+                        <th style="width: 170px;">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -68,6 +68,7 @@
             </table>
         </div>
         @include('admin.orders.shippment-modal')
+        @include('admin.orders.out-for-delivery-modal')
     </div>
     <style>
         .nav-btn {
@@ -96,12 +97,6 @@
             color: #385399;
             transform: translate(50%, 42%);
             z-index: 1;
-        }
-
-        .nav-btn:hover {
-            background-color: #385399 !important;
-            color: #fff !important;
-            cursor: pointer !important;
         }
     </style>
 @endsection
@@ -134,7 +129,7 @@
                 table.draw();
             });
 
-            /* datatables*/
+            /* datatables */
             var table = $('.data-table').DataTable({
                 processing: true,
                 serverSide: true,
@@ -220,7 +215,9 @@
                         order_status: status,
                     },
                     success: function(response) {
-                        console.log(response);
+                        if (response.data == true) {
+                            location.reload();
+                       }
                     }
                 });
             } else if (status < 2) {
@@ -238,30 +235,40 @@
         });
 
         // get all checkout row order_id
-        function getCheckedAttributes() {
+        function getCheckedAttributes(id) {
             var checkedValues = [];
             $('.check').each(function() {
                 if ($(this).is(":checked")) {
                     order_id = $(this).attr("orderid");
-
-                    checkedValues.push(order_id);
+                    let order_statusId = $(this).attr('statusid');
+                    if (order_statusId == id) {
+                        checkedValues.push(order_id);
+                    }else{
+                        $(this).prop('checked', false);
+                    }
                 }
             });
             return checkedValues;
         }
 
-        // bulk shipment
+        // bulk status change functionality
         $('#whole-shipment-btn').click(function () {
-            var checkedOrders = getCheckedAttributes();
+            var selectedValue = $("#status_menu").val() - 1 ;
+            var updateValue = $("#status_menu").val();
+            var checkedOrders = getCheckedAttributes(selectedValue);
                if (checkedOrders.length > 0) {
                 $.ajax({
                     type: "post",
                     url: "{{ route('orders.shipment') }}",
                     data:{
                         order_id: checkedOrders,
+                        update_value : updateValue,
                     },
                     success: function (response) {
                         console.log(response);
+                        if (response.data == true) {
+                            location.reload();
+                       }
                     }
                 });
                }else{
@@ -273,6 +280,7 @@
         $(document).on('click','.shipped', function () {
             let order_id = [];
                 order_id.push($(this).attr('order_id'));
+            let updateValue = parseInt($(this).attr('order_status')) + 1;
             $('#staticBackdrop').modal('show');
             $('#confirm-shipment-btn').click(function () {
                  $.ajax({
@@ -280,14 +288,51 @@
                     url: "{{ route('orders.shipment') }}",
                     data:{
                         order_id : order_id,
+                        update_value : updateValue,
                     },
                     success: function (response) {
                        if (response.data == true) {
-                            location.reload();
+                            location.reload ();
                        }
                     }
                  });
             });
+        });
+
+        // single out for delivery
+        $(document).on('click','.delivered', function () {
+            let order_id = [];
+                order_id.push($(this).attr('order_id'));
+            let updateValue = parseInt($(this).attr('order_status')) + 1;
+            $('#outForDeliveryModal').modal('show');
+            $('#confirm-delivery-btn').click(function () {
+                 $.ajax({
+                    type: "post",
+                    url: "{{ route('orders.shipment') }}",
+                    data:{
+                        order_id : order_id,
+                        update_value : updateValue,
+                    },
+                    success: function (response) {
+                       if (response.data == true) {
+                            location.reload ();
+                       }
+                    }
+                 });
+            });
+        });
+
+         $(document).ready(function () {
+            let selectMenu = $("select#status_menu");
+            selectMenu.find("option").hide();
+            selectMenu.find("option[value='" + 4 + "']").show();
+         });
+
+        $(document).on('click','.nav-btn', function () {
+            let statusValue = $(this).attr('selectValue');
+            let selectMenu = $("select#status_menu");
+            selectMenu.find("option").hide();
+            selectMenu.find("option[value='" + statusValue + "']").show();
         });
     </script>
 @endPushOnce

@@ -65,7 +65,7 @@
                         <p><strong>Seller Name :</strong> MEDICINE PLUS.</p>
                      </div>
                     <div class="invoice-action col-3 text-end">
-                        <a href="#" class=" text-decoration-none"><i class="fa fa-print"></i> Print Invoice</a>&nbsp;
+                        <a href="{{ route('order.invoice',$orderDetail->customer_id) }}" class=" text-decoration-none"><i class="fa fa-print"></i> Print Invoice</a>&nbsp;
                         <snap><i class="fa fa-cancel"></i> Cancel</snap>
                     </div>
                 </div>

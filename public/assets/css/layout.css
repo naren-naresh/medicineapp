@@ -214,23 +214,23 @@
      bottom: -5px;
  }
 /* Customize pagination button styles for datatables*/
-.dt-paging-button {
+/* .dt-paging-button {
     background-color: #385399 !important;
     border: 1px solid #fff !important;
     color: #fff;
     border-radius: 4px !important;
-}
+} */
 /* Apply custom hover styles */
-.dt-paging .dt-paging-button:hover {
-    background-color: #fff !important;
+/* .dt-paging .dt-paging-button:hover {
+    background-color: #385399 !important;
     border-color: #385399 !important;
-    color: #385399 !important;
+    color: #fff !important;
 }
 .dt-paging-button.current {
     background-color: #fff !important ;
     border-color: #385399 !important;
     color: #385399 !important;
-}
+} */
  /*-- media queries-*/
  @media(min-width:768px) {
      .fixed-brand {
