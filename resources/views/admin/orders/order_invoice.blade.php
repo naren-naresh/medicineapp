@@ -64,11 +64,10 @@
                     </tr>
                 </table>
                 <div class="product-row" style="border-bottom: 2px solid #000; padding:10px 0px">
-                    <div style="padding: 0px;width:100%">
-                        <table style="width:100%">
+                    <div style="padding: 0px;">
+                        <table style="width:100%;">
                             <thead>
                                 <th>Product</th>
-                                <th>Image</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
                                 <th>Total</th>
@@ -77,8 +76,8 @@
                                 @php
                                     $orderItems = $data['orderItems']->where('order_id', $orderDetail->id);
                                 @endphp
+                                 <tbody>
                                 @foreach ($orderItems as $orderItem)
-                                <tbody>
                                     <tr>
                                         <td style="width:400px">
                                             <p style="margin-bottom: 0px">{{ $orderItem->product_name }} ( <small
@@ -87,20 +86,18 @@
                                             <small
                                                 style="color: #343333">{{ $orderItem->product_variant_name }}</small>
                                         </td>
-                                        <td style="text-align: center"><img src="{{ public_path('/assets/images/products/'.$orderItem->product_id.'/'.$orderItem->product_image.'')}}"
-                                                style="width: 50px"></td>
-                                        <td style="text-align: center"><small style="text-decoration:line-through;color:#969696;">
+                                        <td><small style="text-decoration:line-through;color:#969696;">
                                                  <span style="font-family: DejaVu Sans; sans-serif;">₹</span>{{ $orderItem->retail_price }}</small>
                                             <p style="margin-top:5px">  <span style="font-family: DejaVu Sans; sans-serif;">₹</span>{{ $orderItem->selling_price }}</p>
                                         </td>
-                                        <td style="text-align: center">{{ $orderItem->quantity }}</td>
-                                        <td style="text-align: center"><small style="text-decoration:line-through;color:#969696">
+                                        <td>{{ $orderItem->quantity }}</td>
+                                        <td><small style="text-decoration:line-through;color:#969696">
                                                  <span style="font-family: DejaVu Sans; sans-serif;">₹</span>{{ $orderItem->quantity * $orderItem->retail_price }}</small>
                                             <p style="margin-top:5px">  <span style="font-family: DejaVu Sans; sans-serif;">₹</span>{{ $orderItem->total_amount }}</p>
                                         </td>
                                     </tr>
-                                </tbody>
                                 @endforeach
+                            </tbody>
                             </tbody>
                         </table>
                     </div>

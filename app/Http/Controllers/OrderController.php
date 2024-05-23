@@ -72,7 +72,11 @@ class OrderController extends Controller
                         }
 
                         if ($order->order_status == 3) {
-                            $btn .= '<a href="#" class="shipped text-decoration-none pb-1" style ="color:#385399" order_id = '.$order->id.' order_status = '.$order->order_status.'><i class="fa fa-bus mx-1"></i>Move to Shipped</a>';
+                            $btn .= '<a href="#" class="shipped text-decoration-none pb-1" style ="color:#385399" order_id = '.$order->id.' order_status = '.$order->order_status.'><i class="fa fa-truck mx-1"></i>Move to Shipped</a>';
+                        }
+
+                        if ($order->order_status == 4) {
+                            $btn .= '<a href="#" class="delivered text-decoration-none pb-1" style ="color:#385399;" order_id = '.$order->id.' order_status = '.$order->order_status.'><i class="fa fa-shipping-fast mx-1"></i>Out for Delivered</a>';
                         }
 
                         $btn .= '<a href="#" class="delete text-decoration-none" style ="color:#385399"><i class="fa fa-close  mx-1"></i> Cancel Order</a>';
@@ -90,7 +94,7 @@ class OrderController extends Controller
     public function getOrderQuery($type){
          $orderData = Order::all();
          if ( empty($type) || $type == 'placed') {
-            $orderData = $orderData->whereIn('order_status',[1,2,3]); // mark us confirmed
+            $orderData = $orderData->whereIn('order_status',[1,2,3]);
          }elseif ($type == 'shipped') {
             $orderData = $orderData->whereIn('order_status',[4,5]);
          }elseif ($type == 'completed') {
@@ -198,7 +202,7 @@ class OrderController extends Controller
 
     public function shipment(Request $request){
           if ($request->ajax()) {
-            $updateData = ['order_status' => 4];
+            $updateData = ['order_status' => $request->update_value];
 
             $orders = Order::whereIn('id',$request->order_id)->get();
 

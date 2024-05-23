@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center">
-                <p style="font-size: 16px; font-weight:500">Are you sure move to shipment ??</p>
+                <p style="font-size: 16px; font-weight:500">Are you sure move to shipment ?</p>
                 <button type="button" class="btn" id="confirm-shipment-btn">Confirm</button>
             </div>
         </div>
