@@ -18,11 +18,11 @@
     </div>
     <nav class="w-100 mb-4">
         <div class="status-nav nav nav-tabs d-flex justify-content-between" role="tablist">
-            <button type="button" class="nav-btn nav-link active" id="placed" status ='placed' data-bs-toggle="tab"
+            <button type="button" class="nav-btn nav-link active" id="placed" status ='placed' selectValue = '4' data-bs-toggle="tab"
                 role="tab" aria-selected="true">Placed Orders</button>
-            <button type="button" class="nav-btn nav-link" id="processing" status ='shipped' data-bs-toggle="tab"
+            <button type="button" class="nav-btn nav-link" id="processing" status ='shipped' selectValue = '6' data-bs-toggle="tab"
                 role="tab" aria-selected="false">Shipped Orders</button>
-            <button type="button" class="nav-btn nav-link" id="completed" status ='completed' data-bs-toggle="tab"
+            <button type="button" class="nav-btn nav-link" id="completed" status ='completed' selectValue = '7' data-bs-toggle="tab"
                 role="tab" aria-selected="false">Completed Orders</button>
             <button type="button" class="nav-btn nav-link" id="canceled" status ='canceled' data-bs-toggle="tab"
                 role="tab" aria-selected="false">Cancelled Orders</button>
@@ -33,6 +33,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <select name="status_menu" id="status_menu" class="form-control">
                     @foreach ($orderStatus as $item)
+                    <option selected>--- Select Status ---</option>
                     <option value="{{$item->id}}">{{$item->status}}</option>
                     @endforeach
                 </select>
@@ -266,6 +267,9 @@
                     },
                     success: function (response) {
                         console.log(response);
+                        if (response.data == true) {
+                            location.reload();
+                       }
                     }
                 });
                }else{
@@ -287,11 +291,24 @@
                     },
                     success: function (response) {
                        if (response.data == true) {
-                            location.reload();
+                            location.reload ();
                        }
                     }
                  });
             });
+        });
+
+         $(document).ready(function () {
+            let selectMenu = $("select#status_menu");
+            selectMenu.find("option").hide();
+            selectMenu.find("option[value='" + 4 + "']").show();
+         });
+
+        $(document).on('click','.nav-btn', function () {
+            let statusValue = $(this).attr('selectValue');
+            let selectMenu = $("select#status_menu");
+            selectMenu.find("option").hide();
+            selectMenu.find("option[value='" + statusValue + "']").show();
         });
     </script>
 @endPushOnce

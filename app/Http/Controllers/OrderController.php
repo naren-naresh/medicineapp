@@ -19,10 +19,7 @@ use Yajra\DataTables\DataTables;
 class OrderController extends Controller
 {
     public function adminIndex(Request $request){
-        // $statusType = null;
-        // if ($request->ajax()) {
-        //     $statusType = $request->input('typeValue', $statusType);
-        // }
+
         if ($request->ajax()) {
 
             $orders = $this->getOrderQuery($request->typeValue) ?? [];
@@ -86,19 +83,8 @@ class OrderController extends Controller
                 ->rawColumns(['checkbox','id','order_date','price','address','status', 'action'])
                 ->make(true);
         }
-        // dd( $statusType);
-        $data['orderStatus'] = $this->statusList();
+        $data['orderStatus'] =  orderStatus::all();
        return view('admin.orders.index',$data);
-    }
-
-    public function statusList(){
-        // $orderStatus = $this->getOrderQuery($type) ?? [];
-        // foreach ($orderStatus as $statusId) {
-        //      $idValues [] = $statusId->order_status ;
-        // }
-       $typeList = orderStatus::all();
-
-       return $typeList;
     }
 
     public function getOrderQuery($type){
@@ -258,10 +244,10 @@ class OrderController extends Controller
         $data['deliveryZone'] = Delivery_zone::all();
         $data['deliveryFee'] = DeliveryFee::all();
 
-        // $pdf = Pdf::loadView('admin.orders.order_invoice',['data' => $data]);
+        $pdf = Pdf::loadView('admin.orders.order_invoice',['data' => $data]);
 
-        // return $pdf->download('invoice.pdf');
-        return view('admin.orders.order_invoice',['data' => $data]);
+        return $pdf->download('invoice.pdf');
+        // return view('admin.orders.order_invoice',['data' => $data]);
     }
 
     public function generateOrderNumber()

@@ -8,18 +8,11 @@
     <title>Invoice</title>
     <!-- Meta Title -->
     <title>Medicine Plus | @yield('meta-title', 'Dashboard')</title>
-    <!-- csrf token -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/bootstrap/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/plugins/bootstrap/toggle.css') }}">
-    <!-- Font Awesome Plugins -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome/css/all.min.css') }}">
-    <!-- Layout Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/css/layout.css') }}">
 </head>
 
 <body>
-    <section class="invoice my-5">
-        <div class="container">
+    <section class="invoice" style="margin: 25px 0px;">
+        <div class="container" style="width:100%; align-items:center">
             @foreach ($data['orderDetails'] as $orderDetail)
                 @php
                     $adminAddress = $data['addresses']->where('customer_id', 1);
@@ -28,45 +21,51 @@
                     $zoneGroupId = $data['deliveryZone']->where('postal_code', $customerAddress->value('postal_code'));
                     $deliveryFee = $data['deliveryFee']->where('zone_group_id', $zoneGroupId->value('id'));
                 @endphp
-                <div class="header row justify-content-between" style="border-bottom: 2px solid #000">
-                    <div class="image-section col-3">
-                        <img src="{{  public_path('assets/images/logo.png')}}" style="width:100px">
-                        <p class="pt-2 mb-0">Thank You!</p>
-                        <p><small>for shopping at</small></p>
-                    </div>
-                    <div class="header-content col-3 text-end">
-                        <p><strong>Tax Invoice</strong></p>
-                    </div>
-                </div>
-                <div class="barcode-section row justify-content-between py-2" style="border-bottom: 2px solid #000">
-                    <div class="company-address-section col-6">
-                        <address>
-                            <p class="my-1">{{ $adminAddress->value('address') }}</p>
-                            <p class="mb-1">Postal Code : {{ $adminAddress->value('postal_code') }}</p>
-                            <p class="mb-1">Phone : {{ $adminAddress->value('contact_number') }}</p>
-                        </address>
-                    </div>
-                    <div class="barcode-content col-6">
-                    </div>
-                </div>
-                <div class="order-details-section row justify-content-between py-2" style="border-bottom: 2px solid #000">
-                    <div class="detail-content col-6">
-                        <p class="mb-1"><strong>Order Id :</strong> {{ $orderDetail->order_number }}</p>
-                        <p class="mb-1"><strong>Order Date :</strong> {{ date('d M, Y h:m A',strtotime($orderDetail->created_at)) }}</p>
-                        <p class="mb-1"><strong>Invoice No :</strong> </p>
-                        <p class="mb-1"><strong>Invoice Date :</strong> </p>
-                    </div>
-                    <div class="ship-to col-6">
-                        <address>
-                            <p class="mb-1"><strong>Ship To</strong></p>
-                            <p class="mb-1"><strong>Postal Code :</strong> {{ $customerAddress->value('postal_code') }}</p>
-                            <p class="mb-1"><strong>Mobile :</strong> {{ $customerAddress->value('contact_number') }}</p>
-                        </address>
-                    </div>
-                </div>
-                <div class="product-row row py-2" style="border-bottom: 2px solid #000">
-                    <div class="table-responsive p-0">
-                        <table class="table table-borderless">
+                <table class="header" style="border-bottom: 2px solid #000;width: 100%">
+                        <tr>
+                            <td class="image-section">
+                                <img src="{{  public_path('assets/images/logo.png')}}" style="width:100px">
+                                <p style="padding-top: 10px;margin-bottom:0px">Thank You!</p>
+                                <p><small>for shopping at</small></p>
+                            </td>
+                            <td class="header-content"  style="width:100px">
+                                <p><strong>Tax Invoice</strong></p>
+                            </td>
+                        </tr>
+                </table>
+                <table class="barcode-section" style="border-bottom: 2px solid #000;width:100%;padding:10px 0px;">
+                    <tr>
+                        <td class="company-address-section">
+                            <address>
+                                <p style="margin: 10px 0px">{{ $adminAddress->value('address') }}</p>
+                                <p style="margin: 8px 0px">Postal Code : {{ $adminAddress->value('postal_code') }}</p>
+                                <p style="margin: 7px 0px">Phone : {{ $adminAddress->value('contact_number') }}</p>
+                            </address>
+                        </td>
+                        <td class="barcode-content">
+                        </td>
+                    </tr>
+                </table>
+                <table class="order-details-section" style="border-bottom: 2px solid #000;width:100%;padding:10px 0px">
+                    <tr>
+                        <td class="detail-content">
+                            <p style="margin: 5px 0px"><strong>Order Id :</strong> {{ $orderDetail->order_number }}</p>
+                            <p style="margin: 7px 0px"><strong>Order Date :</strong> {{ date('d M, Y h:m A',strtotime($orderDetail->created_at)) }}</p>
+                            <p style="margin: 8px 0px"><strong>Invoice No :</strong> </p>
+                            <p style="margin: 5px 0px"><strong>Invoice Date :</strong> </p>
+                        </td>
+                        <td class="ship-to">
+                            <address>
+                                <p style="margin: 5px 0px"><strong>Ship To</strong></p>
+                                <p style="margin: 8px 0px"><strong>Postal Code :</strong> {{ $customerAddress->value('postal_code') }}</p>
+                                <p style="margin: 5px 0px"><strong>Mobile :</strong> {{ $customerAddress->value('contact_number') }}</p>
+                            </address>
+                        </td>
+                    </tr>
+                </table>
+                <div class="product-row" style="border-bottom: 2px solid #000; padding:10px 0px">
+                    <div style="padding: 0px;width:100%">
+                        <table style="width:100%">
                             <thead>
                                 <th>Product</th>
                                 <th>Image</th>
@@ -79,44 +78,45 @@
                                     $orderItems = $data['orderItems']->where('order_id', $orderDetail->id);
                                 @endphp
                                 @foreach ($orderItems as $orderItem)
-                                    <tr class="table-light border-bottom border-top">
-                                        <td style="width: 400px">
-                                            <p class="mb-0">{{ $orderItem->product_name }} ( <small
+                                <tbody>
+                                    <tr>
+                                        <td style="width:400px">
+                                            <p style="margin-bottom: 0px">{{ $orderItem->product_name }} ( <small
                                                     style="color: #343333">SKU : {{ $orderItem->product_sku }}</small>)
                                             </p>
                                             <small
                                                 style="color: #343333">{{ $orderItem->product_variant_name }}</small>
                                         </td>
-                                        <td><img src="{{ public_path('/assets/images/products/'.$orderItem->product_id.'/'.$orderItem->product_image.'')}}"
+                                        <td style="text-align: center"><img src="{{ public_path('/assets/images/products/'.$orderItem->product_id.'/'.$orderItem->product_image.'')}}"
                                                 style="width: 50px"></td>
-                                        <td><small style="text-decoration:line-through;color:#969696">
-                                                ₹{{ $orderItem->retail_price }}</small>
-                                            <p> ₹{{ $orderItem->selling_price }}</p>
+                                        <td style="text-align: center"><small style="text-decoration:line-through;color:#969696;">
+                                                 <span style="font-family: DejaVu Sans; sans-serif;">₹</span>{{ $orderItem->retail_price }}</small>
+                                            <p style="margin-top:5px">  <span style="font-family: DejaVu Sans; sans-serif;">₹</span>{{ $orderItem->selling_price }}</p>
                                         </td>
-                                        <td>{{ $orderItem->quantity }}</td>
-                                        <td><small style="text-decoration:line-through;color:#969696">
-                                                ₹{{ $orderItem->quantity * $orderItem->retail_price }}</small>
-                                            <p>₹{{ $orderItem->total_amount }}</p>
+                                        <td style="text-align: center">{{ $orderItem->quantity }}</td>
+                                        <td style="text-align: center"><small style="text-decoration:line-through;color:#969696">
+                                                 <span style="font-family: DejaVu Sans; sans-serif;">₹</span>{{ $orderItem->quantity * $orderItem->retail_price }}</small>
+                                            <p style="margin-top:5px">  <span style="font-family: DejaVu Sans; sans-serif;">₹</span>{{ $orderItem->total_amount }}</p>
                                         </td>
                                     </tr>
+                                </tbody>
                                 @endforeach
                             </tbody>
                         </table>
-                        <p class="d-flex justify-content-between me-3 mb-1 "><strong>Delivery Fee</strong><span> + ₹
-                            {{ $deliveryFee->value('delivery_fee') }}</span></p>
                     </div>
+                    <table  style="width: 100%; margin-top:5px"><tr><td><strong>Delivery Fee</strong></td><td style="width:50px"> +  <span style="font-family: DejaVu Sans; sans-serif;">₹</span>
+                        {{ $deliveryFee->value('delivery_fee') }}</td></tr></table>
                 </div>
-                <div class="total-section row justify-content-between mt-2" style="border-bottom: 2px solid #000">
-                    <p class="d-flex justify-content-between py-2"><strong>Total</strong> <span> ₹
-                        {{ $orderDetail->final_payable_amount + $deliveryFee->value('delivery_fee') }} </span>
-                </div>
+                <table class="total-section" style="border-bottom: 2px solid #000;width:100%;">
+                    <tr><td style="padding: 7px 0px"><strong>Total</strong></td> <td  style="width:50px"><span>  <span style="font-family: DejaVu Sans; sans-serif;">₹</span>
+                        {{ $orderDetail->final_payable_amount + $deliveryFee->value('delivery_fee') }} </span></td></tr>
+                </table>
                 <div class="description-block">
 
                 </div>
             @endforeach
         </div>
     </section>
-    <script src="{{ asset('assets/plugins/bootstrap/bootstrap.min.js') }}"></script>
 </body>
 
 </html>
