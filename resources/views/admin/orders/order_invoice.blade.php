@@ -87,13 +87,13 @@
                                                 style="color: #343333">{{ $orderItem->product_variant_name }}</small>
                                         </td>
                                         <td><small style="text-decoration:line-through;color:#969696;">
-                                                 <span style="font-family: DejaVu Sans; sans-serif;">₹</span>{{ $orderItem->retail_price }}</small>
-                                            <p style="margin-top:5px">  <span style="font-family: DejaVu Sans; sans-serif;">₹</span>{{ $orderItem->selling_price }}</p>
+                                                 <span style="font-family: DejaVu Sans; sans-serif;">₹</span>{{ number_format($orderItem->retail_price , 2)}}</small>
+                                            <p style="margin-top:5px">  <span style="font-family: DejaVu Sans; sans-serif;">₹</span>{{ number_format($orderItem->selling_price , 2) }}</p>
                                         </td>
                                         <td>{{ $orderItem->quantity }}</td>
                                         <td><small style="text-decoration:line-through;color:#969696">
-                                                 <span style="font-family: DejaVu Sans; sans-serif;">₹</span>{{ $orderItem->quantity * $orderItem->retail_price }}</small>
-                                            <p style="margin-top:5px">  <span style="font-family: DejaVu Sans; sans-serif;">₹</span>{{ $orderItem->total_amount }}</p>
+                                                 <span style="font-family: DejaVu Sans; sans-serif;">₹</span>{{ number_format($orderItem->quantity * $orderItem->retail_price , 2) }}</small>
+                                            <p style="margin-top:5px">  <span style="font-family: DejaVu Sans; sans-serif;">₹</span>{{ number_format($orderItem->total_amount , 2)}}</p>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -101,12 +101,12 @@
                             </tbody>
                         </table>
                     </div>
-                    <table  style="width: 100%; margin-top:5px"><tr><td><strong>Delivery Fee</strong></td><td style="width:50px"> +  <span style="font-family: DejaVu Sans; sans-serif;">₹</span>
-                        {{ $deliveryFee->value('delivery_fee') }}</td></tr></table>
+                    <table  style="width: 100%; margin-top:5px"><tr><td><strong>Delivery Fee</strong></td><td style="width:100px"> +  <span style="font-family: DejaVu Sans; sans-serif;">₹</span>
+                        {{ number_format($deliveryFee->value('delivery_fee') , 2) }}</td></tr></table>
                 </div>
                 <table class="total-section" style="border-bottom: 2px solid #000;width:100%;">
-                    <tr><td style="padding: 7px 0px"><strong>Total</strong></td> <td  style="width:50px"><span>  <span style="font-family: DejaVu Sans; sans-serif;">₹</span>
-                        {{ $orderDetail->final_payable_amount + $deliveryFee->value('delivery_fee') }} </span></td></tr>
+                    <tr><td style="padding: 7px 0px"><strong>Total</strong></td> <td  style="width:100px"><span>  <span style="font-family: DejaVu Sans; sans-serif;">₹</span>
+                        {{ number_format($orderDetail->final_payable_amount + $deliveryFee->value('delivery_fee') , 2) }} </span></td></tr>
                 </table>
                 <div class="description-block">
 

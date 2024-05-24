@@ -68,7 +68,7 @@ class OrderController extends Controller
                         $btn .= '<a href="'.route('ordersDetails.admin',$order->customer_id).'" class="view text-decoration-none pb-1" style ="color:#385399"><i class="fa fa-eye mx-1"></i> View Order</a>';
 
                         if ($order->order_status == 2) {
-                            $btn .= '<a href="#" class="confirm text-decoration-none pb-1" style ="color:#385399" order_id = '.$order->id.' order_status = '.$order->order_status.'><i class="far fa-check-square mx-1"></i> Mark us Confirm</a>';
+                            $btn .= '<a href="#" class="confirm text-decoration-none pb-1" style ="color:#385399" order_id = '.$order->id.' order_status = '.$order->order_status.'><i class="far fa-check-square mx-1"></i> Make Confirm</a>';
                         }
 
                         if ($order->order_status == 3) {
@@ -143,7 +143,7 @@ class OrderController extends Controller
                     Cart::where('id',$cartDetail['cart_id'])->delete();
                 }
                 $orderItems = ['order_id' => $order->id , 'product_id' => $cartDetail['product_id'] , 'product_name' => $cartDetail['product_name'] , 'product_image' => $cartDetail['product_image'],
-                              'product_sku' => $cartDetail['Product_sku'] , 'product_variant_id' => $cartDetail['variant_id'] , 'product_variant_name' => $cartDetail['variant_name'] ,
+                              'product_sku' => $cartDetail['Product_sku'] , 'product_variant_id' => $cartDetail['variant_id'] ?? null, 'product_variant_name' => $cartDetail['variant_name'] ?? null ,
                                'selling_price' => $cartDetail['product_selling_price'] , 'retail_price' => $cartDetail['product_retail_Price'] , 'quantity' => $cartDetail['product_quantity'] , 'total_amount' =>  $cartDetail['product_quantity'] * $cartDetail['product_selling_price']];
 
                 $oderItemData = OrderItem::create($orderItems);

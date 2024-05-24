@@ -111,6 +111,7 @@
             });
         })
         var typeValue;
+        var table;
         $(function() {
             $('#daterange span').html('D-MM-YYYY' + ' to ' + 'D-MM-YYYY');
             $('#daterange').daterangepicker({}, function(start, end) {
@@ -130,7 +131,7 @@
             });
 
             /* datatables */
-            var table = $('.data-table').DataTable({
+           table = $('.data-table').DataTable({
                 processing: true,
                 serverSide: true,
                 rowReorder: true,
@@ -198,7 +199,10 @@
                         orderable: false,
                         searchable: false
                     },
-                ]
+                ],
+                drawCallback: function(settings) {
+                    $('.data-table thead input[type="checkbox"]').prop('checked', false);
+                }
             });
         });
 
@@ -206,27 +210,45 @@
         $(document).on('click', '.confirm', function() {
             var status = $(this).attr('order_status');
             var orderId = $(this).attr('order_id');
-            if (status == 2) {
-                $.ajax({
-                    type: "post",
-                    url: "{{ route('order.confirmOrder') }}",
-                    data: {
-                        order_id: orderId,
-                        order_status: status,
-                    },
-                    success: function(response) {
-                        if (response.data == true) {
-                            location.reload();
-                       }
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Confirm this order.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#385399",
+                cancelButtonColor: "#202020",
+                confirmButtonText: "Yes, confirm it!"
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    if (status == 2) {
+                        $.ajax({
+                            type: "post",
+                            url: "{{ route('order.confirmOrder') }}",
+                            data: {
+                                order_id: orderId,
+                                order_status: status,
+                            },
+                            success: function(response) {
+                                if (response.data == true) {
+                                    table.ajax.reload(null, false);
+                            }
+                            }
+                        });
+                    } else if (status < 2) {
+                        Swal.fire("View the orders detail first.");
                     }
-                });
-            } else if (status < 2) {
-                Swal.fire("View the orders detail first.");
-            }
+
+                    Swal.fire({
+                    title: "Confirmed!",
+                    text: "Order confirmed.",
+                    icon: "success"
+                    });
+                }
+            });
         });
 
         // select all functionality
-        $('#select-all').change(function(params) {
+        $('#select-all').change(function() {
             if ($(this).is(':checked')) {
                 $('.check').prop('checked', true);
             } else {
@@ -241,7 +263,7 @@
                 if ($(this).is(":checked")) {
                     order_id = $(this).attr("orderid");
                     let order_statusId = $(this).attr('statusid');
-                    if (order_statusId == id) {
+                    if (order_statusId == id || order_statusId == id-1 ) {
                         checkedValues.push(order_id);
                     }else{
                         $(this).prop('checked', false);
@@ -267,7 +289,7 @@
                     success: function (response) {
                         console.log(response);
                         if (response.data == true) {
-                            location.reload();
+                            table.ajax.reload(null, false);
                        }
                     }
                 });
@@ -281,22 +303,38 @@
             let order_id = [];
                 order_id.push($(this).attr('order_id'));
             let updateValue = parseInt($(this).attr('order_status')) + 1;
-            $('#staticBackdrop').modal('show');
-            $('#confirm-shipment-btn').click(function () {
-                 $.ajax({
-                    type: "post",
-                    url: "{{ route('orders.shipment') }}",
-                    data:{
-                        order_id : order_id,
-                        update_value : updateValue,
-                    },
-                    success: function (response) {
-                       if (response.data == true) {
-                            location.reload ();
-                       }
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Move the order to shipment.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#385399",
+                    cancelButtonColor: "#202020",
+                    confirmButtonText: "Yes, move it!"
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "post",
+                            url: "{{ route('orders.shipment') }}",
+                            data:{
+                                order_id : order_id,
+                                update_value : updateValue,
+                            },
+                            success: function (response) {
+                            if (response.data == true) {
+                                table.ajax.reload(null, false);
+                            }
+                            }
+                        });
+                        Swal.fire({
+                        title: "Shipped!",
+                        text: "Order is shipped.",
+                        icon: "success"
+                        });
                     }
-                 });
-            });
+                });
+
+
         });
 
         // single out for delivery
@@ -304,35 +342,72 @@
             let order_id = [];
                 order_id.push($(this).attr('order_id'));
             let updateValue = parseInt($(this).attr('order_status')) + 1;
-            $('#outForDeliveryModal').modal('show');
-            $('#confirm-delivery-btn').click(function () {
-                 $.ajax({
-                    type: "post",
-                    url: "{{ route('orders.shipment') }}",
-                    data:{
-                        order_id : order_id,
-                        update_value : updateValue,
-                    },
-                    success: function (response) {
-                       if (response.data == true) {
-                            location.reload ();
-                       }
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "To deliver this order.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#385399",
+                    cancelButtonColor: "#202020",
+                    confirmButtonText: "Yes, deliver it!"
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "post",
+                            url: "{{ route('orders.shipment') }}",
+                            data:{
+                                order_id : order_id,
+                                update_value : updateValue,
+                            },
+                            success: function (response) {
+                            if (response.data == true) {
+                                table.ajax.reload(null, false);
+                                $('#outForDeliveryModal').modal('hide');
+                            }
+                            }
+                        });
+                        Swal.fire({
+                        title: "Delivered!",
+                        text: "Order has been Delivered.",
+                        icon: "success"
+                        });
                     }
-                 });
-            });
+                });
         });
 
          $(document).ready(function () {
             let selectMenu = $("select#status_menu");
             selectMenu.find("option").hide();
+            selectMenu.find("option[value='" + 3 + "']").show();
             selectMenu.find("option[value='" + 4 + "']").show();
          });
 
         $(document).on('click','.nav-btn', function () {
             let statusValue = $(this).attr('selectValue');
+            let beforeStatus = statusValue - 1 ;
             let selectMenu = $("select#status_menu");
             selectMenu.find("option").hide();
+            if (statusValue <= 6 ) {
+                selectMenu.find("option[value='" + beforeStatus + "']").show();
+            }
             selectMenu.find("option[value='" + statusValue + "']").show();
+        });
+
+        // change checked row based on status select-menu
+        $('#status_menu').change(function () {
+            var id = $(this).val();
+            $('.check').each(function() {
+                if ($(this).is(":checked")) {
+                    order_id = $(this).attr("orderid");
+                    let order_statusId = $(this).attr('statusid');
+                    if (order_statusId ==id-1 ) {
+                        $(this).prop('checked', true);
+                    }else{
+                        $(this).prop('checked', false);
+                    }
+                }
+            });
+
         });
     </script>
 @endPushOnce

@@ -55,7 +55,7 @@
                             {{ date('d-m-Y', strtotime($orderDetail->created_at)) }}</p>
                         <p class="mb-1"><span>Delivery Date :
                             </span>{{ date('d-m-Y', strtotime($orderDetail->created_at->addDays(2))) }} </p>
-                        <p class="mb-1"><span>Order Status : </span> <span class="py-1 px-2"
+                        <p class="mb-1"><span>Order Status : </span> <span class="py-1 px-2" id="order_status"
                                 style="background-color:{{ $orderStatus->value('bg_color_code') }};color:{{ $orderStatus->value('color_code') }};font-size:11px;border-radius:4px">
                                 {{ $orderStatus->value('status') }}</span></p>
                     </div>
@@ -92,13 +92,13 @@
                                         <td><img src="{{ asset('assets/images/products/' . $orderItem->product_id . '/' . $orderItem->product_image . '') }}"
                                                 style="width: 50px"></td>
                                         <td><small style="text-decoration:line-through;color:#969696">
-                                                ₹{{ $orderItem->retail_price }}</small>
-                                            <p> ₹{{ $orderItem->selling_price }}</p>
+                                                ₹{{ number_format($orderItem->retail_price , 2) }}</small>
+                                            <span> ₹{{ number_format($orderItem->selling_price , 2) }}</span>
                                         </td>
                                         <td>{{ $orderItem->quantity }}</td>
                                         <td><small style="text-decoration:line-through;color:#969696" >
-                                            ₹{{ $orderItem->quantity * $orderItem->retail_price }}</small>
-                                            <p>₹{{ $orderItem->total_amount }}</p></td>
+                                            ₹{{ number_format($orderItem->quantity * $orderItem->retail_price ,2)}}</small>
+                                            <span>₹{{ number_format($orderItem->total_amount , 2) }}</span></td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -124,13 +124,12 @@
                     </div>
                     <div class="col">
                         <p class="mb-1 d-flex justify-content-between mb-2"><strong>Sub Total</strong><span> ₹
-                                {{ $orderDetail->total_amount }}</span></p>
-                        <p class="mb-1 d-flex justify-content-between mb-2"><strong>Delivery Fee</strong><span> + ₹
-                                {{ $deliveryFee->value('delivery_fee') }}</span></p>
+                                {{number_format( $orderDetail->total_amount , 2) }}</span></p>
+                        <p class="mb-1 d-flex justify-content-between mb-2"><strong>Delivery Fee</strong><span>+ ₹ {{ number_format($deliveryFee->value('delivery_fee') ?? 0 , 2)}}</span></p>
                         <p class="mb-1 d-flex justify-content-between mb-3"><strong>Discount Amount</strong> <span
-                                style="color: #385399">-₹ {{ $orderDetail->discount_amount }}</span></p>
+                                style="color: #385399">-₹ {{ number_format($orderDetail->discount_amount , 2) }}</span></p>
                         <p class="d-flex justify-content-between border-top py-2"><strong>Total</strong> <span> ₹
-                                {{ $orderDetail->final_payable_amount + $deliveryFee->value('delivery_fee') }} </span>
+                                {{ number_format( $orderDetail->final_payable_amount + $deliveryFee->value('delivery_fee') , 2 ) }} </span>
                         </p>
                     </div>
                 </div>
@@ -157,12 +156,12 @@
             setTimeout(function() {
             Swal.fire({
             title: "Are you sure?",
-            text: "You want to update status!",
+            text: "Process this order.",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, change it!"
+            confirmButtonColor: "#385399",
+            cancelButtonColor: "#202020",
+            confirmButtonText: "Yes, process it!"
             }).then((result) => {
             if (result.isConfirmed) {
                  $.ajax({
@@ -173,17 +172,21 @@
                         order_id:orderId,
                     },
                     success: function (response) {
-                         console.log(response);
+                         if (response.data == true) {
+                            $("#order_status").html('Processing');
+                            $("#order_status").css('color', '#fff');
+                            $("#order_status").css('background-color', '#2DCCFF');
+                         }
                     }
                  });
                 Swal.fire({
-                title: "Updated!",
-                text: "Your status has been updated.",
+                title: "Processing!",
+                text: "Order in process.",
                 icon: "success"
                 });
             }
             });
-            }, 15000);
+            }, 1500);
         }
         });
 </script>
