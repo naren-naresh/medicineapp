@@ -51,7 +51,7 @@ class SummaryPageController extends Controller
                 'product_retail_Price' =>  $product_retail_price ?? $product->retail_price,
                 'product_selling_price' =>  $product_selling_price ??  $product->selling_price,
                 'variant_data' => $variationInfoList,
-                'variant_name' => $variationInfo->variantData,
+                'variant_name' => $variationInfo->variantData ?? [],
                 'product_quantity' => $cart->quantity,
             ];
         }

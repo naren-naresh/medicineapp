@@ -111,6 +111,7 @@
             });
         })
         var typeValue;
+        var table;
         $(function() {
             $('#daterange span').html('D-MM-YYYY' + ' to ' + 'D-MM-YYYY');
             $('#daterange').daterangepicker({}, function(start, end) {
@@ -130,7 +131,7 @@
             });
 
             /* datatables */
-            var table = $('.data-table').DataTable({
+           table = $('.data-table').DataTable({
                 processing: true,
                 serverSide: true,
                 rowReorder: true,
@@ -216,7 +217,7 @@
                     },
                     success: function(response) {
                         if (response.data == true) {
-                            location.reload();
+                            table.ajax.reload(null, false);
                        }
                     }
                 });
@@ -267,7 +268,7 @@
                     success: function (response) {
                         console.log(response);
                         if (response.data == true) {
-                            location.reload();
+                            table.ajax.reload(null, false);
                        }
                     }
                 });
@@ -292,7 +293,8 @@
                     },
                     success: function (response) {
                        if (response.data == true) {
-                            location.reload ();
+                         table.ajax.reload(null, false);
+                         $('#staticBackdrop').modal('hide');
                        }
                     }
                  });
@@ -315,7 +317,8 @@
                     },
                     success: function (response) {
                        if (response.data == true) {
-                            location.reload ();
+                        table.ajax.reload(null, false);
+                        $('#outForDeliveryModal').modal('hide');
                        }
                     }
                  });
