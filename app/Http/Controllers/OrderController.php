@@ -68,7 +68,7 @@ class OrderController extends Controller
                         $btn .= '<a href="'.route('ordersDetails.admin',$order->customer_id).'" class="view text-decoration-none pb-1" style ="color:#385399"><i class="fa fa-eye mx-1"></i> View Order</a>';
 
                         if ($order->order_status == 2) {
-                            $btn .= '<a href="#" class="confirm text-decoration-none pb-1" style ="color:#385399" order_id = '.$order->id.' order_status = '.$order->order_status.'><i class="far fa-check-square mx-1"></i> Mark us Confirm</a>';
+                            $btn .= '<a href="#" class="confirm text-decoration-none pb-1" style ="color:#385399" order_id = '.$order->id.' order_status = '.$order->order_status.'><i class="far fa-check-square mx-1"></i> Make Confirm</a>';
                         }
 
                         if ($order->order_status == 3) {
