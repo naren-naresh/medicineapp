@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('product_name');
             $table->string('product_image');
             $table->string('product_sku');
-            $table->unsignedBigInteger('product_variant_id');
-            $table->string('product_variant_name');
+            $table->unsignedBigInteger('product_variant_id')->nullable();
+            $table->string('product_variant_name')->nullable();
             $table->string('selling_price');
             $table->string('retail_price');
             $table->string('quantity');
