@@ -124,6 +124,7 @@
                 table.ajax.reload();
             });
             $('.nav-btn').click(function() {
+                $('#status_menu').prop('selectedIndex',0);
                 typeValue = $(this).attr('status');
                 var ajaxParams = table.ajax.params();
                 ajaxParams.typeValue = typeValue;
@@ -241,7 +242,8 @@
                     Swal.fire({
                     title: "Confirmed!",
                     text: "Order confirmed.",
-                    icon: "success"
+                    icon: "success",
+                    confirmButtonColor: "#385399"
                     });
                 }
             });
@@ -278,24 +280,48 @@
             var selectedValue = $("#status_menu").val() - 1 ;
             var updateValue = $("#status_menu").val();
             var checkedOrders = getCheckedAttributes(selectedValue);
-               if (checkedOrders.length > 0) {
-                $.ajax({
-                    type: "post",
-                    url: "{{ route('orders.shipment') }}",
-                    data:{
-                        order_id: checkedOrders,
-                        update_value : updateValue,
-                    },
-                    success: function (response) {
-                        console.log(response);
-                        if (response.data == true) {
-                            table.ajax.reload(null, false);
-                       }
+            if (checkedOrders.length > 0) {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Confirm this action.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#385399",
+                    cancelButtonColor: "#202020",
+                    confirmButtonText: "Yes, confirm it!"
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                            $.ajax({
+                                type: "post",
+                                url: "{{ route('orders.shipment') }}",
+                                data:{
+                                    order_id: checkedOrders,
+                                    update_value : updateValue,
+                                },
+                                success: function (response) {
+                                    console.log(response);
+                                    if (response.data == true) {
+                                        table.ajax.reload(null, false);
+                                }
+                                }
+                            });
+                        Swal.fire({
+                        title: "Completed!",
+                        icon: "success",
+                        confirmButtonColor: "#385399"
+                        });
+                    }else{
+                        table.ajax.reload(null, false);
+                        $('#status_menu').prop('selectedIndex',0);
                     }
                 });
-               }else{
-                Swal.fire("Kindly select atleast one row.");
-               }
+            }else{
+                Swal.fire({
+                    text:"Kindly select atleast one row and action.",
+                    icon: "warning",
+                    confirmButtonColor: "#385399"
+                });
+            }
         });
 
         //single shipment
@@ -329,7 +355,8 @@
                         Swal.fire({
                         title: "Shipped!",
                         text: "Order is shipped.",
-                        icon: "success"
+                        icon: "success",
+                        confirmButtonColor: "#385399"
                         });
                     }
                 });
@@ -369,7 +396,8 @@
                         Swal.fire({
                         title: "Delivered!",
                         text: "Order has been Delivered.",
-                        icon: "success"
+                        icon: "success",
+                        confirmButtonColor: "#385399"
                         });
                     }
                 });
