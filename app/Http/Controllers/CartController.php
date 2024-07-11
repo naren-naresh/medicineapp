@@ -96,6 +96,10 @@ class CartController extends Controller
             ]);
         }
         $data['product_details'] = Product::where('id', $request->product_id)->get();
+        if (isset($request->from)) {
+            $buy_now = true;
+            return response(['success' => true, 'data' => $data ,'buy_now'=>$buy_now]);
+       }
         return response(['success' => true, 'data' => $data]);
     }
 
