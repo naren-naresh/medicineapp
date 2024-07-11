@@ -146,7 +146,7 @@
 
                                             <div class="options-buy row justify-content-center pt-4">
                                                 <div class="buy-now col-12">
-                                                    <button type="button" class="buy-btn form-control"
+                                                    <button type="button" class="buy-btn form-control" id="buyNow"
                                                         productId ="{{ $product->id }}">Buy Now</button>
                                                 </div>
                                                 <div class="add-cart col-12 mt-3">
@@ -219,6 +219,7 @@
         <script>
             var DeliveryCode = "{{ route('postalCheck') }}";
             var Cart = "{{ route('cart.details') }}";
+            var Summary = "{{ route('summaryPage.index') }}";
         </script>
         <script src="{{ asset('assets/js/frontend/zoom-in_image.js') }}"></script>
         <script src="{{ asset('assets/js/frontend/single_product_view.js') }}"></script>

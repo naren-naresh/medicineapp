@@ -97,7 +97,7 @@ Route::get('single/{id?}','SingleProductController@index')->name('single.product
 Route::post('postalCheck', 'SingleProductController@postalCodeCheck')->name('postalCheck');
 /** cart route  */
 Route::get('cart','CartController@index')->name('cart.index');
-Route::post('cart-details','CartController@cartDetails')->name('cart.details');
+Route::post('cart-details/{id?}','CartController@cartDetails')->name('cart.details');
 Route::post('cart-destroy','CartController@destroy')->name('cart.destroy');
 Route::post('cart-update','CartController@update')->name('cart.update');
 /** add address route */

@@ -257,3 +257,35 @@ $("#addToCart").click(function (e) {
         e.preventDefault()
     }
 });
+
+// buy now ajax call
+$('#buyNow').click(function (e) {
+    let productId = $(this).attr("productId");
+    let quantity = $('#quantity').val();
+    let zoneId = $('#postalCode').val();
+    if (variantCount === variantOptionData.length) {
+        // console.log(variantOptionData);
+        $.ajax({
+            type: "post",
+            url: Cart,
+            data: {
+                product_id : productId,
+                variants_data : variantOptionData,
+                quantity : quantity,
+                zone_id : zoneId,
+                from : 'buy-now',
+            },
+            success: function (response) {
+              console.log(response);
+              if (response.buy_now == true) {
+                var summaryUrl = Summary + "?" + productId;
+                console.log(productId);
+                location.replace(summaryUrl);
+              }
+            }
+        });
+    }else{
+        alert('please select the options properly');
+        e.preventDefault()
+    }
+});

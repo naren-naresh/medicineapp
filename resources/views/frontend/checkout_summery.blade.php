@@ -9,6 +9,15 @@
                 <div class="col-7 products-block">
                     <div class="cart-items px-3">
                         <input type="hidden" name="cartData" id="cartData" value="{{ json_encode($cartDataItems) }}">
+                        @php
+                            if (request()->has('id')) {
+                                $id = request()->route('id');
+                                $dataList = $cartDataItems
+                            } else {
+
+                            }
+                            dd($id);
+                        @endphp
                         @foreach ($cartDataItems as $cartDetail)
                             <div class="row mainRow align-items-center py-3">
                                 <div class="col-2 product-image">
